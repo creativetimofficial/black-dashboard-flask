@@ -1,0 +1,113 @@
+
+/*
+ =========================================================
+ * site.product_name - site.current_version
+ =========================================================
+
+ * Product Page: site.link_tim
+ * Copyright site.year Creative Tim (http://www.creative-tim.com)
+
+
+ =========================================================
+
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+ */
+
+ // Core
+
+@import "kit/core/custom/functions";
+@import "kit/core/bootstrap/functions";
+
+@import "kit/core/custom/variables";
+@import "kit/core/bootstrap/variables";
+
+@import "kit/core/custom/mixins";
+@import "kit/core/bootstrap/mixins";
+
+ // Bootstrap components
+
+@import "kit/core/bootstrap/root";
+@import "kit/core/bootstrap/reboot";
+@import "kit/core/bootstrap/type";
+@import "kit/core/bootstrap/images";
+@import "kit/core/bootstrap/code";
+@import "kit/core/bootstrap/grid";
+@import "kit/core/bootstrap/tables";
+@import "kit/core/bootstrap/forms";
+@import "kit/core/bootstrap/buttons";
+@import "kit/core/bootstrap/transitions";
+@import "kit/core/bootstrap/dropdown";
+@import "kit/core/bootstrap/button-group";
+@import "kit/core/bootstrap/input-group";
+@import "kit/core/bootstrap/custom-forms";
+@import "kit/core/bootstrap/nav";
+@import "kit/core/bootstrap/navbar";
+@import "kit/core/bootstrap/card";
+@import "kit/core/bootstrap/breadcrumb";
+@import "kit/core/bootstrap/pagination";
+@import "kit/core/bootstrap/badge";
+@import "kit/core/bootstrap/jumbotron";
+@import "kit/core/bootstrap/alert";
+@import "kit/core/bootstrap/progress";
+@import "kit/core/bootstrap/media";
+@import "kit/core/bootstrap/list-group";
+@import "kit/core/bootstrap/close";
+@import "kit/core/bootstrap/modal";
+@import "kit/core/bootstrap/tooltip";
+@import "kit/core/bootstrap/popover";
+@import "kit/core/bootstrap/carousel";
+@import "kit/core/bootstrap/utilities";
+@import "kit/core/bootstrap/print";
+
+ // Custom components
+
+ @import "kit/core/custom/alerts.scss";
+ @import "kit/core/custom/buttons.scss";
+ @import "kit/core/custom/dropdown.scss";
+ @import "kit/core/custom/footer.scss";
+ @import "kit/core/custom/forms.scss";
+ @import "kit/core/custom/images.scss";
+ @import "kit/core/custom/modal.scss";
+ @import "kit/core/custom/navbar.scss";
+ @import "kit/core/custom/type.scss";
+ @import "kit/core/custom/icons.scss";
+ @import "kit/core/custom/tables";
+ @import "kit/core/custom/checkboxes-radio";
+ @import "kit/core/custom/fixed-plugin";
+ @import "kit/core/custom/pagination.scss";
+ @import "kit/core/custom/misc.scss";
+ @import "kit/core/custom/rtl.scss";
+ @import "kit/core/custom/input-group.scss";
+ @import "kit/core/custom/example-pages.scss";
+ @import "kit/core/custom/progress.scss";
+ @import "kit/core/custom/badge.scss";
+ @import "kit/core/custom/pills.scss";
+ @import "kit/core/custom/tabs.scss";
+ @import "kit/core/custom/info-areas.scss";
+
+// Sections
+@import "kit/core/custom/sections.scss";
+
+
+
+ // Vendor / Plugins
+
+@import "kit/core/custom/vendor/plugin-perfect-scrollbar.scss";
+@import "kit/core/custom/vendor/plugin-animate-bootstrap-notify.scss";
+@import "kit/core/custom/vendor/plugin-bootstrap-switch.scss";
+@import "kit/core/custom/vendor/plugin-nouislider.scss";
+@import "kit/core/custom/vendor/plugin-datetimepicker.scss";
+
+
+// Cards
+
+@import 'kit/core/custom/card';
+@import "kit/core/custom/cards/card-chart";
+@import "kit/core/custom/cards/card-map";
+@import "kit/core/custom/cards/card-user";
+@import "kit/core/custom/cards/card-task";
+@import "kit/core/custom/cards/card-plain";
+@import "kit/core/custom/cards/card-register";
+@import "kit/core/custom/cards/card-stats";
+@import "kit/core/custom/cards/card-chart";

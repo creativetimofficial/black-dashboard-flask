@@ -1,0 +1,152 @@
+/*!
+
+ =========================================================
+ * site.product_name - site.current_version
+ =========================================================
+
+ * Product Page: site.link_tim
+ * Copyright site.year Creative Tim (http://www.creative-tim.com)
+
+ * Designed by www.invisionapp.com Coded by www.creative-tim.com
+
+ =========================================================
+
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+ */
+
+ @import "kit/pro/custom/functions";
+ @import "kit/pro/bootstrap/functions";
+
+ @import "kit/pro/variables";
+ @import "kit/pro/bootstrap/variables";
+
+ @import "kit/pro/custom/mixins";
+ @import "kit/pro/bootstrap/mixins";
+
+ // Bootstrap components
+
+@import "kit/pro/bootstrap/root";
+@import "kit/pro/bootstrap/reboot";
+@import "kit/pro/bootstrap/type";
+@import "kit/pro/bootstrap/images";
+@import "kit/pro/bootstrap/code";
+@import "kit/pro/bootstrap/grid";
+@import "kit/pro/bootstrap/tables";
+@import "kit/pro/bootstrap/forms";
+@import "kit/pro/bootstrap/buttons";
+@import "kit/pro/bootstrap/transitions";
+@import "kit/pro/bootstrap/dropdown";
+@import "kit/pro/bootstrap/button-group";
+@import "kit/pro/bootstrap/input-group";
+@import "kit/pro/bootstrap/custom-forms";
+@import "kit/pro/bootstrap/nav";
+@import "kit/pro/bootstrap/navbar";
+@import "kit/pro/bootstrap/card";
+@import "kit/pro/bootstrap/breadcrumb";
+@import "kit/pro/bootstrap/pagination";
+@import "kit/pro/bootstrap/badge";
+@import "kit/pro/bootstrap/jumbotron";
+@import "kit/pro/bootstrap/alert";
+@import "kit/pro/bootstrap/progress";
+@import "kit/pro/bootstrap/media";
+@import "kit/pro/bootstrap/list-group";
+@import "kit/pro/bootstrap/close";
+@import "kit/pro/bootstrap/modal";
+@import "kit/pro/bootstrap/tooltip";
+@import "kit/pro/bootstrap/popover";
+@import "kit/pro/bootstrap/carousel";
+@import "kit/pro/bootstrap/utilities";
+@import "kit/pro/bootstrap/print";
+
+// Custom components
+
+@import "kit/pro/custom/alerts.scss";
+@import "kit/pro/custom/buttons.scss";
+@import "kit/pro/custom/dropdown.scss";
+@import "kit/pro/custom/footer.scss";
+@import "kit/pro/custom/forms.scss";
+@import "kit/pro/custom/images.scss";
+@import "kit/pro/custom/modal.scss";
+@import "kit/pro/custom/navbar.scss";
+@import "kit/pro/custom/type.scss";
+@import "kit/pro/custom/icons.scss";
+@import "kit/pro/custom/checkboxes-radio";
+@import "kit/pro/custom/fixed-plugin";
+@import "kit/pro/custom/pagination.scss";
+@import "kit/pro/custom/misc.scss";
+@import "kit/pro/custom/rtl.scss";
+@import "kit/pro/custom/input-group.scss";
+@import "kit/pro/custom/progress.scss";
+@import "kit/pro/custom/badge.scss";
+@import "kit/pro/custom/pills.scss";
+@import "kit/pro/custom/tabs.scss";
+@import "kit/pro/info-areas.scss";
+@import "kit/pro/misc-extend.scss";
+@import "kit/pro/sections-extend.scss";
+@import "kit/pro/footers.scss";
+@import "kit/pro/tables.scss";
+
+
+// Pro components
+
+@import "kit/pro/example-pages.scss";
+@import "kit/pro/social-buttons.scss";
+@import "kit/pro/media.scss";
+@import "kit/pro/modals-extend.scss";
+@import "kit/pro/navbar-extend.scss";
+@import "kit/pro/buttons-extend.scss";
+@import "kit/pro/pills-extend.scss";
+@import "kit/pro/dropdown-extend.scss";
+
+
+
+
+// Sections
+@import "kit/pro/custom/sections.scss";
+
+
+
+ // Vendor / Plugins
+
+@import "kit/pro/custom/vendor/plugin-perfect-scrollbar.scss";
+@import "kit/pro/custom/vendor/plugin-animate-bootstrap-notify.scss";
+@import "kit/pro/custom/vendor/plugin-bootstrap-switch.scss";
+@import "kit/pro/custom/vendor/plugin-nouislider.scss";
+@import "kit/pro/custom/vendor/plugin-datetimepicker.scss";
+@import "kit/pro/plugins/plugin-tagsinput.scss";
+@import "kit/pro/plugins/plugin-bootstrap-select";
+@import "kit/pro/plugins/plugin-jasny-fileupload.scss";
+@import "kit/pro/plugins/plugin-carousel-slick.scss";
+
+
+
+// Cards
+
+@import 'kit/pro/custom/card';
+@import "kit/pro/custom/cards/card-chart";
+@import "kit/pro/custom/cards/card-map";
+@import "kit/pro/custom/cards/card-user";
+@import "kit/pro/custom/cards/card-task";
+@import "kit/pro/custom/cards/card-plain";
+@import "kit/pro/custom/cards/card-register";
+@import "kit/pro/custom/cards/card-stats";
+@import "kit/pro/custom/cards/card-chart";
+@import "kit/pro/cards/card-background";
+@import "kit/pro/cards/card-blog";
+@import "kit/pro/cards/card-profile";
+@import "kit/pro/cards/card-pricing";
+@import "kit/pro/cards/card-login";
+@import "kit/pro/cards/card-testimonials";
+@import "kit/pro/cards/card-product";
+
+
+// Avatars
+
+@import "kit/pro/avatars/avatar-group";
+@import "kit/pro/avatars/avatar";
+
+
+// Responsive
+
+@import "kit/pro/responsive";

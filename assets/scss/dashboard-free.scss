@@ -1,0 +1,102 @@
+
+/*!
+
+=========================================================
+* Black Dashboard - v1.0.1
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/black-dashboard
+* Copyright 2019 Creative Tim (https://www.creative-tim.com)
+* Licensed under MIT (https://github.com/creativetimofficial/black-dashboard/blob/master/LICENSE.md)
+
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+*/
+
+ // Core
+
+@import "dashboard/core/custom/functions";
+@import "dashboard/core/bootstrap/functions";
+
+@import "dashboard/core/custom/variables";
+@import "dashboard/core/bootstrap/variables";
+
+@import "dashboard/core/custom/mixins";
+@import "dashboard/core/bootstrap/mixins";
+
+ // Bootstrap components
+
+@import "dashboard/core/bootstrap/root";
+@import "dashboard/core/bootstrap/reboot";
+@import "dashboard/core/bootstrap/type";
+@import "dashboard/core/bootstrap/images";
+@import "dashboard/core/bootstrap/code";
+@import "dashboard/core/bootstrap/grid";
+@import "dashboard/core/bootstrap/tables";
+@import "dashboard/core/bootstrap/forms";
+@import "dashboard/core/bootstrap/buttons";
+@import "dashboard/core/bootstrap/transitions";
+@import "dashboard/core/bootstrap/dropdown";
+@import "dashboard/core/bootstrap/button-group";
+@import "dashboard/core/bootstrap/input-group";
+@import "dashboard/core/bootstrap/custom-forms";
+@import "dashboard/core/bootstrap/nav";
+@import "dashboard/core/bootstrap/navbar";
+@import "dashboard/core/bootstrap/card";
+@import "dashboard/core/bootstrap/breadcrumb";
+@import "dashboard/core/bootstrap/pagination";
+@import "dashboard/core/bootstrap/badge";
+@import "dashboard/core/bootstrap/jumbotron";
+@import "dashboard/core/bootstrap/alert";
+@import "dashboard/core/bootstrap/progress";
+@import "dashboard/core/bootstrap/media";
+@import "dashboard/core/bootstrap/list-group";
+@import "dashboard/core/bootstrap/close";
+@import "dashboard/core/bootstrap/modal";
+@import "dashboard/core/bootstrap/tooltip";
+@import "dashboard/core/bootstrap/popover";
+@import "dashboard/core/bootstrap/carousel";
+@import "dashboard/core/bootstrap/utilities";
+@import "dashboard/core/bootstrap/print";
+
+ // Custom components
+
+ @import "dashboard/core/custom/alerts.scss";
+ @import "dashboard/core/custom/buttons.scss";
+ @import "dashboard/core/custom/dropdown.scss";
+ @import "dashboard/core/custom/footer.scss";
+ @import "dashboard/core/custom/forms.scss";
+ @import "dashboard/core/custom/images.scss";
+ @import "dashboard/core/custom/modal.scss";
+ @import "dashboard/core/custom/navbar.scss";
+ @import "dashboard/core/custom/type.scss";
+ @import "dashboard/core/custom/tables";
+ @import "dashboard/core/custom/checkboxes-radio";
+ @import "dashboard/core/custom/fixed-plugin";
+ @import "dashboard/core/custom/sidebar-and-main-panel.scss";
+ @import "dashboard/core/custom/misc.scss";
+ @import "dashboard/core/custom/rtl.scss";
+ @import "dashboard/core/custom/input-group.scss";
+
+
+ // Vendor / Plugins
+
+@import "dashboard/core/custom/vendor/plugin-perfect-scrollbar.scss";
+@import "dashboard/core/custom/vendor/plugin-animate-bootstrap-notify.scss";
+
+// light mode
+
+@import "dashboard/core/custom/white-content.scss";
+
+// Cards
+
+@import 'dashboard/core/custom/card';
+@import "dashboard/core/custom/cards/card-chart";
+@import "dashboard/core/custom/cards/card-map";
+@import "dashboard/core/custom/cards/card-user";
+@import "dashboard/core/custom/cards/card-task";
+@import "dashboard/core/custom/cards/card-plain";
