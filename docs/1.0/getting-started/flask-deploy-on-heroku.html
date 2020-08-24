@@ -678,10 +678,10 @@
 
 
         <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content" role="main">
-          <h1 class="bd-title" id="content">How to deploy Flask on Heroku</h1>
-          <p class="bd-lead"></p>
-          <h1 id="flask-deploy-on-heroku"><a href="https://palletsprojects.com/p/flask/">Flask</a> Deploy on <a href="https://www.heroku.com/">Heroku</a></h1>
+        <h1 class="bd-title" id="content">How to deploy Flask on Heroku</h1>
 
+<p class="bd-lead"></p>
+<hr />
 <p>This page explains how to deploy a <a href="https://www.palletsprojects.com/p/flask/">Flask</a> application on Heroku, the popular deployment platform.</p>
 
 <p><br /></p>
@@ -795,8 +795,7 @@ Heroku is a cloud-based, fully-managed platform as a service (Paas) for building
 <p>Heroku apps include a Procfile that specifies the commands that are executed by the app on startup.
 As specified in the <a href="https://devcenter.heroku.com/articles/procfile">official docs</a>, the <em>Procfile</em> is always a simple text file that is named Procfile without a file extension.</p>
 
-<pre><code class="language-txt">web: gunicorn run:app --log-file=-
-</code></pre>
+<figure class="highlight"><pre><code class="language-html" data-lang="html">web: gunicorn run:app --log-file=-</code></pre></figure>
 
 <p>For our sample, <code class="highlighter-rouge">gunicorn</code> is called with <code class="highlighter-rouge">run:app</code> argument.</p>
 
@@ -813,27 +812,26 @@ As specified in the <a href="https://devcenter.heroku.com/articles/procfile">off
 
 <p>The full command list, executed on our sample project.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="c"># Clone the source code:</span>
-<span class="nv">$ </span>git clone https://github.com/app-generator/boilerplate-code-flask.git
-<span class="nv">$ </span><span class="nb">cd </span>boilerplate-code-flask
+<figure class="highlight"><pre><code class="language-html" data-lang="html">$ # Clone the source code:
+$ git clone https://github.com/app-generator/boilerplate-code-flask.git
+$ cd boilerplate-code-flask
+$
+$ # Check Heroku CLI is installed
+$ heroku -v
+heroku/7.25.0 win32-x64 node-v12.13.0 # <span class="nt">&lt;--</span> <span class="na">All</span> <span class="na">good</span>
 <span class="err">$</span>
-<span class="nv">$ </span><span class="c"># Check Heroku CLI is installed</span>
-<span class="nv">$ </span>heroku <span class="nt">-v</span>
-heroku/7.25.0 win32-x64 node-v12.13.0 <span class="c"># &lt;-- All good</span>
+<span class="err">$</span> <span class="na">#</span> <span class="na">Check</span> <span class="na">Heroku</span> <span class="na">CLI</span> <span class="na">is</span> <span class="na">installed</span>
+<span class="err">$</span> <span class="na">heroku</span> <span class="na">login</span>
+<span class="err">$</span> <span class="na">#</span> <span class="na">this</span> <span class="na">command</span> <span class="na">will</span> <span class="na">open</span> <span class="na">a</span> <span class="na">browser</span> <span class="na">window</span> <span class="na">-</span> <span class="na">click</span> <span class="na">the</span> <span class="na">login</span> <span class="na">button</span> <span class="err">(</span><span class="na">in</span> <span class="na">browser</span><span class="err">)</span>
 <span class="err">$</span>
-<span class="nv">$ </span><span class="c"># Check Heroku CLI is installed</span>
-<span class="nv">$ </span>heroku login
-<span class="nv">$ </span><span class="c"># this command will open a browser window - click the login button (in browser)</span>
+<span class="err">$</span> <span class="na">#</span> <span class="na">Create</span> <span class="na">the</span> <span class="na">Heroku</span> <span class="na">project</span>
+<span class="err">$</span> <span class="na">heroku</span> <span class="na">create</span>
 <span class="err">$</span>
-<span class="nv">$ </span><span class="c"># Create the Heroku project</span>
-<span class="nv">$ </span>heroku create
+<span class="err">$</span> <span class="na">#</span> <span class="na">Trigger</span> <span class="na">the</span> <span class="na">LIVE</span> <span class="na">deploy</span>
+<span class="err">$</span> <span class="na">git</span> <span class="na">push</span> <span class="na">heroku</span> <span class="na">master</span>
 <span class="err">$</span>
-<span class="nv">$ </span><span class="c"># Trigger the LIVE deploy</span>
-<span class="nv">$ </span>git push heroku master
-<span class="err">$</span>
-<span class="nv">$ </span><span class="c"># Open the LIVE app in browser</span>
-<span class="nv">$ </span>heroku open
-</code></pre></div></div>
+<span class="err">$</span> <span class="na">#</span> <span class="na">Open</span> <span class="na">the</span> <span class="na">LIVE</span> <span class="na">app</span> <span class="na">in</span> <span class="na">browser</span>
+<span class="err">$</span> <span class="na">heroku</span> <span class="na">open</span></code></pre></figure>
 
 <p>At this point, you should be able to visit the app in the browser.</p>
 

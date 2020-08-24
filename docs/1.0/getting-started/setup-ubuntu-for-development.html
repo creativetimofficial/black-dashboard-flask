@@ -672,10 +672,9 @@
 
         <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content" role="main">
           <h1 class="bd-title" id="content">Setup Ubuntu for Developers</h1>
-          <p class="bd-lead"></p>
-          <h1 id="setup-ubuntu-for-developers">Setup <a href="https://ubuntu.com/">Ubuntu</a> for developers</h1>
-<hr />
 
+<p class="bd-lead"></p>
+<hr />
 <p><a href="https://ubuntu.com/">Ubuntu</a> is a complete Linux operating system, freely available with both community and professional support. Ubuntu is suitable for both desktop and server use. The current Ubuntu release supports many architectures: Intel x86 (IBM-compatible PC), AMD64 (x86-64), ARMv7, ARMv8.</p>
 
 <p>Ubuntu includes thousands of pieces of software, starting with the Linux kernel version 4.15 and GNOME 3.28, and covering every standard desktop application from word processing and spreadsheet applications to internet access applications, web server software, email software, programming languages and tools and of course several games. For more information please access the official website: <a href="https://ubuntu.com/">Ubuntu.com</a></p>
@@ -687,10 +686,8 @@
 
 <p>The <code class="highlighter-rouge">Build Essential</code> package group provides the GNU Compiler Collection (GCC), GNU Debugger (GDB), and other related development tools.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="c"># install Development Tools bundle</span>
-<span class="nv">$ </span><span class="nb">sudo </span>apt <span class="nb">install </span>build-essential
-
-</code></pre></div></div>
+<figure class="highlight"><pre><code class="language-html" data-lang="html">$ # install Development Tools bundle
+$ sudo apt install build-essential</code></pre></figure>
 
 <p><br /></p>
 
@@ -699,8 +696,7 @@
 
 <p><a href="https://git-scm.com/">Git</a> is the most popular version control system on Linux. It is easy to use, amazingly fast, it’s very efficient with large projects, and it has an incredible branching system for non-linear development.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>apt <span class="nb">install install </span>git
-</code></pre></div></div>
+<figure class="highlight"><pre><code class="language-html" data-lang="html">$ sudo apt install install git</code></pre></figure>
 
 <p><br /></p>
 
@@ -708,16 +704,14 @@
 
 <p>Ubuntu comes with both Python 2.7 and Python 3.5 by default. You can install Python 3.6 along with them via a <a href="https://launchpad.net/~jonathonf/+archive/ubuntu/python-3.6">third-party PPA</a> by doing the following steps:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>add-apt-repository ppa:jonathonf/python-3.6
-</code></pre></div></div>
+<figure class="highlight"><pre><code class="language-html" data-lang="html">$ sudo add-apt-repository ppa:jonathonf/python-3.6</code></pre></figure>
 
 <blockquote>
   <p>And Python3 libraries for development</p>
 </blockquote>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>apt-get update
-<span class="nv">$ </span><span class="nb">sudo </span>apt-get <span class="nb">install </span>python3.6
-</code></pre></div></div>
+<figure class="highlight"><pre><code class="language-html" data-lang="html">$ sudo apt-get update
+$ sudo apt-get install python3.6</code></pre></figure>
 
 <p><br /></p>
 
@@ -725,11 +719,10 @@
 
 <p>Node.js is an open-source, cross-platform, JavaScript runtime environment that executes JavaScript code outside of a browser.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>apt-get <span class="nb">install install </span>nodejs
-<span class="err">$</span>
-<span class="nv">$ </span><span class="c"># check the version</span>
-<span class="nv">$ </span>node <span class="nt">--version</span>
-</code></pre></div></div>
+<figure class="highlight"><pre><code class="language-html" data-lang="html">$ sudo apt-get install install nodejs
+$
+$ # check the version
+$ node --version</code></pre></figure>
 
 <p><br /></p>
 
@@ -737,11 +730,11 @@
 
 <p>The yarn is an advanced package management software for Node.js applications. It is a fast, secure, and reliable alternative that any other Nodejs package manager.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>npm <span class="nb">install </span>yarn <span class="nt">-g</span>
-<span class="err">$</span>
-<span class="nv">$ </span><span class="c"># check the version</span>
-<span class="nv">$ </span>yarn <span class="nt">-v</span>
-</code></pre></div></div>
+<figure class="highlight"><pre><code class="language-html" data-lang="html">$ sudo npm install yarn -g
+$
+$ # check the version
+$ yarn -v</code></pre></figure>
+
 
         </main>
       </div>
