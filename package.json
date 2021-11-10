@@ -1,7 +1,7 @@
 {
     "name": "black-dashboard-flask",
     "mastertemplate": "boilerplate-code-flask-dashboard",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Template project - Flask Boilerplate Code ",
     "scripts": {},
     "repository": {
