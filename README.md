@@ -45,7 +45,7 @@
 
 <br />
 
-## Docker SUpport
+## Docker Support
 
 > Get the code
 
