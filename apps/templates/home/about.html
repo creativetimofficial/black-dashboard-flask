@@ -1,0 +1,106 @@
+{% set it = data['People'].__iter__() %}
+{% set next = it.__next__() %}
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Networker Data</title>
+
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <script type="text/javascript" src="https://speechly.github.io/browser-ui/v2/push-to-talk-button.js"></script>
+      <script type="text/javascript" src="https://speechly.github.io/browser-ui/v2/big-transcript.js"></script>
+      <!-- <script type="text/javascript" src="../style/speech.js"></script> -->
+      <link rel="stylesheet" href="../static/style.css">
+  
+      <script src="{{url_for('static', filename='speech.js')}}"></script>
+      <script
+  src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+      <link rel="stylesheet" href="https://speechly.github.io/browser-ui/v2/speechly-ui.css">
+      <!-- <script src="{{url_for('static', filename='style.css')}}"></script> -->
+
+  </head>
+  <body id="people">
+    <section>
+      <h1>About Networker</h1>
+      <p>Networker is an AI-powered networking assistant that helps you remember important details about the people you meet and guides you towards deeper, more meaningful conversations. Say goodbye to small talk and build more authentic relationships with ease.
+      </p><p>Networker seeks to improve the way we network and communicate with others. By using OpenAI’s da-vinci algorithms (many of you will know their frontend as “ChatGPT”) combined with and Speechly’s Speech to Text and Google’s Text to Speech technology, this project aims to help people remember important details about the people they interact with, creating deeper and more fruitful relationships.</p><hr>
+      <h2>How to Use the App</h2>
+      <p><ol><li>Push the microphone, spacebar to speak or enter into the prompt manually.</li>
+          <li>For your prompt, the first word you ask is important. Use the following as a guide:</li>
+        <ul><li><b>Update Strings</b> = "update",'edit', 'modify': This is a general "Upsert" function that will add fields to an existing user, or build out a new one. <br>Example Prompt: "Update Drew Piispanen - he likes vanilla ice cream." <br>Example Response: "Drew Piispanen has been updated"</li>
+      <li><b>General Strings</b> = 'who': This asks Networker to give general information about a person. <br>Example Prompt: "Who's Drew Piispanen?"<br>Example Response: "Drew Piispanen lives in Hershey, PA. He is studying data science, and is coding the 'Networker Application'. His favorite ice cream is cookie dough."</li>
+      <li><b>Reminder Strings</b> = 'remind': This will ask Networker to remind them about a specific field of this person. <br>Example Prompt: "Remind me, what's Drew Piispanen's favorite ice cream flavor?" <br>Example Response: "Drew's favorite ice cream flavor is cookie dough."</li></ul>
+      <li>Networker will respond with in the response textfield, to which the following prompt can audit the last response.</li>
+      </ol></p>
+      <p><b>NOTE: ADDING A PREPROMPT WILL REMOVE THE NETWORKER FUNCTIONING.</b></p>
+
+      <hr>
+        <h2>Desired Project Outcomes</h2>
+        <p>Once the Speech to text funcitonality is flushed out, we'll want to have the following features:
+        <ul><li><b>Networking Assistant:</b> Networker will take any data gathered from a conversation you've had and log it, including important details as well as important facts about the person/people you've interacted with, stored in JSON on a MongoDB instance.
+        </li><li>
+        <b>Inquiry Assistant:</b> Networker will gather information on you by asking rich, meaningful questions to get to know you, your connections, and help you to inquire more about life, acting as both an assistant and personal coach.
+        </li></ul> 
+        </p></section>
+    <section class="bottom">
+      <!--for demo wrap-->
+<!-- 
+      <h4 id="hoverlog">View People Data</h4>
+      <div id="log" style="display:none">
+      <p>Historically Logged People</p>
+      <div class="tbl-header">
+        <table cellpadding="0" cellspacing="0" border="0">
+          <thead>
+            <tr>
+              <th>Name</th>
+              
+              {% for field in data['People'][next] %}
+              <th>{{ field }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="tbl-content">
+        <table cellpadding="0" cellspacing="0" border="0">
+          <tbody>
+            {% for name, person in data['People'].items() %}
+            <tr>
+              <td>{{ name }}</td>
+              {% for field, value in person.items() %}
+              <td>
+                {% if (value, list) %}
+                {{value}}{{list}}
+                {% else %}
+                {{ value }}
+                {% endif %}
+              </td>
+              {% endfor %}
+            </tr>
+         
+          </tbody>
+              
+        {% endfor %}  {# Add this line to close the inner for loop #}
+        </table>
+      </div>
+    </div> -->
+    <p class="find-us">
+      Learn More:<br><a href="https://github.com/apiispanen/networker" target="_blank">Github</a> | 
+      <a href="https://medium.com/@andrewpiispanen/the-networker-project-cc8765c25f50" target="_blank">Medium</a> | <a href="mailto:apiispanen@berkeley.edu">Email</a>
+      </p>
+
+    </section>
+    <a href="/"><h4>-- Go Back --</h4></a>
+    
+    
+
+  
+  
+  </body>
+
+
+
+
+</html>

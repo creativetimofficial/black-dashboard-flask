@@ -1,0 +1,41 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Tables {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <div class="card ">
+      <div class="card-header">
+        <h4 class="card-title"> Prompts for user: {{user_id}}</h4>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+              
+          <table class="table tablesorter " id="">
+            <thead class=" text-primary">
+              {% for prompt in prompts %}
+              <tr>
+                <th>{{prompt}}</th>
+                
+              </tr>
+              {% endfor %}
+            </thead>
+
+            </tbody>
+                
+     
+      </table>
+    </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

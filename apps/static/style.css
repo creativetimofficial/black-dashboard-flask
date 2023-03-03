@@ -1,0 +1,199 @@
+body {
+	background:
+    radial-gradient(at 30% 40%, #00ffff80 10%, transparent 74%),
+    radial-gradient(at 70% 60%, #0080ff80 10%, transparent 74%);
+  background-color: #000;
+  color: #fff;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	min-height: 100vh;
+  --dropdown-handle-size: 0.35rem;  
+
+}
+
+main {
+	display: flex;
+	flex-direction: row;
+  flex-wrap: wrap;
+	justify-content: center;
+  align-content: center;
+	min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+section {
+  margin: 0.5rem 0.5rem 8rem 0.5rem;
+}
+
+label {
+  padding: 0 0 0.2rem 0;
+  display: block;
+}
+
+.group {
+  margin: 0.75rem 0.75rem;
+}
+
+input, select , textarea{
+  box-sizing: border-box;
+  font-size: 1.5rem;
+  border: 1px solid #ccc;
+  padding: 0.5em;
+  border-radius: 0.3em;
+  background: linear-gradient(#eee, #ffffff 20%);
+  min-width: 20rem;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none !important;
+  box-shadow: 0 0 10px #fff;
+}
+
+#response textarea{
+  height:100px;
+
+}
+#airesponse textarea{
+  height:100px;
+
+}
+
+
+select {
+  /* reset */
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-image:
+    linear-gradient(45deg, transparent 50%, gray 50%),
+    linear-gradient(135deg, gray 50%, transparent 50%),
+    linear-gradient(#eee, #ffffff 20%);
+  background-position:
+    calc(100% - var(--dropdown-handle-size) - 1rem) calc(50%),
+    calc(100% - 1rem) calc(50%),
+    center;
+  background-size:
+    var(--dropdown-handle-size) var(--dropdown-handle-size),
+    var(--dropdown-handle-size) var(--dropdown-handle-size),
+    100% 100%;
+  background-repeat: no-repeat;
+}
+
+.inputContainer {
+  position: relative;
+}
+
+.tiny{
+  font-size: 8px;
+}
+
+/* ************* PEOPLE PAGE ONLY ************* */
+#people:not(.bottom){
+  margin-left:15%;
+  margin-right:15%;
+  padding-top:5%;
+  padding-bottom: 5%;
+}
+#people li{
+  padding:10px;
+
+}
+
+#people h1, h3{
+  font-size: 30px;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 15px;
+}
+h4{
+  font-size: 20px;
+  color: #fff;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 12px;
+}
+table{
+  width:100%;
+  height:100%;
+  table-layout: fixed;
+}
+.tbl-header{
+  background-color: rgba(255,255,255,0.3);
+ }
+.tbl-content{
+  /* height:300px; */
+  overflow-x:auto;
+  margin-top: 0px;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+th{
+  padding: 20px 15px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 12px;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+td{
+  padding: 15px;
+  text-align: left;
+  vertical-align:middle;
+  font-weight: 300;
+  font-size: 12px;
+  color: #fff;
+  border-bottom: solid 1px rgba(255,255,255,0.1);
+  word-wrap: break-word;
+}
+a:link, a:visited, a:active, a{
+  text-decoration: none;
+  color:#fff;
+}
+a:hover, .hoverlog{
+  text-decoration: none;
+  color:#b4a3a3;
+}
+.find-us{
+ text-align: center; 
+ padding:30px
+}
+.find-us a{
+padding: 20px;
+line-height: 200%;
+}
+
+
+/* demo styles */
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,300,700);
+#people body{
+  background: -webkit-linear-gradient(left, #25c481, #25b7c4);
+  background: linear-gradient(to right, #25c481, #25b7c4);
+  font-family: 'Roboto', sans-serif;
+}
+#people section{
+  margin: 50px;
+}
+
+/* for custom scrollbar for webkit browser*/
+
+::-webkit-scrollbar {
+    width: 6px;
+} 
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+} 
+::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+}
+

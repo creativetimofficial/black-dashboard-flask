@@ -10,6 +10,14 @@ from decouple import config
 from apps.config import config_dict
 from apps import create_app, db
 
+
+from apps.home.db import get_people
+data = get_people()
+it = iter(data['People']).__next__
+audioContent = ''
+print('enter getJSONReuslt', flush=True)
+
+
 # WARNING: Don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 

@@ -1,0 +1,90 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+
+<head>
+    <meta charset="utf-8" />
+    <title>Networker (Alpha)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script type="text/javascript" src="https://speechly.github.io/browser-ui/v2/push-to-talk-button.js"></script>
+    <script type="text/javascript" src="https://speechly.github.io/browser-ui/v2/big-transcript.js"></script>
+    <link rel="stylesheet" href="../static/style.css">
+    <!-- <script src="https://unpkg.com/@grammarly/editor-sdk?clientId=client_LPkx8nDFo6k1yYnvLRcj5m"></script> -->
+    <link rel="shortcut icon" href="">
+    <script src="{{url_for('static', filename='speech.js')}}"></script>
+
+
+    <link rel="stylesheet" href="https://speechly.github.io/browser-ui/v2/speechly-ui.css">
+    <!-- <script src="{{url_for('static', filename='style.css')}}"></script> -->
+  </head>
+  <body>
+
+  </script>
+    <div class="PushToTalkContainer">
+        <!-- Drew's APP ID -->
+      <push-to-talk-button appid="29d3a734-0f17-4929-bf4f-15c5972b8454" capturekey=" " placement="top"> </push-to-talk-button>    
+      <!-- Default APP ID -->
+      
+        <!-- <push-to-talk-button appid="f2e6e9f3-0174-46c2-8723-abdf85fbeb3a" capturekey=" "/> -->
+    </div>
+
+    <div class="BigTranscriptContainer">
+      <big-transcript></big-transcript>
+    </div>
+    
+    <main>
+      <section>
+        <div class="group">
+          <label>Preprompt</label>
+          <div class="inputContainer">
+            <select id="brand">
+              <option value="">General (Default)</option>
+              <option value="Pretend that you're my assistant: ">Assistant</option>
+              <option value="Pretend that you're my friend: ">Friend</option>
+              <option value="Pretend that you're my therapist: ">Therapist</option>
+              <option value="Pretend that you're a philosopher: ">Philosopher</option>
+              <option value="Pretend that you're my colleague: ">Colleague</option>
+              <option value="Pretend that you're my brain: ">Brain</option>
+              
+            </select>
+          </div>
+          <p class="tiny">Preprompt is, "Pretend that you're my..."</p>
+        </div>
+
+        <div class="group">
+          <label>Prompt</label>
+          <div class="inputContainer" id="response">
+            <grammarly-editor-plugin>
+              <textarea type="text" placeholder="You can alternatively insert prompt here - press enter when done"></textarea>
+            </grammarly-editor-plugin>
+          </div>
+  
+        </div>
+        <div class="group">
+          <label>Response</label>
+          <div class="inputContainer" id="airesponse">
+             <textarea type="text" disabled></textarea>
+            </div>
+            <p class="tiny">Push mic or spacebar to talk. <br> Prompt can be entered into manually.
+            </p>
+            <a href="/about"><h4>About</h4></a>
+        
+
+      </section>
+    </main>
+  </body>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+
+{% endblock javascripts %}

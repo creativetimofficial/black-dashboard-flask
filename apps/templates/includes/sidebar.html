@@ -3,12 +3,12 @@
     <div class="sidebar">
       <div class="sidebar-wrapper">
         <div class="logo">
-          <a target="_blank" rel="sponsored noopener noreferrer" 
+          <a rel="sponsored noopener noreferrer" 
              href="/demo.html" class="simple-text logo-mini">
             NW
           </a>
-          <a target="_blank" rel="sponsored noopener noreferrer" 
-             href="https://github.com/apiispanen/networker" class="simple-text logo-normal">
+          <a rel="sponsored noopener noreferrer" 
+             href="/voice.html" class="simple-text logo-normal">
             Networker Demo
           </a>
         </div>
@@ -16,9 +16,15 @@
         <ul class="nav">
         {% if current_user.is_authenticated %}
         <li class="{% if 'tables' in segment %} active {% endif %}">
-          <a href="/ui-tables.html">
-            <i class="tim-icons icon-puzzle-10"></i>
+          <a href="/about">
+            <i class="tim-icons icon-badge"></i>
             <p>People</p>
+          </a>
+        </li>
+        <li class="{% if 'tables' in segment %} active {% endif %}">
+          <a href="/prompts">
+            <i class="tim-icons icon-bullet-list-67"></i>
+            <p>Prompts</p>
           </a>
         </li>
           <li class="{% if 'index' in segment %} active {% endif %}">
