@@ -32,15 +32,18 @@
               <div >
               <tr>
                 <td>{{ name }}</td><td class="more">View More</td>
+                
                 {% for field, value in person.items() %}
+           
                 <td class="expand" style="display: none;">
+                
                   {% if (value, list) %} 
                   {{field}} : {{value}}{{list}}
                   {% else %}
                   {{ value }}
                   {% endif %}
                 </td>
-                {% endfor %}
+                {% endfor %} 
               </tr>
             </div>
           {% endfor %}  {# Add this line to close the inner for loop #}

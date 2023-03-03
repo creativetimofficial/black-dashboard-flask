@@ -91,6 +91,10 @@ def about():
 
     return render_template('home/ui-tables.html', data=data, it=it)
 
+@blueprint.route('/demo')
+def demo():
+    return render_template('home/voice.html')
+
 
 @blueprint.route("/save_audio", methods=['POST'])
 @login_required
