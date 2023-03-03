@@ -5,30 +5,33 @@ API_KEY = os.getenv('API_KEY')
 if API_KEY is not None: 
     print('The API key is found')
 else:
-    from apps.home.creds import API_KEY
-    print('The API_KEY environment variable is not set.')
-
-import string
+    try:
+        print('The API_KEY environment variable is not set.')
+        from apps.home.creds import API_KEY
+        from apps.home.user import person
+    except:
+        from creds import API_KEY
+        from user import person
 
 from flask import session
 import openai
 import json
-from apps.home.user import person
 
 openai.api_key = API_KEY
 
 def ai_response(prompt, networking = None, previous_conversation=None, temperature =.5):
+    import string
+
     # OPEN AI CONFIG
     temperature = temperature
     model_engine = "text-davinci-003"
     # model_engine = "gpt-3.5-turbo"
 
-
     # LOAD IN THE UPDATE/REMINDER STRINGS
     update_strings = ["update",'edit', 'modify']
     general_strings = [ 'who']
     reminder_strings = ['remind']
-    ask_strings = ["what"]
+    log_strings = ["spoke", 'talked']
 
     if networking:
         human = person() 
@@ -87,6 +90,10 @@ def ai_response(prompt, networking = None, previous_conversation=None, temperatu
             #     print("*** RETRIEVING USER ***")
             #     ai_response(f"What can you tell me about {human.name} based on the following?\n\n{human.get_info()}")
 
+    for string in log_strings:
+        if string in prompt:
+            prompt = f"Pretend you are a scribe trying to summarize a meeting. Can you take professional, bulleted notes on the following? If they need a follow up, write 'Follow up: TRUE' and specify timeframe.\n{prompt}"
+
     # NOW RUN THE PROMPT:
     completions = openai.Completion.create(
         engine=model_engine,
@@ -106,9 +113,16 @@ def ai_response(prompt, networking = None, previous_conversation=None, temperatu
         human.json = message.strip()
         human.update()
         message = str(human.name)+" has been updated."
-        print("******** JSON UPDATED ********")
+        print("******** JSON UPDATED ********")    
 
-    return message
+    return message.strip()
+
+
+# postmeeting = "Just spoke with Zach. Seems like he's ready to go with our software demo but needs approval from his boss. He was interested in the low price, and wanted to learn more about the drag and drop editor. I'd like to follow up with him in a week to make sure he does that."
+
+# ai_response(postmeeting)
+
+
 
 # prompt = 'update robert piispanen - he works at carlson fabrication solution, is a business owner and has a dog named stella. On the weekends, he likes to go swimming at the lake.'
 
@@ -127,15 +141,20 @@ def ai_response(prompt, networking = None, previous_conversation=None, temperatu
 # print(conversation)
 
 # save_conversation(prompt, conversation)
-# def gpt_response(prompt):
-#     print('hello')
-#     response = openai.ChatCompletion.create( 
-#     openai.api_key,
-#     model="gpt-3.5-turbo-0301",
-#     messages=[{"role": "user", "content": prompt}],
-#     max_tokens=1024,
-#     n=1,
-#     temperature=0.5)
-#     print(response["choices"][0]["message"]["content"])
+
+def gpt_response(prompt):
+    response = openai.ChatCompletion.create( 
+    openai.api_key,
+    model="gpt-3.5-turbo-0301",
+    messages=[{"role": "user", "content": prompt}],
+    max_tokens=1024,
+    n=1,
+    temperature=0.5)
+    message = response["choices"][0]["message"]["content"]
+    # Requires ChatGPT
+    # message = response["choices"]
+    return message
+
+# print(gpt_response("do you know what the best dance move is?"))
 
 

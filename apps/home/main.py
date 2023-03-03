@@ -23,7 +23,7 @@ def index():
 
 
 @app.route('/about')
-def about():
+def about():    
     # with open("conversations.json", "r") as f:
     #     data = json.load(f)
     data = get_people()

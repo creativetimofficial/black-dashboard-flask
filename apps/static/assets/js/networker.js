@@ -1,13 +1,16 @@
 $('.more').click(function() {
-    var $this = $(this);
-    var $expand = $this.nextUntil('.more', '.expand');
-    $expand.slideToggle();
-    $this.text($expand.is(':visible') ? 'View less' : 'View more');
-    $this.text($expand.is(':hidden') ? 'View More' : 'View Less');
-  });
-
+  var $this = $(this);
+  var $expand = $this.nextUntil('.more', '.expand');
+  $expand.slideToggle();
+  if ($expand.is(':visible')) {
+    $this.text('View Less');
+    $this.click(function(){
+      $this.text('View More');
   
-  function handleError(element) {
-    console.error(`404 Error: ${element.src}`);
-    element.src = "fallback-image.jpg";
-  };
+    })
+  }
+  else {
+    $this.text('View More');
+  }
+
+});

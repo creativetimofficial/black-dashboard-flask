@@ -1,7 +1,10 @@
 import difflib
-from apps.home.db import get_people, update_person, delete_person
-from apps.home.user_info import get_json
-
+try:
+    from apps.home.db import get_people, update_person, delete_person
+    from apps.home.user_info import get_json
+except:
+    from db import get_people, update_person, delete_person
+    from user_info import get_json
 
 class person():
     def __init__(self, name="", json="") -> None:

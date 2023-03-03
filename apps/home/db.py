@@ -88,7 +88,8 @@ def log_user_response(user, prompt, response, client=client):
         # Return the ID of the inserted document
         return result.inserted_id
 
-
+# def note_taker(prompt):
+#     return response
 # conversation_json = """{   "People":{
 #             "John Doe": {
 #             "School": "Bunker Hill",

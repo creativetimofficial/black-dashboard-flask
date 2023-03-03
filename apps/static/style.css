@@ -37,6 +37,14 @@ label {
   margin: 0.75rem 0.75rem;
 }
 
+.expand{
+  display:block;
+}
+.more{
+  display:inline-block;
+  opacity: .2;
+}
+
 input, select , textarea{
   box-sizing: border-box;
   font-size: 1.5rem;

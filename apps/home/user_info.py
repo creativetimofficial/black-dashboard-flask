@@ -1,7 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-from apps.home.db import get_people, update_person
+try:
+    from apps.home.db import get_people, update_person
+except:
+    from db import get_people, update_person
 import difflib
 
 def google_it(search_term, other_info=None):
@@ -87,10 +90,6 @@ def json_update(lookupname, json_input, filename=None):
     except:
         print("No match found for ", name, "Adding new entry with JSON response: ",json_input)
         
-    # Write the updated data back to the file
-    if filename:
-        with open("conversations.json", "w") as f:
-            json.dump(data, f, indent=4)
 
     return update_person(name, json_input['People'][name], badname=lookupname)
 
