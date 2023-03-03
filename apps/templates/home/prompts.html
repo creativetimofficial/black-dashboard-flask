@@ -16,13 +16,24 @@
               
           <table class="table tablesorter " id="">
             <thead class=" text-primary">
-              {% for prompt in prompts %}
               <tr>
-                <th>{{prompt}}</th>
-                
+                <th>
+                  Prompt
+                </th>
+                <th>
+                  Reponse
+                </th>
+                <th>timestamp</th>
+              </thead>
+              </tr>
+              <tr>All logged activity for user will be displayed</tr>
+              {% for prompt in prompts %}
+             
+              <tr>
+                <td>{{prompt["prompt"]}}</td> <td>{{prompt["response"]}}</td><td>{{prompt["timestamp"]}}</td>
               </tr>
               {% endfor %}
-            </thead>
+           
 
             </tbody>
                 

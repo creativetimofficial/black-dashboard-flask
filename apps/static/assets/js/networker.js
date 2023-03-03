@@ -5,3 +5,9 @@ $('.more').click(function() {
     $this.text($expand.is(':visible') ? 'View less' : 'View more');
     $this.text($expand.is(':hidden') ? 'View More' : 'View Less');
   });
+
+  
+  function handleError(element) {
+    console.error(`404 Error: ${element.src}`);
+    element.src = "fallback-image.jpg";
+  };

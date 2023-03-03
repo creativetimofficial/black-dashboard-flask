@@ -5,7 +5,7 @@ Copyright (c) 2019 - present AppSeed.us
 
 
 from apps.home import blueprint
-from flask import render_template, request
+from flask import render_template, request, session
 from flask_login import login_required
 from jinja2 import TemplateNotFound
 
@@ -108,6 +108,8 @@ def save_audio():
     if len(prompt.split(' ')) > 1:
         print("YOUR PROMPT:", prompt.split(' '),  len(prompt))
         response = ai_response(prompt, networking=True).strip()
+        user_id = session.get("_user_id")
+        log_user_response(user_id, prompt, response, client=client)
         print("AI response run")
     # ELSE, REDIRECT
     else:
@@ -117,19 +119,23 @@ def save_audio():
     # do something with the audio data here
     return jsonify({"audioContent": audioContent, "airesponse":response})
 
-@blueprint.route("/prompts.html")
+@blueprint.route("/prompts")
 @login_required
 def prompts():
+    print("PROMPTS")
     # Connect to MongoDB and query for unique prompts
     db = client["db"]
         # Connect to MongoDB and query for unique prompt
     collection = db["user_responses"]
     # prompts = collection.distinct("prompt")
-    user_id = 'user123'
-    cursor = collection.find({"user": user_id})
+    # user_id = 'user123'
+    # print(session)
+    user_id = session.get("_user_id")
+
+    prompts = collection.find({"user": user_id})
  
 
-    return render_template('home/prompts.html', prompts=cursor, user_id=user_id)
+    return render_template('home/prompts.html', prompts=prompts, user_id=user_id)
 
 
 
