@@ -9,13 +9,13 @@
   <link rel="shortcut icon" href="">
   <script src="{{url_for('static', filename='speech.js')}}"></script>
 
-
   <link rel="stylesheet" href="https://speechly.github.io/browser-ui/v2/speechly-ui.css">
   <!-- <script src="{{url_for('static', filename='style.css')}}"></script> -->
 </head>
 
-{% extends "layouts/base.html" %}
 
+
+{% extends "layouts/base.html" %}
 
 
 {% block title %} UI Tables {% endblock %} 
@@ -23,6 +23,19 @@
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
 {% block content %}
+<!-- Push to talk button: Make it so that when the entity is selected 
+  (NOT AFTER SPEECH COMPLETE), the person's profile will come up and we can edit the 
+  relevant info -->
+<push-to-talk-button
+appid="29d3a734-0f17-4929-bf4f-15c5972b8454"
+placement="bottom"
+hide="false"
+capturekey=" "
+intro="Push to talk"
+size="80px" >
+</push-to-talk-button>
+
+
 <div class="row">
   <div class="col-md-12">
     <div class="card ">
@@ -51,7 +64,6 @@
               <tr>
                 <td>{{ name }}</td><td class="more">View More</td>
                 
-
 
                 {% for field, value in person.items() %}
            

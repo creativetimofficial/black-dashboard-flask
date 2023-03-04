@@ -45,6 +45,7 @@ label {
   opacity: .2;
 }
 
+
 input, select , textarea{
   box-sizing: border-box;
   font-size: 1.5rem;
