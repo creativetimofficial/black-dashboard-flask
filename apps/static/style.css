@@ -206,3 +206,28 @@ line-height: 200%;
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
 }
 
+/* MODAL POPUP FOR NOTE */
+.modal-notify .modal-header {
+  border-radius: 3px 3px 0 0;
+}
+.modal-notify .modal-content {
+  border-radius: 3px;
+}
+#addnotes *{
+  top:0px;
+margin-top:0px; color:black
+}
+
+#addnotes textarea {
+  color:black;
+  min-height:100px
+
+}
+/* END MODAL */
+
+
+#prompt textarea, #response textarea, #prompt, #response{
+display:inline;
+height:150px;
+text-align: center;
+}

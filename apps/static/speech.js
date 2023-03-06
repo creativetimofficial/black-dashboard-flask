@@ -21,9 +21,6 @@ document.addEventListener("keydown", (event) => {
 
   if (event.key === ' ' && !isTextarea && isMainarea) {
     
-    event.preventDefault();
-    button.click();
-    
   }
 });
 
@@ -37,20 +34,6 @@ button.addEventListener("speechsegment", (e) => {
       speechSegment.entities.forEach(entity => {
         console.log(entity.type);
         console.log(entity.person_name);
-//         // let select = document.getElementById(entity.type);  
-//         // console.log(select);
-//         // let options = Array
-//         //   .from(select.getElementsByTagName("option"))
-//         //   .map(option => option.innerHTML);
-        
-//         // const found = options
-//         //   .find(option => 
-//         //         entity
-//         //         .value
-//         //         .toLowerCase()
-//         //         .startsWith(option.toLowerCase()));
-        
-//         // if (found) select.value = found;
       })
 
 
@@ -130,13 +113,13 @@ window.onload.resize=function() {
 var hoverlog = document.getElementById("hoverlog");
 var log = document.getElementById("log");
 
-if (hoverlog){
-hoverlog.onclick=function(){
-  $("#log").slideToggle( "slow", function() {
-    // Animation complete.
-  });
+// if (hoverlog){
+// hoverlog.onclick=function(){
+//   $("#log").slideToggle( "slow", function() {
+//     // Animation complete.
+//   });
 
-}};
+// }};
 
 
 }

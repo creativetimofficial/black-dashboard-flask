@@ -66,10 +66,11 @@ import os
 # from stt import speech_to_text
 from apps.home.prompt import *
 from apps.home.tts import tts_string
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, flash, redirect, url_for
 from flask import session
-from apps.home.db import get_people, log_user_response, client
+from apps.home.db import get_people, log_user_response, client, update_person
 from apps.home.user import Session
+from html import escape
 
 networker = Session()
 
@@ -138,37 +139,66 @@ def prompts():
 
     prompts = collection.find({"user": user_id})
  
+    qTerm = request.args.get('s')
+    if not qTerm:    
+        prompts = collection.find({"user": user_id})
+        flash("You did not search for anything")
+        res="ALL"
+        # return redirect(url_for('home_blueprint.prompts'))
+    elif qTerm:
+        cleanQuery = escape(qTerm)
+        # Do a search on the user and the query, case insensitive "i" option
+        prompts = collection.find({"user": user_id, 
+                                   '$or':[
+                                    {"prompt":{'$regex':cleanQuery, '$options' : 'i'}},
+                                    { "response":{'$regex':cleanQuery, '$options' : 'i'}}
+                                   ]
+                                   })
+        
+        res = 'assume it has been searched'
+        # res = dbQuery.fetchall()
+    
 
-    return render_template('home/prompts.html', prompts=prompts, user_id=user_id)
-
-
-
-# STEP 1: SEND RANI TO THE BACKEND
-# STEP 2: VERIFY RANI IS A PERSON, SEND BACK JSON FILE IF SO
-# STEP 3: IF VERIFIED, SEND THE CONSEQUENT INFORMATION
-# STEP 4: (AFTER) LISTEN TO THE NEXT PARTS.
-
-
-# @blueprint.route("/verify_person", methods=['GET','POST'])
-# @login_required
-# def verify_person():
-#     if request.method == 'POST':
-#         print("POST REQUEST RECEIVED")
-#         pass
-#     if request.method == 'GET':
-#         print("POST REQUEST RECEIVED")
-#         pass
-    # ONE OF THESE REQUESTS CAN RUN THE "VERIFY()" FUNCTION AND THEN RETURN IT TO JAVASCRIPT 
+    return render_template('home/prompts.html', prompts=prompts, user_id=user_id, res=res)
 
 @blueprint.route("/verify_person", methods=['POST'])
 @login_required
 def verify_person():
     data = request.get_json()
     entity_value = data.get('entityValue')
-    name = person(name = entity_value)
-    result = name.verify()
-    return jsonify(result)
+    entry = person(name = entity_value)
+    result = entry.verify()
+    return jsonify(entry.name)
 
+@blueprint.route("/relevant_fields", methods=['POST'])
+@login_required
+def relevant_fields():
+    data = request.get_json()
+    entity_value = data.get('entityValue')
+    # entry = person(name = entity_value)
+    # result = entry.verify()
+    return 
+
+@blueprint.route('/up-person', methods=['POST'])
+def up_person():
+    name = request.form['name'].strip()
+    # field = request.form['field']
+    value = request.form['value'].strip()
+    db = client.db
+    collection = db["People"]
+
+    # Format the value into an actual dict, ugh:
+    parts = value.split(':')
+    key = parts[0].strip()
+    value = parts[1].strip()
+    value = {key: value}
+    # print(key, value)
+
+    update_person(name, value )
+
+
+    # ({"People": {"$exists": True}}, {"$set": {"People."+name+"."+str(key): str(json_input[key])}})
+    return jsonify(success=True)
 
 
 

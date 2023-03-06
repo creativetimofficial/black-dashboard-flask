@@ -36,7 +36,7 @@ size="80px" >
 </push-to-talk-button>
 <big-transcript
 placement="top"
-formattext="false" >
+formattext="true" >
 </big-transcript>
 
 
@@ -50,29 +50,26 @@ formattext="false" >
       <div class="card-body">
         <div class="table-responsive">
               
-          <table class="table tablesorter " id="">
+          <table class="table tablesorter " id="people">
             <thead class=" text-primary">
               {% set it = data['People'].__iter__() %}
               {% set next = it.__next__() %}
               <tr>
                 <th>Name</th>
                 
-                <!-- {% for field in data['People'][next] %}
-                <th>{{ field }}</th>
-                {% endfor %} -->
               </tr>
             </thead>
  
-              
               {% for name, person in data['People'].items() %}
               <div >
               <tr>
-                <td>{{ name }}</td><td class="more">View More</td>
+                <td class="name" contenteditable>{{ name }}</td>
+                <td class="more">View More</td>
                 
 
                 {% for field, value in person.items() %}
            
-                <td class="expand" style="display: none;">
+                <td class="expand" name="{{name}}" style="display: none;" contenteditable>
                 
                   {% if (value, list) %} 
                   {{field}} : {{value}}{{list}}
@@ -80,7 +77,9 @@ formattext="false" >
                   {{ value }}
                   {% endif %}
                 </td>
-                {% endfor %} 
+                {% endfor %}
+                <!-- <td class="expand" style="display: none;" contenteditable></td>  -->
+                <td class="expand" style="display: none;"><a href="/prompts?s={{ name }}">View Notes</a> | <a href="" class="usereditbutton" data-toggle="modal" data-target="#edituser">Edit User</a></td>
                 
               </tr>
             </div>
@@ -93,14 +92,103 @@ formattext="false" >
     </div>
       </div>
     </div>
+    <div id="prompt" >
+    <textarea name=""></textarea>
+  </div>
+  <div id="response">
+    <textarea name="" ></textarea>
+  </div>
   </div>
 
 </div>
 <intro-popup>
   <span slot="priming-body">You'll be able to control this web app faster with voice.</span>
 </intro-popup>
+              <!-- NOTE POPUP -->
+              <div class="modal fade" id="addnotes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog modal-notify modal-warning" role="document">
+                <!--Content-->
+                <div class="modal-content">
+                  <!--Header-->
+                  <div class="modal-header text-center">
+                    <h4 class="modal-title white-text w-100 font-weight-bold py-2">New Note</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true" class="white-text">&times;</span>
+                    </button>
+                  </div>
+            
+                  <!--Body-->
+                  <div class="modal-body">
+                    <div class="md-form mb-5">
+                      <i class="fas fa-user prefix grey-text"></i>
+                      <textarea type="text" id="form3" class="form-control validate"></textarea>
+                      <label data-error="wrong" data-success="right" for="form2">Your Note</label>
+                    </div>
+            
+                    <div class="md-form">
+                      <i class="fas fa-envelope prefix grey-text"></i>
+                      <input type="email" id="form2" class="form-control validate">
+                      <label data-error="wrong" data-success="right" for="form2">Person of Interest</label>
+                    </div>
+                  </div>
+            
+                  <!--Footer-->
+                  <div class="modal-footer justify-content-center">
+                    <a type="button" class="btn btn-outline-warning waves-effect">Send</a>
+                  </div>
+                </div>
+                <!--/.Content-->
+              </div>
+            </div>
+            
+            <!-- END NOTEEE -->
+
+            <!-- EDIT POPUP -->
+            <div class="modal fade" id="edituser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-notify modal-warning" role="document">
+              <!--Content-->
+              <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header text-center">
+                  <h4 class="modal-title white-text w-100 font-weight-bold py-2">Edit User</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                  </button>
+                </div>
+          
+                <!--Body-->
+                <div class="modal-body">
+                  <div class="md-form mb-5">
+                    <i class="fas fa-user prefix grey-text"></i>
+                    <textarea type="text" id="form3" class="form-control validate"></textarea>
+                    <label data-error="wrong" data-success="right" for="form2">Name</label>
+                  </div>
+          
+                  <div class="md-form">
+                    <i class="fas fa-envelope prefix grey-text"></i>
+                    <input type="email" id="form2" class="form-control validate">
+                    <label data-error="wrong" data-success="right" for="form2">Person of Interest</label>
+                  </div>
+                </div>
+          
+                <!--Footer-->
+                <div class="modal-footer justify-content-center">
+                  <a type="button" class="btn btn-outline-warning waves-effect">Submit</a>
+                </div>
+              </div>
+              <!--/.Content-->
+            </div>
+          </div>
+          
+          <!-- END User Update -->
+
+
 
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}{% endblock javascripts %}
+
+
