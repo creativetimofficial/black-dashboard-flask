@@ -143,6 +143,34 @@ def prompts():
 
 
 
+# STEP 1: SEND RANI TO THE BACKEND
+# STEP 2: VERIFY RANI IS A PERSON, SEND BACK JSON FILE IF SO
+# STEP 3: IF VERIFIED, SEND THE CONSEQUENT INFORMATION
+# STEP 4: (AFTER) LISTEN TO THE NEXT PARTS.
+
+
+# @blueprint.route("/verify_person", methods=['GET','POST'])
+# @login_required
+# def verify_person():
+#     if request.method == 'POST':
+#         print("POST REQUEST RECEIVED")
+#         pass
+#     if request.method == 'GET':
+#         print("POST REQUEST RECEIVED")
+#         pass
+    # ONE OF THESE REQUESTS CAN RUN THE "VERIFY()" FUNCTION AND THEN RETURN IT TO JAVASCRIPT 
+
+@blueprint.route("/verify_person", methods=['POST'])
+@login_required
+def verify_person():
+    data = request.get_json()
+    entity_value = data.get('entityValue')
+    name = person(name = entity_value)
+    result = name.verify()
+    return jsonify(result)
+
+
+
 
 # DREW OLD NETWORKER
 

@@ -1,4 +1,10 @@
-// Implement a listener for speech segment updates
+
+// IF SOMEONE FILLS OUT THE PROMPT AND WANTS TO RESEND:
+const responseTextArea = document.querySelector("#response textarea");
+// add an event listener for when the user submits the form
+if (responseTextArea) {
+  
+  // Implement a listener for speech segment updates
 window.onload=function(){
 
 let audio = null;
@@ -26,24 +32,26 @@ document.addEventListener("keydown", (event) => {
 button.addEventListener("speechsegment", (e) => {
 
   const speechSegment = e.detail;
-  //     // // OLD JS
-  //     speechSegment.entities.forEach(entity => {
-      
-  //       let select = document.getElementById(entity.type);  
-  //       console.log(select);
-  //       let options = Array
-  //         .from(select.getElementsByTagName("option"))
-  //         .map(option => option.innerHTML);
+  
+      // OLD JS
+      speechSegment.entities.forEach(entity => {
+        console.log(entity.type);
+        console.log(entity.person_name);
+//         // let select = document.getElementById(entity.type);  
+//         // console.log(select);
+//         // let options = Array
+//         //   .from(select.getElementsByTagName("option"))
+//         //   .map(option => option.innerHTML);
         
-  //       const found = options
-  //         .find(option => 
-  //               entity
-  //               .value
-  //               .toLowerCase()
-  //               .startsWith(option.toLowerCase()));
+//         // const found = options
+//         //   .find(option => 
+//         //         entity
+//         //         .value
+//         //         .toLowerCase()
+//         //         .startsWith(option.toLowerCase()));
         
-  //       if (found) select.value = found;
-  //     })
+//         // if (found) select.value = found;
+      })
 
 
   // Check if the speech segment is the final segment - AKA You're done talking!
@@ -59,9 +67,6 @@ button.addEventListener("speechsegment", (e) => {
     }
   });
 
-// IF SOMEONE FILLS OUT THE PROMPT AND WANTS TO RESEND:
-const responseTextArea = document.querySelector("#response textarea");
-// add an event listener for when the user submits the form
 responseTextArea.addEventListener("keydown", function(event) {
   // check if the user pressed the "Enter" key
   if (event.key === "Enter") {
@@ -114,6 +119,8 @@ function save_audio(words) {
 }
 
 };
+
+}; // IF TEXTAREA FOUND 
 
 window.onload.resize=function() {
   var scrollWidth = $('.tbl-content').width() - $('.tbl-content table').width();
