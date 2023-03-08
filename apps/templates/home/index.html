@@ -1,12 +1,3 @@
-<head>
-  <link rel="stylesheet" href="https://speechly.github.io/browser-ui/v2/speechly-ui.css">
-
-  <script type="text/javascript" src="https://speechly.github.io/browser-ui/v2/push-to-talk-button.js"></script>
-  <script type="text/javascript" src="https://speechly.github.io/browser-ui/v2/big-transcript.js"></script>
-
-
-</head>
-
 {% extends "layouts/base.html" %}
 
 
@@ -379,23 +370,8 @@
         </div>
       </div>
     </div>
-    <div class="PushToTalkContainer">
-      <!-- Drew's APP ID -->
+
     
-      <push-to-talk-button
-      appid="29d3a734-0f17-4929-bf4f-15c5972b8454"
-      placement="bottom"
-      hide="false"
-      capturekey=" "
-      intro="Push to talk"
-      size="80px" >
-    </push-to-talk-button>
-    
-    </div>
-    
-    <div class="BigTranscriptContainer">
-    <big-transcript></big-transcript>
-    </div>
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->

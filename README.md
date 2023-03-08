@@ -11,6 +11,31 @@ Once the Speech to text funcitonality is flushed out, we'll want to have the fol
 
 ### Latest deployment is held on Railway and [can be found here](https://networker.up.railway.app/)
 
+1. Add: This trigger is used to add a new object to the system. For example, if you say "Add person", the system should create a new person object and add it to the database.
+
+2. Update: This trigger is used to update an existing object in the system. For example, if you say "Update person", the system should prompt you for the details to be updated and then update the person object in the database.
+
+3. Delete: This trigger is used to delete an existing object from the system. For example, if you say "Delete person", the system should prompt you to confirm the deletion and then delete the person object from the database.
+
+4. Info: This trigger is used to retrieve information about an object from the system. For example, if you say "Info person", the system should return information about the person object from the database.
+
+5. Edit: This trigger is used to edit an existing object in the system. For example, if you say "Edit person", the system should prompt you for the details to be edited and then edit the person object in the database.
+
+6. Note: This trigger is used to add a note to an existing object in the system. For example, if you say "Note person", the system should prompt you for the note text and then add the note to the person object in the database.
+
+7. Record: This trigger is used to record an event related to an object in the system. For example, if you say "Record person", the system should prompt you for the event details and then create a new event object related to the person object in the database.
+
+8. Set: This trigger is used to set an event for an object in the system. For example, if you say "Set event", the system should prompt you for the event details and then create a new event object in the database.
+
+9. This is wrong: This trigger is used to correct the system when it provides an incorrect response. For example, if the system responds incorrectly to a command, you can say "This is wrong" and then provide the correct response.
+
+10. Mute: This trigger is used to mute a person in the system. For example, if you say "Mute person", the system should mute the person's audio input.
+
+11. Feedback: This trigger is used to leave feedback for the system. For example, if you say "Feedback", the system should prompt you for feedback and then store it in the database.
+
+12. Go To: This trigger is used to navigate to a specific page in the system. For example, if you say "Go to page", the system should navigate to the specified page.
+
+
 
 Py Scripts: 
 - App

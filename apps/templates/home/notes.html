@@ -5,18 +5,6 @@
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
 {% block content %}
-<head>
-  <meta charset="utf-8" />
-  <title>Networker (Alpha)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script type="text/javascript" src="https://speechly.github.io/browser-ui/v2/push-to-talk-button.js"></script>
-  <script type="text/javascript" src="https://speechly.github.io/browser-ui/v2/big-transcript.js"></script>
-  <link rel="stylesheet" href="../static/style.css">
-  <!-- <script src="https://unpkg.com/@grammarly/editor-sdk?clientId=client_LPkx8nDFo6k1yYnvLRcj5m"></script> -->
-  <link rel="shortcut icon" href="">
-  <script src="{{url_for('static', filename='speech.js')}}"></script>
-  <!-- <script src="{{url_for('static', filename='style.css')}}"></script> -->
-</head>
 <div class="row">
   
   <div class="col-md-12">
@@ -49,7 +37,7 @@
                 <th>timestamp</th>
               </thead>
               </tr>
-              <tr>All logged activity for user will be displayed</tr>
+              <p class="tiny">All logged activity for user will be displayed</p>
               {% for prompt in prompts %}
              
               <tr name="user_responses" value="{{prompt['_id']}}">
@@ -67,23 +55,6 @@
     </div>
   </div>
 
-</div>
-<div class="PushToTalkContainer">
-  <!-- Drew's APP ID -->
-
-  <push-to-talk-button
-  appid="29d3a734-0f17-4929-bf4f-15c5972b8454"
-  placement="bottom"
-  hide="false"
-  capturekey=" "
-  intro="Push to talk"
-  size="80px" >
-</push-to-talk-button>
-
-</div>
-
-<div class="BigTranscriptContainer">
-<big-transcript></big-transcript>
 </div>
 {% endblock content %}
 

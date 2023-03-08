@@ -7,8 +7,8 @@ const inputElement = document.querySelector('#prompt textarea');
 const airesponseTextArea = document.querySelector("#response textarea");
 var isMuted = false;
 var ask = true;
-var Nav = false;
-const name = null;
+var nav = false;
+var name = null;
 
 button.addEventListener("speechsegment", (e) => {
   const speechSegment = e.detail;
@@ -29,6 +29,9 @@ button.addEventListener("speechsegment", (e) => {
     }
     else if(word == "edit"){
       edit = true;
+    }
+    else if (word == "mute" && !isMuted){
+      toggleMute();
     }
 
     // OPEN THE STUPID FORM AND MAKE SURE IT'S OPEN
@@ -115,13 +118,13 @@ button.addEventListener("speechsegment", (e) => {
     
     // LOOK UP DA PERSON
     if (entity.type === 'person') {
-      console.log("Name entity has been found.", entity.name)
+      console.log("Name entity has been found.", entity.value)
     const xhr = new XMLHttpRequest();
     xhr.open('POST', '/verify_person');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function() {
       if (xhr.status === 200) {
-        const name = xhr.response.replace(/"/g, '').trim();
+        var name = xhr.response.replace(/"/g, '').trim();
         // window.location.href = 'about/?s='.concat(name);
         // console.log("Searching for ",name)
         
@@ -183,6 +186,16 @@ button.addEventListener("speechsegment", (e) => {
     // ADD TO PROMPT textarea
     if (inputElement != null){
     inputElement.value = wordsString;
+    speechSegment.entities
+    speechSegment.entities.forEach(entity => {
+      if (entity.type === 'person') {
+        name = entity.name;
+        console.log("looking up ", name, " in context");
+      }})
+
+
+
+
     if(!note){
     ask_question(wordsString);}
     }
@@ -223,7 +236,7 @@ $('.delete-button').on('click', deleteObject);
 
 function ask_question(words) {
   if (ask){
-  return  fetch('/save_audio', {
+  return  fetch('/ask_question', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -236,8 +249,6 @@ function ask_question(words) {
         const airesponse = data.airesponse;
         airesponseTextArea.value = airesponse;
         speak(airesponse);
-
-
       }) }
     console.log("Your query has been run!");
 }
@@ -293,7 +304,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const td = e.target;
             const tr = td.parentElement;
             const nameTd = tr.querySelector("td[name]");
-            const name = nameTd.getAttribute("name");          
+            var name = nameTd.getAttribute("name");          
             const value = field.textContent;
             // Change the background when enter is done
             // $(field).css("background-color", "green").fadeOut(3000);
@@ -347,7 +358,7 @@ $("#submit-note-btn").click(function() {
 // THE MUTE BUTTON
 
 $(document).on('keypress', function(e) {
-  if (e.key === 'm') {
+  if (e.key === 'm' && e.target.nodeName !== 'INPUT' && e.target.nodeName !== 'TEXTAREA' && e.target.nodeName !== 'SELECT' && e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'OPTION') {
     toggleMute();
   }
 });
@@ -387,9 +398,6 @@ async function speak(text) {
   }
   return false;
 }
-
-
-
 
 
 

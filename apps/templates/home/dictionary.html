@@ -1,0 +1,148 @@
+{% extends "layouts/base.html" %}
+
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+
+<head>
+  <link rel="stylesheet" href="https://speechly.github.io/browser-ui/v2/speechly-ui.css">
+
+  <script type="text/javascript" src="https://speechly.github.io/browser-ui/v2/push-to-talk-button.js"></script>
+  <script type="text/javascript" src="https://speechly.github.io/browser-ui/v2/big-transcript.js"></script>
+
+
+</head>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Networker Data</title>
+
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <script type="text/javascript" src="https://speechly.github.io/browser-ui/v2/push-to-talk-button.js"></script>
+      <script type="text/javascript" src="https://speechly.github.io/browser-ui/v2/big-transcript.js"></script>
+      <!-- <script type="text/javascript" src="../style/speech.js"></script> -->
+      <link rel="stylesheet" href="../static/style.css">
+  
+      <script src="{{url_for('static', filename='speech.js')}}"></script>
+      <script
+  src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+      <link rel="stylesheet" href="https://speechly.github.io/browser-ui/v2/speechly-ui.css">
+      <!-- <script src="{{url_for('static', filename='style.css')}}"></script> -->
+
+  </head>
+  <body id="dictionary">
+   
+    <table>
+      <thead>
+        <tr>
+          <th>Trigger</th>
+          <th>Object</th>
+          <th>Note</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Add</td>
+          <td>[Person]</td>
+          <td>Add</td>
+          <td>"Add John Doe"</td>
+        </tr>
+        <tr>
+          <td>Update</td>
+          <td>[Person]</td>
+          <td>Update</td>
+          <td>"Update Jane Doe"</td>
+        </tr>
+        <tr>
+          <td>Delete</td>
+          <td>[Person]</td>
+          <td>Delete</td>
+          <td>"Delete Bob Smith"</td>
+        </tr>
+        <tr>
+          <td>Info</td>
+          <td>[Object]</td>
+          <td>Returns info</td>
+          <td>"Info on Project X"</td>
+        </tr>
+        <tr>
+          <td>Edit</td>
+          <td>[Person]</td>
+          <td>Edit</td>
+          <td>"Edit Sarah Johnson"</td>
+        </tr>
+        <tr>
+          <td>Note</td>
+          <td>[Person]</td>
+          <td>Makes a note</td>
+          <td>"Note about Tom Lee"</td>
+        </tr>
+        <tr>
+          <td>Record</td>
+          <td>[Person]</td>
+          <td>Records an event</td>
+          <td>"Record meeting with Sam Chen"</td>
+        </tr>
+        <tr>
+          <td>Set</td>
+          <td>[Event]</td>
+          <td>Sets an event</td>
+          <td>"Set reminder for project deadline"</td>
+        </tr>
+        <tr>
+          <td>This is wrong</td>
+          <td>[Correct Response]</td>
+          <td>Fine tuning the AI for what the response should have been.</td>
+          <td>"Actually, I meant to say 'Add John Smith'."</td>
+        </tr>
+        <tr>
+          <td>Mute</td>
+          <td>[Person]</td>
+          <td>Mutes speaker</td>
+          <td>"Mute Jane Doe"</td>
+        </tr>
+        <tr>
+          <td>Feedback</td>
+          <td>[Person]</td>
+          <td>Leaves feedback</td>
+          <td>"Feedback on customer service"</td>
+        </tr>
+        <tr>
+          <td>Go To</td>
+          <td>[Page]</td>
+          <td>Navigation to a page</td>
+          <td>"Go to settings page"</td>
+        </tr>
+      </tbody>
+    </table>
+
+
+    <section class="bottom">
+    <p class="find-us">
+      Learn More:<br><a href="https://github.com/apiispanen/networker" target="_blank">Github</a> | 
+      <a href="https://medium.com/@andrewpiispanen/the-networker-project-cc8765c25f50" target="_blank">Medium</a> | <a href="mailto:apiispanen@berkeley.edu">Email</a>
+      </p>
+
+    </section>
+    <a href="/"><h4>-- Go Back --</h4></a>
+
+  </body>
+
+
+
+
+</html>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+{% endblock javascripts %}

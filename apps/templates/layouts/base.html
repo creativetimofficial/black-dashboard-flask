@@ -22,20 +22,25 @@
   <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="/static/assets/img/favicon.png">
   <link rel="canonical" href="https://appseed.us/admin-dashboards/flask-dashboard-black">
-  
+   <!--     Fonts and icons     -->
+   <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
+   <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+   <!-- Nucleo Icons -->
+   <link href="/static/assets/css/nucleo-icons.css" rel="stylesheet" />
+   <!-- CSS Files -->
+   <link href="/static/assets/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
+   <!-- CSS Just for demo purpose, don't include it in your project -->
+   <link href="/static/assets/demo/demo.css" rel="stylesheet" />
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <link rel="stylesheet" href="../static/style.css">
+   <link rel="shortcut icon" href="">  
+
+
   <title>
-    Networker - {% block title %}{% endblock %} | Alpha
+  Networker - {% block title %}{% endblock %} | Alpha
   </title>
 
-  <!--     Fonts and icons     -->
-  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
-  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
-  <!-- Nucleo Icons -->
-  <link href="/static/assets/css/nucleo-icons.css" rel="stylesheet" />
-  <!-- CSS Files -->
-  <link href="/static/assets/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
-  <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link href="/static/assets/demo/demo.css" rel="stylesheet" />
+ 
 
   <!-- Specific Page CSS goes HERE  -->
   {% block stylesheets %}{% endblock stylesheets %}
@@ -54,12 +59,25 @@
       <div class="content">
 
         {% block content %}{% endblock content %}
-
-      </div>
+        <div class="PushToTalkContainer">
+          <push-to-talk-button
+            appid="29d3a734-0f17-4929-bf4f-15c5972b8454"
+            placement="bottom"
+            hide="false"
+            capturekey=" "
+            intro="Push to talk"
+            size="80px"
+          ></push-to-talk-button>
+        </div>
+      
+        <div class="BigTranscriptContainer">
+          <big-transcript></big-transcript>
+        </div>
 
       {% include 'includes/footer.html' %}
 
     </div>
+    
     
   </div>
 
@@ -71,5 +89,6 @@
   {% block javascripts %}{% endblock javascripts %}
 
 </body>
+
 
 </html>

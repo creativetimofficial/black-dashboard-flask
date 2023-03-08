@@ -1,22 +1,10 @@
 {% extends "layouts/base.html" %}
-
 {% block title %} UI Tables {% endblock %} 
 
-<!-- Specific Page CSS goes HERE  -->
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
 {% block stylesheets %}{% endblock stylesheets %}
 {% block content %}
-<head>
-  <meta charset="utf-8" />
-  <title>Networker (Alpha)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script type="text/javascript" src="https://speechly.github.io/browser-ui/v2/push-to-talk-button.js"></script>
-  <script type="text/javascript" src="https://speechly.github.io/browser-ui/v2/big-transcript.js"></script>
-  <link rel="stylesheet" href="../static/style.css">
-  <!-- <script src="https://unpkg.com/@grammarly/editor-sdk?clientId=client_LPkx8nDFo6k1yYnvLRcj5m"></script> -->
-  <link rel="shortcut icon" href="">
-  <script src="{{url_for('static', filename='speech.js')}}"></script>
-  <!-- <script src="{{url_for('static', filename='style.css')}}"></script> -->
-</head>
 <div class="row">
   
   <div class="col-md-12">
@@ -70,28 +58,6 @@
   </div>
 
 </div>
-<div class="PushToTalkContainer">
-  <!-- Drew's APP ID -->
 
-  <push-to-talk-button
-  appid="29d3a734-0f17-4929-bf4f-15c5972b8454"
-  placement="top"
-  hide="false"
-  capturekey=" "
-  intro="Push to talk"
-  size="80px" >
-</push-to-talk-button>
-
-<!-- <push-to-talk-button appid="29d3a734-0f17-4929-bf4f-15c5972b8454" capturekey=" " placement="top"> </push-to-talk-button>     -->
-<!-- Default APP ID -->
-
-  <!-- <push-to-talk-button appid="f2e6e9f3-0174-46c2-8723-abdf85fbeb3a" capturekey=" "/> -->
-</div>
-
-<div class="BigTranscriptContainer">
-<big-transcript placement="top"></big-transcript>
-</div>
 {% endblock content %}
 
-<!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}

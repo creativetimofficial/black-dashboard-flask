@@ -1,5 +1,12 @@
-
-
+<div id="prompt-response">
+  <div id="prompt" >
+  <textarea name=""></textarea>
+</div>
+<div id="response">
+  <textarea name="" ></textarea>
+</div>
+</div>
+      
       <footer class="footer">
         <div class="container-fluid">
           <ul class="nav">
@@ -13,6 +20,7 @@
             <div class="text-center">
                 <a href="" id="newnote" class="btn btn-default btn-rounded" data-toggle="modal" data-target="#addnotes">New Note</a>
               </div>
+              
               <!-- NOTE POPUP -->
               <div class="modal fade" id="addnotes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
               aria-hidden="true">
@@ -53,6 +61,118 @@
             </div>
             
             <!-- END NOTEEE -->    
+                          <!-- HELP POPUP -->
+                          <div class="text-center">
+                            <a href="" id="newhelp" class="btn btn-default btn-rounded" data-toggle="modal" data-target="#addhelp">Help</a>
+                          </div>
+                          <div class="modal fade" id="addhelp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                          aria-hidden="true">
+                          <div class="modal-dialog modal-notify modal-warning" role="document">
+                            <!--Content-->
+                            <div class="modal-content">
+                              <!--Header-->
+                              <div class="modal-header text-center">
+                                <h4 class="modal-title white-text w-100 font-weight-bold py-2">Data Dictionary</h4>
+                                <p class="tiny">If speaking, mention any person of interest & say "Submit" when completed.</p>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true" class="white-text">&times;</span>
+                                </button>
+                              </div>
+                        
+                              <!--Body-->
+                              <div class="modal-body">
+                                
+    <table>
+      <thead>
+        <tr>
+          <th>Trigger</th>
+          <th>Object</th>
+          <th>Note</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Add</td>
+          <td>[Person]</td>
+          <td>Add</td>
+          <td>"Add John Doe"</td>
+        </tr>
+        <tr>
+          <td>Update</td>
+          <td>[Person]</td>
+          <td>Update</td>
+          <td>"Update Jane Doe"</td>
+        </tr>
+        <tr>
+          <td>Delete</td>
+          <td>[Person]</td>
+          <td>Delete</td>
+          <td>"Delete Bob Smith"</td>
+        </tr>
+        <tr>
+          <td>Info</td>
+          <td>[Object]</td>
+          <td>Returns info</td>
+          <td>"Info on Project X"</td>
+        </tr>
+        <tr>
+          <td>Edit</td>
+          <td>[Person]</td>
+          <td>Edit</td>
+          <td>"Edit Sarah Johnson"</td>
+        </tr>
+        <tr>
+          <td>Note</td>
+          <td>[Person]</td>
+          <td>Makes a note</td>
+          <td>"Note about Tom Lee"</td>
+        </tr>
+        <tr>
+          <td>Record</td>
+          <td>[Person]</td>
+          <td>Records an event</td>
+          <td>"Record meeting with Sam Chen"</td>
+        </tr>
+        <tr>
+          <td>Set</td>
+          <td>[Event]</td>
+          <td>Sets an event</td>
+          <td>"Set reminder for project deadline"</td>
+        </tr>
+        <tr>
+          <td>This is wrong</td>
+          <td>[Correct Response]</td>
+          <td>Fine tuning the AI for what the response should have been.</td>
+          <td>"Actually, I meant to say 'Add John Smith'."</td>
+        </tr>
+        <tr>
+          <td>Mute</td>
+          <td>[Person]</td>
+          <td>Mutes speaker</td>
+          <td>"Mute Jane Doe"</td>
+        </tr>
+        <tr>
+          <td>Feedback</td>
+          <td>[Person]</td>
+          <td>Leaves feedback</td>
+          <td>"Feedback on customer service"</td>
+        </tr>
+        <tr>
+          <td>Go To</td>
+          <td>[Page]</td>
+          <td>Navigation to a page</td>
+          <td>"Go to settings page"</td>
+        </tr>
+      </tbody>
+    </table>
+                              </div>
+                   
+                            </div>
+                            <!--/.Content-->
+                          </div>
+                        </div>
+                        <!-- END HELP -->
             </li>
           </ul>
           <div class="copyright">

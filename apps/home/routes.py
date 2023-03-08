@@ -24,11 +24,10 @@ def route_template(template):
     try:
 
         if not template.endswith('.html'):
-            pass
+            template = template+('.html')
 
         # Detect the current page
         segment = get_segment(request)
-
         # Serve the file (if exists) from app/templates/home/FILE.html
         return render_template("home/" + template, segment=segment)
 
@@ -90,16 +89,16 @@ def people():
     data = get_people()
     it = iter(data['People']).__next__
 
-    return render_template('home/ui-tables.html', data=data, it=it)
+    return render_template('home/people.html', data=data, it=it)
 
 # @blueprint.route('/demo')
 # def demo():
 #     return render_template('home/voice.html')
 
 
-@blueprint.route("/save_audio", methods=['POST'])
+@blueprint.route("/ask_question", methods=['POST'])
 @login_required
-def save_audio():
+def ask_question():
     print("SOMETHING HAPPENING HERE")
     # process the audio data here
     
