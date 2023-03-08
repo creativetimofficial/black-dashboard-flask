@@ -22,9 +22,9 @@ def index():
 def route_template(template):
 
     try:
-
         if not template.endswith('.html'):
-            template = template+('.html')
+            pass
+            # template = template+('.html')
 
         # Detect the current page
         segment = get_segment(request)
@@ -89,7 +89,7 @@ def people():
     data = get_people()
     it = iter(data['People']).__next__
 
-    return render_template('home/people.html', data=data, it=it)
+    return render_template('home/people.html', data=data, it=it, segment=get_segment(request))
 
 # @blueprint.route('/demo')
 # def demo():
@@ -152,7 +152,7 @@ def prompts():
         res = 'assume it has been searched'
     
     prompts = prompts.sort("timestamp", -1)
-    return render_template('home/prompts.html', prompts=prompts, user_id=user_id, res=res)
+    return render_template('home/prompts.html', prompts=prompts, user_id=user_id, res=res, segment=get_segment(request))
 
 @blueprint.route('/speak/<words>', methods=['GET'])
 def speak_route(words):
@@ -203,7 +203,7 @@ def notes():
         # res = dbQuery.fetchall()
     
 
-    return render_template('home/notes.html', prompts=prompts, user_id=user_id, qTerm=qTerm)
+    return render_template('home/notes.html', prompts=prompts, user_id=user_id, qTerm=qTerm, segment=get_segment(request))
 
 
 @blueprint.route("/verify_person", methods=['POST'])

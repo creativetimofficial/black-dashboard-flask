@@ -4,14 +4,13 @@ API_KEY = os.getenv('API_KEY')
 
 if API_KEY is not None: 
     print('The API key is found')
+    from creds import API_KEY
+    from user import person
 else:
-    try:
-        print('The API_KEY environment variable is not set.')
-        from apps.home.creds import API_KEY
-        from apps.home.user import person
-    except:
-        from creds import API_KEY
-        from user import person
+    print('The API_KEY environment variable is not set. Trying from apps.home')
+    from apps.home.creds import API_KEY
+    from apps.home.user import person
+        
 
 from flask import session
 import openai
