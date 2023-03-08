@@ -59,7 +59,7 @@ def get_segment(request):
 
 # DREW NETWORKER
 
-print("************************************ RUNNING MAIN FILE ************************************")
+print("************************************ RUNNING ROUTES FILE ************************************")
 
 import os
 # from stt import speech_to_text

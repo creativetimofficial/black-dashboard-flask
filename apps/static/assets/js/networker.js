@@ -34,16 +34,7 @@ button.addEventListener("speechsegment", (e) => {
       toggleMute();
     }
 
-    // OPEN THE STUPID FORM AND MAKE SURE IT'S OPEN
-    if (note && window.getComputedStyle(document.getElementById("addnotes")).display === "none") {
-      document.getElementById("newnote").click();
-        // Check if the modal is still hidden
-      if (window.getComputedStyle(document.getElementById("addnotes")).display === "none") {
-        // If it is hidden, make it visible
-        document.getElementById("addnotes").style.display = "block";
-      }
-    }
-    
+
     if (edit && name) {
       const nameTds = document.querySelectorAll('td.expand');
   
@@ -58,11 +49,16 @@ button.addEventListener("speechsegment", (e) => {
   
     }
 
-
-
+    // OPEN THE STUPID FORM AND MAKE SURE IT'S OPEN
+    if (note && window.getComputedStyle(document.getElementById("addnotes")).display === "none") {
+      document.getElementById("newnote").click();
+        // Check if the modal is still hidden
+      if (window.getComputedStyle(document.getElementById("addnotes")).display === "none") {
+        // If it is hidden, make it visible
+        document.getElementById("addnotes").style.display = "block";
+      }
+    }
   })
-
-
 
   // CHECK FOR NOTE AND LOG THE NOTE INTO THE BODY 
   if (note && !nav) {

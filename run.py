@@ -11,13 +11,6 @@ from apps.config import config_dict
 from apps import create_app, db
 
 
-from apps.home.db import get_people
-data = get_people()
-it = iter(data['People']).__next__
-audioContent = ''
-print('enter getJSONReuslt', flush=True)
-
-
 # WARNING: Don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
@@ -25,7 +18,6 @@ DEBUG = config('DEBUG', default=True, cast=bool)
 get_config_mode = 'Debug' if DEBUG else 'Production'
 
 try:
-
     # Load the configuration using the default values
     app_config = config_dict[get_config_mode.capitalize()]
 
@@ -50,7 +42,14 @@ if __name__ == "__main__":
         print("Running on Railway")
         app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
     else:
-        app.run()
+        # app.run()
         # FOR RUNNING ON LOCAL
-        # print("Running on Railway")
-        # app.run(debug=False, port=int(os.getenv("PORT", default=5000)))
+        print("Running on Local")
+        app.run(debug=False, port=int(os.getenv("PORT", default=5000)))
+
+    
+from apps.home.db import get_people
+data = get_people()
+it = iter(data['People']).__next__
+audioContent = ''
+print('enter getJSONReuslt', flush=True)

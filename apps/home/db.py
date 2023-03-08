@@ -94,7 +94,7 @@ def log_user_response(user, prompt, response="", type="note", client=client):
 def delete_object(collection, objectID, client=client):
     db = client.db
     collection = db[collection]
-    print(f"ObjectId('{objectID}')")
+    # print(f"ObjectId('{objectID}')")
     result = collection.delete_one({'_id': ObjectId(objectID)} ) # <- HELP
     if result.deleted_count == 1:
         print("Successfully deleted " + objectID + " from the JSON table.")
