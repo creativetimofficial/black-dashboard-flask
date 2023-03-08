@@ -68,7 +68,7 @@ from apps.home.prompt import *
 from apps.home.tts import tts_string, speak
 from flask import Flask, request, render_template, jsonify, flash, redirect, url_for
 from flask import session
-from apps.home.db import get_people, log_user_response, client, update_person
+from apps.home.db import get_people, log_user_response, client, update_person, delete_object
 from apps.home.user import Session
 from html import escape
 
@@ -173,7 +173,6 @@ def speak_route(words):
 @blueprint.route("/notes")
 @login_required
 def notes():
-    print("PROMPTS")
     # Connect to MongoDB and query for unique prompts
     db = client["db"]
         # Connect to MongoDB and query for unique prompt
@@ -200,7 +199,7 @@ def notes():
                                     { "response":{'$regex':cleanQuery, '$options' : 'i'}}
                                    ]
                                    })
-        
+        prompts = prompts.sort("timestamp", -1)
         res = 'assume it has been searched'
         # res = dbQuery.fetchall()
     
@@ -284,6 +283,19 @@ def repurpose():
     response_data = {
         'success': True,
             'text': new_text
+    }
+    return jsonify(response_data)
+
+
+@blueprint.route('/delete/<collection>/<objectID>', methods=['GET','POST'])
+@login_required
+def delete(collection,objectID):
+    print(f"INCOMING POST AT DELETE/{collection}/{objectID}")
+    delete_object(collection,objectID)
+    # Return a JSON response with the processed data
+    response_data = {
+        'success': True,
+            'text': 'deleted'
     }
     return jsonify(response_data)
 

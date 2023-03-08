@@ -7,6 +7,7 @@ const inputElement = document.querySelector('#prompt textarea');
 const airesponseTextArea = document.querySelector("#response textarea");
 var isMuted = false;
 var ask = true;
+var Nav = false;
 const name = null;
 
 button.addEventListener("speechsegment", (e) => {
@@ -61,7 +62,7 @@ button.addEventListener("speechsegment", (e) => {
 
 
   // CHECK FOR NOTE AND LOG THE NOTE INTO THE BODY 
-  if (note) {
+  if (note && !nav) {
     var concatenatedWords = '';
     var noteIndex = all_words.findIndex(word => word && word['value'] && word['value'].toLowerCase() === 'note');
     if (noteIndex !== -1) {
@@ -94,6 +95,7 @@ button.addEventListener("speechsegment", (e) => {
   if (intent === 'nav'){
     console.log("NAVIGATION");
     ask = false;
+    nav = true;
   }
   if (intent === "info"){
     console.log("INFOOO")
@@ -193,7 +195,30 @@ button.addEventListener("speechsegment", (e) => {
 // **********************************************
 // ************** NON-SPEECH FUNCTIONS **************
 
-// define the function that you want to perform
+
+
+// DELETES THE ROW WITH THE .DELETEOBJECT CLASS
+function deleteObject() {
+  // Get the object ID and collection name from the clicked row
+  var objectId = $(this).closest('tr').attr('value');
+  var collectionName = $(this).closest('tr').attr('name');
+  console.log(collectionName , objectId);
+  // Send a DELETE request to the Flask endpoint
+  $.ajax({
+    url: '/delete/' + collectionName + '/' + objectId,
+    type: 'POST',
+    success: function(result) {
+      // Reload the page or update the table as needed
+      location.reload();
+    },
+    error: function(err) {
+      console.log(err);
+    }
+  });
+}
+
+// Attach the click event handler to the delete button
+$('.delete-button').on('click', deleteObject);
 
 
 function ask_question(words) {
@@ -293,8 +318,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 $("#submit-note-btn").click(function() {
   // Get the values from the textareas
+  $('#addnotes').fadeOut('fast');
+  $('.modal-backdrop.fade.show').fadeOut('fast');
+
   var form2Data = $("#form2").val();
   var form3Data = $("#form3").val();
+  
 
   // Send an AJAX request to the new-note endpoint with the data
   $.ajax({
@@ -304,7 +333,7 @@ $("#submit-note-btn").click(function() {
     data: JSON.stringify({note: form2Data, person: form3Data}),
     success: function(response) {
       // Handle success response
-      $('#addnotes').fadeOut();
+     
       document.getElementById("form3").value = "";
 
     },

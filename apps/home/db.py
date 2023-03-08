@@ -2,6 +2,7 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 import os
 
+
 from datetime import datetime, date
 
 MONGO_CLIENT = os.getenv('MONGO_CLIENT')
@@ -88,7 +89,17 @@ def log_user_response(user, prompt, response="", type="note", client=client):
         
         # Return the ID of the inserted document
         return result.inserted_id
+  
 
+def delete_object(collection, objectID, client=client):
+    db = client.db
+    collection = db[collection]
+    print(f"ObjectId('{objectID}')")
+    result = collection.delete_one({'_id': ObjectId(objectID)} ) # <- HELP
+    if result.deleted_count == 1:
+        print("Successfully deleted " + objectID + " from the JSON table.")
+    else:
+        print(f"ObjectID: {objectID} not found in the JSON table.")
 # def note_taker(prompt):
 #     return response
 # conversation_json = """{   "People":{

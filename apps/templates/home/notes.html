@@ -52,8 +52,8 @@
               <tr>All logged activity for user will be displayed</tr>
               {% for prompt in prompts %}
              
-              <tr>
-                <td value="{{prompt['_id']}}">{{prompt["prompt"]}}</td> <td>{{prompt["response"]}}</td><td>{{prompt["timestamp"]}}</td>
+              <tr name="user_responses" value="{{prompt['_id']}}">
+                <td>{{prompt["prompt"]}}</td> <td>{{prompt["response"]}}</td><td>{{prompt["timestamp"]}}</td><td class="delete-button"> <i class="tim-icons icon-simple-remove"></i></td>
               </tr>
               {% endfor %}
            
