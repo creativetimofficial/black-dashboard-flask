@@ -40,13 +40,11 @@ def ai_response(prompt, networking = None, previous_conversation=None, temperatu
         inquire_prompt = "Based on the below prompt, what is this person's full name who we are talking about?\n\n'"+prompt+"'\n\nAnswer in as few characters as possible."
         name = ai_response(inquire_prompt, networking=False, temperature=0).replace('\n',' ')
         human.name  = name.translate(str.maketrans("", "", string.punctuation))
-        print(human.name)
         verified = human.verify()
-        print("NAME VERIFIED: "+str(verified))
+        print(f"NAME VERIFIED: {str(verified)} {human.name}")
         # If not a human in our DB:
         if not verified:
             pass
-        print("NAME: "+human.name)      
 
         if first_word in update_strings + general_strings + reminder_strings:
             prompt = prompt.replace(name, human.name)
@@ -86,6 +84,7 @@ def ai_response(prompt, networking = None, previous_conversation=None, temperatu
                 human_info = human.get_info()
                 print(f"getting info for {human.name}:\n{human_info}")
                 prompt = f"Based on the user's json file below, {prompt}\n\n{human_info}"
+
             # if first_word in ask_strings:
             #     print("*** RETRIEVING USER ***")
             #     ai_response(f"What can you tell me about {human.name} based on the following?\n\n{human.get_info()}")
@@ -106,8 +105,8 @@ def ai_response(prompt, networking = None, previous_conversation=None, temperatu
     )
 
     message = completions.choices[0].text
-    print(f"Prompt:{prompt}")
-    print("AI Response:", message)
+    # print(f"Prompt:{prompt}")
+    # print("AI Response:", message)
     if networking and first_word in update_strings:
         print("to feed into json_update:\n",human.name, message)
         human.json = message.strip()
@@ -116,6 +115,8 @@ def ai_response(prompt, networking = None, previous_conversation=None, temperatu
         print("******** JSON UPDATED ********")    
 
     return message.strip()
+
+
 
 
 # postmeeting = "Just spoke with Zach. Seems like he's ready to go with our software demo but needs approval from his boss. He was interested in the low price, and wanted to learn more about the drag and drop editor. I'd like to follow up with him in a week to make sure he does that."
@@ -142,7 +143,9 @@ def ai_response(prompt, networking = None, previous_conversation=None, temperatu
 
 # save_conversation(prompt, conversation)
 
-def gpt_response(prompt):
+# messages = {f'You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible. Knowledge cutoff: {knowledge_cutoff} Current date: {current_date}'}
+messages=''
+def gpt_response(prompt, messages = messages):
     response = openai.ChatCompletion.create( 
     openai.api_key,
     model="gpt-3.5-turbo-0301",
@@ -158,3 +161,6 @@ def gpt_response(prompt):
 # print(gpt_response("do you know what the best dance move is?"))
 
 
+# py -m pip install openai --upgrade
+# TO REVERT:
+# py m- pip install --force-reinstall -v "openai==0.26.4"

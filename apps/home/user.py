@@ -12,25 +12,23 @@ class person():
         self.json = json
         name = name
     def verify(self):
-        print(self.name)
-        self.name = self.name.strip()
-        lookupname = self.name
+        lookupname = self.name.strip().title()
         if 'name is' in lookupname:
             lookupname = lookupname.split(' ')[-2:]
             print("longer response - lookup name is ",lookupname)
         data = get_people()
         name_list = list(data["People"].keys())
-        print('ALL PEOPLE IN DB vvv')
-        print(lookupname, name_list )
+        # print('ALL PEOPLE IN DB vvv')
+        # print(lookupname, name_list )
         try:
             # first_name_match = difflib.get_close_matches(lookupname.split(' ')[0],[name.split(' ')[0] for name in name_list], n=1, cutoff=.7)[0]
             # # NOW, LOOK AT ANY LAST NAMES THAT MATCH
             # last_name_match = difflib.get_close_matches(lookupname.split(' ')[1], [name.split(' ')[1] for name in name_list], n=1, cutoff=.7)[0]
 
-            closest_match = difflib.get_close_matches(lookupname, name_list, n=1, cutoff=0)[0]
+            closest_match = difflib.get_close_matches(lookupname, name_list, n=2, cutoff=0.4)[0]
             # COMBINE
             # closest_match = first_name_match + ' ' + last_name_match
-            print("We are assuming '", lookupname, "' is", closest_match)
+            print(f"We are assuming '{lookupname}' is", closest_match)
             self.name = closest_match
       
             return True
@@ -51,7 +49,7 @@ class person():
         name_list = list(data["People"].keys())
         if self.name in name_list:
             info = data["People"][self.name]
-            print('FROM DB:', info)
+            # print('FROM DB:', info)
             self.json = info
         else:
             print("No data found  for "+self.name+" - try verifying the user first.")
@@ -80,6 +78,8 @@ class Session():
         pass
         
 
+# human = person(" DANIEL CRAIG ")
+# human.verify()
 
 # user_js = conversation_json = """{   "People":{
 #             "John Hooligan": {

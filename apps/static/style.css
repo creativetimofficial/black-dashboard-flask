@@ -205,6 +205,12 @@ line-height: 200%;
 ::-webkit-scrollbar-thumb {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
 }
+.inputContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
 
 /* MODAL POPUP FOR NOTE */
 .modal-notify .modal-header {
@@ -213,21 +219,54 @@ line-height: 200%;
 .modal-notify .modal-content {
   border-radius: 3px;
 }
+#addnotes div{
+  background-color: #e14eca;
+  opacity: .95;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  box-sizing: border-box;
+  list-style: none;
+  border-radius: 25px;
+
+}
+#addnotes a.btn{
+  /* background-color: grey; */
+  color:white
+}
 #addnotes *{
   top:0px;
-margin-top:0px; color:black
+margin-top:0px; color:black;
+outline: none;
+
 }
 
 #addnotes textarea {
   color:black;
-  min-height:100px
+  min-height:100px;
+
 
 }
 /* END MODAL */
 
 
 #prompt textarea, #response textarea, #prompt, #response{
-display:inline;
+display:inline-block;
 height:150px;
-text-align: center;
+text-align: left;
+/* margin: 10px; */
+padding:5px;
+color: none;
+height:100px
+
 }
+#prompt-response{
+  display: flex;
+  justify-content: center; /* horizontal center */
+  align-items: center;
+  padding-bottom:15px
+
+}
+/* body * {
+  max-width:50vw
+} */

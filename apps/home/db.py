@@ -54,7 +54,7 @@ def update_person(name, json_input, badname='', client=client):
     return name+" Updated"
 
 
-def log_user_response(user, prompt, response, client=client):
+def log_user_response(user, prompt, response="", type="note", client=client):
     # Connect to MongoDB
     client = MongoClient(MONGO_CLIENT)
     db = client["db"]
@@ -80,6 +80,7 @@ def log_user_response(user, prompt, response, client=client):
             "user": user,
             "prompt": prompt,
             "response": response,
+            "type":type,
             "timestamp": datetime.utcnow()
         }
         result = collection.insert_one(doc)
@@ -97,6 +98,6 @@ def log_user_response(user, prompt, response, client=client):
 #             "Interests":"Painting",
 #             "Fun Facts":"Skiied in the alps" }}}"""
 
-
+# print(log_user_response(1, "what's for dinner?", "Salmon"))
 # print(update_person("Sam Casey", conversation_json))
 

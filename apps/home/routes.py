@@ -112,10 +112,10 @@ def save_audio():
 
     if len(prompt.split(' ')) > 1:
         print("YOUR PROMPT:", prompt.split(' '),  len(prompt))
-        response = ai_response(prompt, networking=True).strip()
+        response = ai_response(prompt, networking=True)
         user_id = session.get("_user_id")
         log_user_response(user_id, prompt, response, client=client)
-        print("AI response run")
+        print("AI response Completed.")
     # ELSE, REDIRECT
     else:
         response = "How can I help you?"
@@ -130,11 +130,8 @@ def prompts():
     print("PROMPTS")
     # Connect to MongoDB and query for unique prompts
     db = client["db"]
-        # Connect to MongoDB and query for unique prompt
     collection = db["user_responses"]
-    # prompts = collection.distinct("prompt")
     # user_id = 'user123'
-    # print(session)
     user_id = session.get("_user_id")
 
     prompts = collection.find({"user": user_id})
@@ -148,7 +145,41 @@ def prompts():
     elif qTerm:
         cleanQuery = escape(qTerm)
         # Do a search on the user and the query, case insensitive "i" option
-        prompts = collection.find({"user": user_id, 
+        prompts = collection.find({"user": user_id,'$or':[
+                                    {"prompt":{'$regex':cleanQuery, '$options' : 'i'}},
+                                    { "response":{'$regex':cleanQuery, '$options' : 'i'}}
+                                   ]                        })
+        
+        res = 'assume it has been searched'
+    
+    prompts = prompts.sort("timestamp", -1)
+    return render_template('home/prompts.html', prompts=prompts, user_id=user_id, res=res)
+
+@blueprint.route("/notes")
+@login_required
+def notes():
+    print("PROMPTS")
+    # Connect to MongoDB and query for unique prompts
+    db = client["db"]
+        # Connect to MongoDB and query for unique prompt
+    collection = db["user_responses"]
+    # prompts = collection.distinct("prompt")
+    # user_id = 'user123'
+    # print(session)
+    user_id = session.get("_user_id")
+
+    prompts = collection.find({"user": user_id})
+ 
+    qTerm = request.args.get('s')
+    if not qTerm:    
+        prompts = collection.find({"user": user_id, "type":"note"})
+        flash("You did not search for anything")
+        res="ALL"
+        # return redirect(url_for('home_blueprint.prompts'))
+    elif qTerm:
+        cleanQuery = escape(qTerm)
+        # Do a search on the user and the query, case insensitive "i" option
+        prompts = collection.find({"user": user_id, "type":"note",
                                    '$or':[
                                     {"prompt":{'$regex':cleanQuery, '$options' : 'i'}},
                                     { "response":{'$regex':cleanQuery, '$options' : 'i'}}
@@ -159,15 +190,17 @@ def prompts():
         # res = dbQuery.fetchall()
     
 
-    return render_template('home/prompts.html', prompts=prompts, user_id=user_id, res=res)
+    return render_template('home/notes.html', prompts=prompts, user_id=user_id, res=res)
+
 
 @blueprint.route("/verify_person", methods=['POST'])
 @login_required
 def verify_person():
     data = request.get_json()
     entity_value = data.get('entityValue')
+    # print(f"looking for '{entity_value}'")
     entry = person(name = entity_value)
-    result = entry.verify()
+    entry.verify()
     return jsonify(entry.name)
 
 @blueprint.route("/relevant_fields", methods=['POST'])
@@ -200,6 +233,28 @@ def up_person():
     # ({"People": {"$exists": True}}, {"$set": {"People."+name+"."+str(key): str(json_input[key])}})
     return jsonify(success=True)
 
+@blueprint.route("/new_note", methods=['POST'])
+@login_required
+def new_note():
+    data = request.get_json()
+    # NOW GET THE DATA FROM TEXTAREAS #FORM2 and #FORM3
+    form2_data = data.get('note')
+    form3_data = data.get('person')
+    
+    # Process the data here...
+    
+    # Return a JSON response with the processed data
+    response_data = {
+        'success': True,
+        'message': 'Note submitted successfully!',
+        'processed_data': {
+            'note': form2_data,
+            'person': form3_data
+        }
+    }
+    user_id = session.get("_user_id")
+    log_user_response(user_id,response_data['processed_data']['person'], response_data['processed_data']['note'], type="note")
+    return jsonify(response_data)
 
 
 # DREW OLD NETWORKER

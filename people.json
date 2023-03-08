@@ -1,0 +1,100 @@
+{
+    "_id": {
+      "$oid": "63fd0087b9b2b4001ccb7c5f"
+    },
+    "People": {
+      "Sam Casey": {
+        "School": "Babson",
+        "Location": "Salt Lake City, UT",
+        "Interests": "Skiing, Hiking",
+        "Fun Facts": "Likes Apples and Peaches",
+        "Previous Conversations": {},
+        "Last Company": "Mercury",
+        "Dog Name": "Penny",
+        "Occupation": "Software Developer",
+        "Pets": "Cat, Dog (Whiskers)",
+        "Favorite Color": "Blue"
+      },
+      "Michael Rothstein": {
+        "School": "Babson",
+        "Location": "New York City",
+        "Interests": "Cars and Money",
+        "Fun Facts": "Rothstein loves fun. Did you know?",
+        "Previous Conversations": {},
+        "Notes": "He is nice but I think he listens to Super Tramp too much"
+      },
+      "Rani Zierath": {
+        "School": "Penn State School of Medicine",
+        "College": "American University",
+        "Location": "Hershey,  Pennsylvania",
+        "Interests": "Cooking",
+        "Fun Facts": "She's the nicest person anyone has ever met.",
+        "Previous Conversations": {},
+        "Favorite Food": "Sushi",
+        "Boyfriend": "Drew",
+        "Favorite Snack": "Almond"
+      },
+      "John Doe": {
+        "School": "Bunker Hill",
+        "Location": "Boston, MA",
+        "Interests": "Painting",
+        "Fun Facts": "Skiied in the alps"
+      },
+      "Daniel Craig": {
+        "School": "Bunker Hill",
+        "Location": "Unknown",
+        "Interests": "Unknown",
+        "Fun Facts": "Unknown",
+        "[OTHER RELEVANT FIELD NAME]": ""
+      },
+      "Rachel Jenks": {
+        "School": "Oklahoma University",
+        "Location": "Plano, Texas",
+        "Interests": "Shopping",
+        "Fun Facts": "She is currently dating Brett Clark"
+      },
+      "John Hooligan": {
+        "School": "James Brown U",
+        "Fondest Memory": "Swimming the English Channel",
+        "Fun Facts": "Knows a thing or two about being incognito"
+      },
+      "Bob Piispanen": {
+        "School": "Lake",
+        "Location": "Dog",
+        "Interests": "Crazy",
+        "Fun Facts": "",
+        "Work": "Carlson Fabrication Solutions",
+        "Owns a dog": "Stella",
+        "Weekend Activities": "Swimming in a lake"
+      },
+      "Drew Piispanen": {
+        "School": "UC Berkeley",
+        "Location": "Hershey, PA",
+        "Interests": "Coding this application",
+        "Fun Facts": "He's studied ",
+        "Work": "Founder of The Networker Application",
+        "Owns a dog": "Stella",
+        "Weekend Activities": "Hiking, Swimming, Eating",
+        "Favorite Ice Cream": "Cookie Dough"
+      },
+      "Craig Slomers": {
+        "Company": "2D Outfitters LLC",
+        "Occupation": "Owner and Founder",
+        "Location": "Chicora, Pennsylvania",
+        "Interests": "Payroll Software"
+      },
+      "Dan Murmur": {
+        "Location": "Los Angeles",
+        "Interests": "Making film",
+        "Fun Facts": "Used to write for Ben 10",
+        "Position": "Head of West Coast Operations at Can"
+      },
+      "Doug MacDonald": {
+        "Location": "Boston",
+        "Interests": "Playing guitar",
+        "Job": "Sales",
+        "Partner": "Mel",
+        "Email": "doug.mac900@gmail.com"
+      }
+    }
+  }

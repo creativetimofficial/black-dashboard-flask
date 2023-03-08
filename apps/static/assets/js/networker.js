@@ -5,48 +5,57 @@
 var button = document.getElementsByTagName("push-to-talk-button")[0];
 const inputElement = document.querySelector('#prompt textarea');
 const airesponseTextArea = document.querySelector("#response textarea");
-
+var isMuted = false;
 
 button.addEventListener("speechsegment", (e) => {
- 
   const speechSegment = e.detail;
   // console.log(speechSegment.intent);
-  
+
   // ************** SEGMENT BY WORDS
   var note = false;
+  var edit = false;
   const all_words = speechSegment['words'];
 
   all_words.forEach(phrase => {
-  const word = phrase['value'];
 
-  if(word === "note"){
-    note = true;
-  }
+      const word = phrase['value'];
 
-  // OPEN THE STUPID FORM AND MAKE SURE IT'S OPEN
-  if (note && window.getComputedStyle(document.getElementById("addnotes")).display === "none") {
-    document.getElementById("newnote").click();
-       // Check if the modal is still hidden
-    if (window.getComputedStyle(document.getElementById("addnotes")).display === "none") {
-      // If it is hidden, make it visible
-      document.getElementById("addnotes").style.display = "block";
+    if(word === "note"){
+      note = true;
     }
-  }
+    else if(word == "edit"){
+      edit = true;
+    }
+
+    // OPEN THE STUPID FORM AND MAKE SURE IT'S OPEN
+    if (note && window.getComputedStyle(document.getElementById("addnotes")).display === "none") {
+      document.getElementById("newnote").click();
+        // Check if the modal is still hidden
+      if (window.getComputedStyle(document.getElementById("addnotes")).display === "none") {
+        // If it is hidden, make it visible
+        document.getElementById("addnotes").style.display = "block";
+      }
+    }
+  
   })
 
+
+
   // CHECK FOR NOTE AND LOG THE NOTE INTO THE BODY 
-  if (note){
+  if (note) {
     console.log("NOTE");
     var concatenatedWords = '';
-    console.log(all_words);
-    for (var i = 1; i < all_words.length; i++) {
-      if ( all_words[i]){
-      concatenatedWords += all_words[i]['value'] + " ";
+    var noteIndex = all_words.findIndex(word => word['value'].toLowerCase() === 'note');
+    if (noteIndex !== -1) {
+      for (var i = noteIndex + 1; i < all_words.length; i++) {
+        if (all_words[i]) {
+          concatenatedWords += all_words[i]['value'] + " ";
+        }
       }
-    }    
-    document.getElementById("form3").value = concatenatedWords;
+      document.getElementById("form3").value = concatenatedWords;
+    }
   }
-
+  
   // ************** SEGMENT BY INTENT
   const intent = speechSegment.intent['intent'];
   // console.log(intent);
@@ -70,14 +79,14 @@ button.addEventListener("speechsegment", (e) => {
   // ************** SEGMENT BY ENTITY 
   speechSegment.entities.forEach(entity => {
 
-    console.log(entity.type);
-    console.log(entity.value);
+    // console.log(entity.type);
+    // console.log(entity.value);
 
     // Send entity.value to "/verify_person" only once
     
     // LOOK UP DA PERSON
     if (entity.type === 'person') {
-
+      console.log("Name entity has been found.", entity.name)
     const xhr = new XMLHttpRequest();
     xhr.open('POST', '/verify_person');
     xhr.setRequestHeader('Content-Type', 'application/json');
@@ -85,7 +94,7 @@ button.addEventListener("speechsegment", (e) => {
       if (xhr.status === 200) {
         const name = xhr.response.replace(/"/g, '').trim();
         // window.location.href = 'about/?s='.concat(name);
-        console.log("Searching for ",name)
+        // console.log("Searching for ",name)
         
         if (note && entity.type==="person"){
           document.getElementById("form2").value = name;
@@ -96,7 +105,6 @@ button.addEventListener("speechsegment", (e) => {
         for (let i = 0; i < nameTds.length; i++) {
         const nameTd = nameTds[i];
         if (nameTd.innerText.trim() === name) {
-          console.log("TD FOUND");
           const moreTd = nameTd.nextElementSibling;
           if (moreTd && moreTd.classList.contains('more')) {
             moreTd.scrollIntoView();
@@ -122,7 +130,7 @@ button.addEventListener("speechsegment", (e) => {
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function() {
       if (xhr.status === 200) {
-      console.log(entity.type);
+      // console.log(entity.type);
     }}
     xhr.send(JSON.stringify({entitytype: entity.value}))
   }
@@ -134,7 +142,8 @@ button.addEventListener("speechsegment", (e) => {
     const wordsString = speechSegment.words.map(word => word.value).join(' ');
     // ADD TO PROMPT textarea
     inputElement.value = wordsString;
-    ask_question(wordsString);
+    if(!note){
+    ask_question(wordsString);}
 
     }
 
@@ -162,20 +171,32 @@ function ask_question(words) {
         const airesponse = data.airesponse;
         airesponseTextArea.value = airesponse;
         // self.location.reload();
+        if (!isMuted){
+          console.log("NOT MUTED");
+          const audioContent = data.audioContent;
+          audioSrc = `data:audio/mpeg;base64,${audioContent}`;
+          // resolve(audioSrc); // resolve the promise with audioSrc
+
+          audio = new Audio(audioSrc);
+          audio.play();
+        }
+
+
       })
     console.log("Your query has been run!");
 }
 
+if (inputElement){
 // ALTERNATIVELY, ENTERING IN SOMETHING MANUALLY
 inputElement.addEventListener("keydown", function(event) {
   // check if the user pressed the "Enter" key
   if (event.key === "Enter") {
     event.preventDefault();
     const inputVal = inputElement.value;
-    console.log(inputVal);
     ask_question(inputVal);
   }
 });
+}
 
 
 
@@ -196,14 +217,16 @@ $('.more').click(function() {
 
 
 peopleTable = document.getElementById("people");
+if (peopleTable){
 peopleTable.addEventListener("keydown", function(event) {
   // check if the user pressed the "Enter" key
   if (event.key === "Enter") {
     event.preventDefault();
   }
 })
+}
 
-
+// UPDATE A PERSON MANUALLY IN THE FORM
 document.addEventListener("DOMContentLoaded", () => {
   const expandFields = document.querySelectorAll(".expand");
 
@@ -215,6 +238,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const nameTd = tr.querySelector("td[name]");
             const name = nameTd.getAttribute("name");          
             const value = field.textContent;
+            // Change the background when enter is done
+            // $(field).css("background-color", "green").fadeOut(3000);
+            $(field).css("background-color", "green");
             // console.log("SUBMIT", name,value); // THE PEOPLE PAGE HAS BEEN SUBMITTED FOR UPDATES
 
 
@@ -226,14 +252,65 @@ document.addEventListener("DOMContentLoaded", () => {
                   })
               })
               .then(response => response.json())
-              .then(data => console.log(data))
+              // .then(data => console.log(data))
               .catch(error => console.error(error));
           }
       });
   });
 });
 
+$("#submit-note-btn").click(function() {
+  // Get the values from the textareas
+  console.log("SUBMIT BUTTON");
+  var form2Data = $("#form2").val();
+  var form3Data = $("#form3").val();
+
+  // Send an AJAX request to the new-note endpoint with the data
+  $.ajax({
+    url: "/new_note",
+    type: "POST",
+    contentType: "application/json",
+    data: JSON.stringify({note: form2Data, person: form3Data}),
+    success: function(response) {
+      // Handle success response
+      $('#addnotes').fadeOut();
+
+    },
+    error: function(xhr, status, error) {
+      // Handle error response
+    }
+  });
+});
 
 
+// THE MUTE BUTTON
+
+const originalLog = console.log;
+
+// Replace console.log with a new function that checks isMuted before logging
+// console.log = function() {
+//   if (!isMuted) {
+//     originalLog.apply(console, arguments);
+//   }
+// };
+
+$(document).on('keypress', function(e) {
+  if (e.key === 'm') {
+    toggleMute();
+  }
+});
+
+$('#mute').on('click', toggleMute);
+
+function toggleMute() {
+ 
+  isMuted = !isMuted;
+  console.log("is quiet - ", isMuted);
+  $('#mute i').toggleClass('icon-volume-98 icon-simple-remove');
+  $('audio').each(function() {
+    $(this).prop('muted', isMuted);
+   
+  });
+};
 
 // *********** END SCRIPT *********** 

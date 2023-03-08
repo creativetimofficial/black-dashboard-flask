@@ -8,6 +8,7 @@
   <!-- <script src="https://unpkg.com/@grammarly/editor-sdk?clientId=client_LPkx8nDFo6k1yYnvLRcj5m"></script> -->
   <link rel="shortcut icon" href="">
   <script src="{{url_for('static', filename='speech.js')}}"></script>
+  
 
   <link rel="stylesheet" href="https://speechly.github.io/browser-ui/v2/speechly-ui.css">
   <!-- <script src="{{url_for('static', filename='style.css')}}"></script> -->
@@ -26,7 +27,15 @@
 <!-- Push to talk button: Make it so that when the entity is selected 
   (NOT AFTER SPEECH COMPLETE), the person's profile will come up and we can edit the 
   relevant info -->
-<push-to-talk-button
+
+
+
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card ">
+      <div class="card-header">
+        <push-to-talk-button
 appid="29d3a734-0f17-4929-bf4f-15c5972b8454"
 placement="bottom"
 hide="false"
@@ -38,13 +47,6 @@ size="80px" >
 placement="top"
 formattext="true" >
 </big-transcript>
-
-
-
-<div class="row">
-  <div class="col-md-12">
-    <div class="card ">
-      <div class="card-header">
         <h4 class="card-title"> People</h4>
       </div>
       <div class="card-body">
@@ -92,6 +94,7 @@ formattext="true" >
     </div>
       </div>
     </div>
+    <div id="prompt-response">
     <div id="prompt" >
     <textarea name=""></textarea>
   </div>
@@ -99,50 +102,13 @@ formattext="true" >
     <textarea name="" ></textarea>
   </div>
   </div>
+  </div>
 
 </div>
 <intro-popup>
   <span slot="priming-body">You'll be able to control this web app faster with voice.</span>
 </intro-popup>
-              <!-- NOTE POPUP -->
-              <div class="modal fade" id="addnotes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-              aria-hidden="true">
-              <div class="modal-dialog modal-notify modal-warning" role="document">
-                <!--Content-->
-                <div class="modal-content">
-                  <!--Header-->
-                  <div class="modal-header text-center">
-                    <h4 class="modal-title white-text w-100 font-weight-bold py-2">New Note</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true" class="white-text">&times;</span>
-                    </button>
-                  </div>
-            
-                  <!--Body-->
-                  <div class="modal-body">
-                    <div class="md-form mb-5">
-                      <i class="fas fa-user prefix grey-text"></i>
-                      <textarea type="text" id="form3" class="form-control validate"></textarea>
-                      <label data-error="wrong" data-success="right" for="form2">Your Note</label>
-                    </div>
-            
-                    <div class="md-form">
-                      <i class="fas fa-envelope prefix grey-text"></i>
-                      <input type="email" id="form2" class="form-control validate">
-                      <label data-error="wrong" data-success="right" for="form2">Person of Interest</label>
-                    </div>
-                  </div>
-            
-                  <!--Footer-->
-                  <div class="modal-footer justify-content-center">
-                    <a type="button" class="btn btn-outline-warning waves-effect">Send</a>
-                  </div>
-                </div>
-                <!--/.Content-->
-              </div>
-            </div>
-            
-            <!-- END NOTEEE -->
+              
 
             <!-- EDIT POPUP -->
             <div class="modal fade" id="edituser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -162,14 +128,14 @@ formattext="true" >
                 <div class="modal-body">
                   <div class="md-form mb-5">
                     <i class="fas fa-user prefix grey-text"></i>
-                    <textarea type="text" id="form3" class="form-control validate"></textarea>
+                    <textarea type="text" id="userform3" class="form-control validate"></textarea>
                     <label data-error="wrong" data-success="right" for="form2">Name</label>
                   </div>
           
                   <div class="md-form">
                     <i class="fas fa-envelope prefix grey-text"></i>
                     <input type="email" id="form2" class="form-control validate">
-                    <label data-error="wrong" data-success="right" for="form2">Person of Interest</label>
+                    <label data-error="wrong" data-success="right" for="userform2">Person of Interest</label>
                   </div>
                 </div>
           
