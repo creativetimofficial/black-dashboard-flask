@@ -11,6 +11,6 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 # gunicorn
-CMD ["gunicorn", "--config", "gunicorn-cfg.py", "python", "run.py"]
-
+# CMD ["gunicorn", "--config", "gunicorn-cfg.py"]
+CMD ["python", "run.py"]
 
