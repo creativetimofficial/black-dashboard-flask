@@ -40,9 +40,9 @@ if DEBUG:
     app.logger.info('Environment = ' + get_config_mode)
     app.logger.info('DBMS        = ' + app_config.SQLALCHEMY_DATABASE_URI)
 
-# if __name__ == "__main__":
-import os
-API_KEY = os.getenv('API_KEY')
+if __name__ == "__main__":
+    import os
+    API_KEY = os.getenv('API_KEY')
 
 
     if API_KEY is not None:
