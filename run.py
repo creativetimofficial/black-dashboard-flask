@@ -40,5 +40,17 @@ if DEBUG:
     app.logger.info('Environment = ' + get_config_mode)
     app.logger.info('DBMS        = ' + app_config.SQLALCHEMY_DATABASE_URI)
 
-if __name__ == "__main__":
-    app.run()
+# if __name__ == "__main__":
+import os
+API_KEY = os.getenv('API_KEY')
+
+
+    if API_KEY is not None:
+        # FOR RUNNING ON RAILWAY
+        print("Running on Railway")
+        app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    else:
+        app.run()
+        # FOR RUNNING ON LOCAL
+        # print("Running on Railway")
+        # app.run(debug=False, port=int(os.getenv("PORT", default=5000)))
