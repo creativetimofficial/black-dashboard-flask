@@ -117,8 +117,6 @@ def ai_response(prompt, networking = None, previous_conversation=None, temperatu
     return message.strip()
 
 
-
-
 # postmeeting = "Just spoke with Zach. Seems like he's ready to go with our software demo but needs approval from his boss. He was interested in the low price, and wanted to learn more about the drag and drop editor. I'd like to follow up with him in a week to make sure he does that."
 
 # ai_response(postmeeting)

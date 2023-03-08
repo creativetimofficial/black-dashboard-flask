@@ -6,6 +6,8 @@ var button = document.getElementsByTagName("push-to-talk-button")[0];
 const inputElement = document.querySelector('#prompt textarea');
 const airesponseTextArea = document.querySelector("#response textarea");
 var isMuted = false;
+var ask = true;
+const name = null;
 
 button.addEventListener("speechsegment", (e) => {
   const speechSegment = e.detail;
@@ -22,6 +24,7 @@ button.addEventListener("speechsegment", (e) => {
 
     if(word === "note"){
       note = true;
+      ask = false;
     }
     else if(word == "edit"){
       edit = true;
@@ -36,7 +39,23 @@ button.addEventListener("speechsegment", (e) => {
         document.getElementById("addnotes").style.display = "block";
       }
     }
+    
+    if (edit && name) {
+      const nameTds = document.querySelectorAll('td.expand');
   
+      for (let i = 0; i < nameTds.length; i++) {
+      const nameTd = nameTds[i];
+      if (nameTd.innerText.includes(word.trim()) && nameTd.getAttribute('name') === name) {
+        // PUT THE CURSOUR ON THE TD THEN SHADE THE BACKGROUND TRANSPARENT YELLOW 
+        nameTd.style.backgroundColor = 'rgba(255, 255, 0, 0.5)'; // set background color to transparent yellow
+        nameTd.focus();
+      }
+      }
+  
+    }
+
+
+
   })
 
 
@@ -58,6 +77,11 @@ button.addEventListener("speechsegment", (e) => {
       document.getElementById("form3").value = concatenatedWords;
     }
   }  
+
+
+
+
+
   // ************** SEGMENT BY INTENT
   const intent = speechSegment.intent['intent'];
   // console.log(intent);
@@ -69,6 +93,7 @@ button.addEventListener("speechsegment", (e) => {
   }
   if (intent === 'nav'){
     console.log("NAVIGATION");
+    ask = false;
   }
   if (intent === "info"){
     console.log("INFOOO")
@@ -127,27 +152,38 @@ button.addEventListener("speechsegment", (e) => {
 
 
   // *** ENTITY IS NOT PERSON - IE A FIELD
-  if (entity.type !== 'person') {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/relevant_fields');
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onload = function() {
-      if (xhr.status === 200) {
-      // console.log(entity.type);
-    }}
-    xhr.send(JSON.stringify({entitytype: entity.value}))
-  }
+  // if (entity.type !== 'person') {
+  //   const xhr = new XMLHttpRequest();
+  //   xhr.open('POST', '/relevant_fields');
+  //   xhr.setRequestHeader('Content-Type', 'application/json');
+  //   xhr.onload = function() {
+  //     if (xhr.status === 200) {
+  //     // console.log(entity.type);
+  //   }}
+  //   xhr.send(JSON.stringify({entitytype: entity.value}))
+  // };
+  console.log(entity.type);
+  if (entity.type === 'page') {
+    console.log(entity);
+    var url = '/'.concat(entity.value.toLowerCase());
+    window.location.replace(url);
+  };
+  
 
+  // END ENTITY SEARCHES
   });
 
+
+  // ******* BROWSE FINAL SPEECH SEGMENT *******
   if (speechSegment.isFinal) {
     const words = speechSegment.words;
     const wordsString = speechSegment.words.map(word => word.value).join(' ');
     // ADD TO PROMPT textarea
+    if (inputElement != null){
     inputElement.value = wordsString;
     if(!note){
     ask_question(wordsString);}
-
+    }
     }
 
 
@@ -161,6 +197,7 @@ button.addEventListener("speechsegment", (e) => {
 
 
 function ask_question(words) {
+  if (ask){
   return  fetch('/save_audio', {
       method: 'POST',
       headers: {
@@ -173,19 +210,10 @@ function ask_question(words) {
       .then(data => {
         const airesponse = data.airesponse;
         airesponseTextArea.value = airesponse;
-        // self.location.reload();
-        if (!isMuted){
-          console.log("NOT MUTED");
-          const audioContent = data.audioContent;
-          audioSrc = `data:audio/mpeg;base64,${audioContent}`;
-          // resolve(audioSrc); // resolve the promise with audioSrc
-
-          audio = new Audio(audioSrc);
-          audio.play();
-        }
+        speak(airesponse);
 
 
-      })
+      }) }
     console.log("Your query has been run!");
 }
 
@@ -236,6 +264,7 @@ document.addEventListener("DOMContentLoaded", () => {
   expandFields.forEach(field => {
       field.addEventListener("keydown", e => {
           if (e.key === "Enter") {
+            speak("Update");
             const td = e.target;
             const tr = td.parentElement;
             const nameTd = tr.querySelector("td[name]");
@@ -288,15 +317,6 @@ $("#submit-note-btn").click(function() {
 
 // THE MUTE BUTTON
 
-const originalLog = console.log;
-
-// Replace console.log with a new function that checks isMuted before logging
-// console.log = function() {
-//   if (!isMuted) {
-//     originalLog.apply(console, arguments);
-//   }
-// };
-
 $(document).on('keypress', function(e) {
   if (e.key === 'm') {
     toggleMute();
@@ -305,15 +325,45 @@ $(document).on('keypress', function(e) {
 
 $('#mute').on('click', toggleMute);
 
-function toggleMute() {
- 
+// MUTE TOGGLE
+async function toggleMute() {
   isMuted = !isMuted;
   console.log("is quiet - ", isMuted);
   $('#mute i').toggleClass('icon-volume-98 icon-simple-remove');
   $('audio').each(function() {
     $(this).prop('muted', isMuted);
-   
-  });
+  })
+  if(!isMuted){speak("Unmuted"); }else {
+    if (audio && !audio.paused) {
+      audio.pause();
+    } };
 };
+
+
+// LISTEN FOR SPEECH - SPEAKING FUNCTION
+let audio = null;
+
+async function speak(text) {
+  if (!isMuted) {
+    const response = await fetch(`/speak/${text}`);
+    const data = await response.json();
+    const audioContent = data.audioContent;
+    audioSrc = `data:audio/mpeg;base64,${audioContent}`;
+    if (audio && !audio.paused) {
+      audio.pause();
+    }
+    audio = new Audio(audioSrc);
+    audio.play();
+    return data.textResult;
+  }
+  return false;
+}
+
+
+
+
+
+
+
 
 // *********** END SCRIPT *********** 

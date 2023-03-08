@@ -65,7 +65,7 @@ print("************************************ RUNNING MAIN FILE ******************
 import os
 # from stt import speech_to_text
 from apps.home.prompt import *
-from apps.home.tts import tts_string
+from apps.home.tts import tts_string, speak
 from flask import Flask, request, render_template, jsonify, flash, redirect, url_for
 from flask import session
 from apps.home.db import get_people, log_user_response, client, update_person
@@ -83,8 +83,8 @@ app.config["CACHE_TYPE"] = "null"
 #     return render_template('voice.html')
 
 
-@blueprint.route('/about')
-def about():
+@blueprint.route('/people')
+def people():
     # with open("conversations.json", "r") as f:
     #     data = json.load(f)
     data = get_people()
@@ -92,9 +92,9 @@ def about():
 
     return render_template('home/ui-tables.html', data=data, it=it)
 
-@blueprint.route('/demo')
-def demo():
-    return render_template('home/voice.html')
+# @blueprint.route('/demo')
+# def demo():
+#     return render_template('home/voice.html')
 
 
 @blueprint.route("/save_audio", methods=['POST'])
@@ -154,6 +154,21 @@ def prompts():
     
     prompts = prompts.sort("timestamp", -1)
     return render_template('home/prompts.html', prompts=prompts, user_id=user_id, res=res)
+
+@blueprint.route('/speak/<words>', methods=['GET'])
+def speak_route(words):
+    # Call the speak() function and get the audio file URL and text result
+    while True:
+        audio_content, text_result = speak(words)
+
+        # Return the audio URL and text result as a JSON object
+        return jsonify({
+            'audioContent': audio_content,
+            'textResult': text_result
+        })
+
+
+
 
 @blueprint.route("/notes")
 @login_required
@@ -256,6 +271,23 @@ def new_note():
     log_user_response(user_id,response_data['processed_data']['person'], response_data['processed_data']['note'], type="note")
     return jsonify(response_data)
 
+@blueprint.route('/repurpose',methods=['POST'])
+def repurpose():
+    data = request.get_json()
+    text = data.get('text')
+    
+    # NEED TO AI REPURPOSE SCRIPT
+    prompt = f"Please repurpose and properly format the following note: {text}"
+    new_text = ai_response(prompt, networking=False)
+
+    # Return a JSON response with the processed data
+    response_data = {
+        'success': True,
+            'text': new_text
+    }
+    return jsonify(response_data)
+
+
 
 # DREW OLD NETWORKER
 
@@ -273,3 +305,6 @@ def new_note():
 #     # FOR RUNNING ON LOCAL
 #     print("Running on Railway")
 #     app.run(debug=False, port=int(os.getenv("PORT", default=5000)))
+
+if __name__ == '__main__':
+    app.run()
