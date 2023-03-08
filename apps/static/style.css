@@ -219,6 +219,9 @@ line-height: 200%;
 .modal-notify .modal-content {
   border-radius: 3px;
 }
+#addhelp *{
+  color:black
+}
 #addnotes div{
   background-color: #e14eca;
   opacity: .95;
