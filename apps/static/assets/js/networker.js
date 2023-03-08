@@ -43,19 +43,21 @@ button.addEventListener("speechsegment", (e) => {
 
   // CHECK FOR NOTE AND LOG THE NOTE INTO THE BODY 
   if (note) {
-    console.log("NOTE");
     var concatenatedWords = '';
-    var noteIndex = all_words.findIndex(word => word['value'].toLowerCase() === 'note');
+    var noteIndex = all_words.findIndex(word => word && word['value'] && word['value'].toLowerCase() === 'note');
     if (noteIndex !== -1) {
       for (var i = noteIndex + 1; i < all_words.length; i++) {
         if (all_words[i]) {
           concatenatedWords += all_words[i]['value'] + " ";
+          if (all_words[i]['value'].toLowerCase() === 'submit') {
+            // Click the submit button
+            document.getElementById('submit-note-btn').click();
+          }
         }
       }
       document.getElementById("form3").value = concatenatedWords;
     }
-  }
-  
+  }  
   // ************** SEGMENT BY INTENT
   const intent = speechSegment.intent['intent'];
   // console.log(intent);
@@ -98,6 +100,7 @@ button.addEventListener("speechsegment", (e) => {
         
         if (note && entity.type==="person"){
           document.getElementById("form2").value = name;
+          console.log(name);
         }
         
         const nameTds = document.querySelectorAll('td.name');
@@ -261,7 +264,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 $("#submit-note-btn").click(function() {
   // Get the values from the textareas
-  console.log("SUBMIT BUTTON");
   var form2Data = $("#form2").val();
   var form3Data = $("#form3").val();
 
@@ -274,6 +276,7 @@ $("#submit-note-btn").click(function() {
     success: function(response) {
       // Handle success response
       $('#addnotes').fadeOut();
+      document.getElementById("form3").value = "";
 
     },
     error: function(xhr, status, error) {
