@@ -4,8 +4,12 @@ API_KEY = os.getenv('API_KEY')
 
 if API_KEY is not None: 
     print('The API key is found')
-    from creds import API_KEY
-    from user import person
+    try:
+        from creds import API_KEY
+        from user import person
+    except:
+        from apps.home.user import person
+        
 else:
     print('The API_KEY environment variable is not set. Trying from apps.home')
     from apps.home.creds import API_KEY
