@@ -9,13 +9,14 @@ from decouple import config
 
 from apps.config import config_dict
 from apps import create_app, db
-
+from apps.home.routes import *
 
 # WARNING: Don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=True, cast=bool)
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 # The configuration
 get_config_mode = 'Debug' if DEBUG else 'Production'
+print(f"Config Mode: {get_config_mode}")
 
 try:
     # Load the configuration using the default values
