@@ -34,3 +34,4 @@ googleapis-common-protos==1.56.4
 MarkupSafe==2.1.1
 # Werkzeug==2.2.2
 pymongo==4.3.3
+psycopg2-binary
