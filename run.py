@@ -46,7 +46,7 @@ if __name__ == "__main__":
         # app.run()
         # FOR RUNNING ON LOCAL
         print("Running on Local")
-        app.run(debug=False, port=int(os.getenv("PORT", default=5000)))
+        app.run(debug=True, port=int(os.getenv("PORT", default=5000)))
 
     
 from apps.home.db import get_people

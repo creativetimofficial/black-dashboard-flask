@@ -75,6 +75,12 @@ button.addEventListener("speechsegment", (e) => {
         }
       }
       document.getElementById("form3").value = concatenatedWords;
+      if (speechSegment.isFinal){
+         ask_question("Hey, this dialog came from speech to text AI. Can you clean it up a bit, taking notes about what was said here?".concat(concatenatedWords), speech=false, show_response=false).then(airesponse => {
+          console.log(airesponse);
+          document.getElementById("form3").value = airesponse; // Prints the airesponse value to the console
+        });;
+      }
     }
   }  
 
@@ -192,7 +198,7 @@ button.addEventListener("speechsegment", (e) => {
 
 
 
-    if(!note){
+    if(!note && ask){
     ask_question(wordsString);}
     }
     }
@@ -230,24 +236,24 @@ function deleteObject() {
 $('.delete-button').on('click', deleteObject);
 
 
-function ask_question(words) {
-  if (ask){
+function ask_question(words, speech=true, show_response=true) {
   return  fetch('/ask_question', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        words: words
+        words: words,
+        "networking": false
       })
     }).then(response => response.json())
       .then(data => {
         const airesponse = data.airesponse;
-        airesponseTextArea.value = airesponse;
-        speak(airesponse);
+        if (show_response){airesponseTextArea.value = airesponse;}
+        if (speech && !isMuted) {speak(airesponse)}
+        return airesponse;
       }) }
     console.log("Your query has been run!");
-}
 
 if (inputElement){
 // ALTERNATIVELY, ENTERING IN SOMETHING MANUALLY
@@ -395,6 +401,16 @@ async function speak(text) {
   return false;
 }
 
+function handleSearch() {
+  const input = document.querySelector('#inlineFormInputGroup');
+  input.addEventListener('keydown', function(event) {
+    if (event.key === "Enter") { // Check for Enter key press
+      const query = input.value;
+      window.location.href = `/people?s=${query}`; // Redirect to specific URL
+    }
+  });
+}
+handleSearch();
 
 
 

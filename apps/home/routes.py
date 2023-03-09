@@ -84,10 +84,14 @@ app.config["CACHE_TYPE"] = "null"
 
 @blueprint.route('/people')
 def people():
-    # with open("conversations.json", "r") as f:
-    #     data = json.load(f)
     data = get_people()
     it = iter(data['People']).__next__
+    # qTerm = request.args.get('s')
+    # if not qTerm:    
+    #     flash("You did not search for anything")
+    #     return redirect(url_for('home_blueprint.people'))
+    # elif qTerm:
+    #     cleanQuery = escape(qTerm)
 
     return render_template('home/people.html', data=data, it=it, segment=get_segment(request))
 
@@ -104,14 +108,16 @@ def ask_question():
     
     # mark the function as called
     session['audio_saved'] = True
+    
     # read the audio data from the request body
     prompt = request.json['words']
+    networking = request.json['networking'] 
     print("RAW PROMPT FROM JS: ",prompt)
     # IF THERE'S MORE THAN 1 WORD, PROCESS THE REQUEST:
 
     if len(prompt.split(' ')) > 1:
         print("YOUR PROMPT:", prompt.split(' '),  len(prompt))
-        response = ai_response(prompt, networking=True)
+        response = ai_response(prompt, networking=networking)
         user_id = session.get("_user_id")
         log_user_response(user_id, prompt, response, client=client)
         print("AI response Completed.")
