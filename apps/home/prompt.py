@@ -7,12 +7,16 @@ print('The API_KEY environment variable is not set. Trying from apps.home')
 from apps.home.user import person, google_it
 from apps.home.database import get_conversation
 
-
-
 from flask import session
 import openai
-
+if API_KEY is None:
+    
+    try:
+        from apps.home.creds import *
+    except:
+        print("No API Key Found anywhere. Tough luck I guess?")
 openai.api_key = API_KEY
+
 
 def ai_response(prompt, networking = False, temperature =.5):
     import string
