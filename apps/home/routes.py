@@ -95,6 +95,19 @@ def people():
 
     return render_template('home/people.html', data=data, it=it, segment=get_segment(request))
 
+@blueprint.route('/people2')
+def people2():
+    data = get_people()
+    it = iter(data['People']).__next__
+    # qTerm = request.args.get('s')
+    # if not qTerm:    
+    #     flash("You did not search for anything")
+    #     return redirect(url_for('home_blueprint.people'))
+    # elif qTerm:
+    #     cleanQuery = escape(qTerm)
+
+    return render_template('home/people2.html', data=data, it=it, segment=get_segment(request))
+
 # @blueprint.route('/demo')
 # def demo():
 #     return render_template('home/voice.html')
@@ -119,7 +132,7 @@ def ask_question():
         print("YOUR PROMPT:", prompt.split(' '),  len(prompt))
         response = ai_response(prompt, networking=networking)
         user_id = session.get("_user_id")
-        log_user_response(user_id, prompt, response, client=client)
+        log_user_response(user_id, prompt, response, type="prompt", client=client)
         print("AI response Completed.")
     # ELSE, REDIRECT
     else:
@@ -171,8 +184,6 @@ def speak_route(words):
             'audioContent': audio_content,
             'textResult': text_result
         })
-
-
 
 
 @blueprint.route("/notes")
@@ -234,21 +245,21 @@ def relevant_fields():
 @blueprint.route('/up-person', methods=['POST'])
 def up_person():
     name = request.form['name'].strip()
+    oldvalue = request.form['oldvalue'].strip()
     # field = request.form['field']
     value = request.form['value'].strip()
-    db = client.db
-    collection = db["People"]
-
     # Format the value into an actual dict, ugh:
     parts = value.split(':')
     key = parts[0].strip()
-    value = parts[1].strip()
-    value = {key: value}
+    try:
+        value = parts[1].strip()
+        value = {key: value}
+    except:
+        print(f"REMOVING FIELD: {oldvalue}, value: {value}")
+        value = ''
+    
     # print(key, value)
-
-    update_person(name, value )
-
-
+    update_person(name, value, oldvalue )
     # ({"People": {"$exists": True}}, {"$set": {"People."+name+"."+str(key): str(json_input[key])}})
     return jsonify(success=True)
 
@@ -257,8 +268,8 @@ def up_person():
 def new_note():
     data = request.get_json()
     # NOW GET THE DATA FROM TEXTAREAS #FORM2 and #FORM3
-    form2_data = data.get('note')
-    form3_data = data.get('person')
+    form3_data = data.get('note')
+    form2_data = data.get('person')
     
     # Process the data here...
     
@@ -267,12 +278,15 @@ def new_note():
         'success': True,
         'message': 'Note submitted successfully!',
         'processed_data': {
-            'note': form2_data,
-            'person': form3_data
+            'note': form3_data,
+            'person': form2_data
         }
     }
+    print(f"NOTE: {response_data['processed_data']['note']}")
+    print(f"PERSON: {response_data['processed_data']['person']}")
+
     user_id = session.get("_user_id")
-    log_user_response(user_id,response_data['processed_data']['person'], response_data['processed_data']['note'], type="note")
+    log_user_response(user_id, response_data['processed_data']['note'], person_of_interest=response_data['processed_data']['person'], type="note")
     return jsonify(response_data)
 
 @blueprint.route('/repurpose',methods=['POST'])

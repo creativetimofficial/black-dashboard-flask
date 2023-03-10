@@ -19,8 +19,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="/static/assets/img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/static/assets/img/apple-touch-icon.png">
   <link rel="canonical" href="https://appseed.us/admin-dashboards/flask-dashboard-black">
    <!--     Fonts and icons     -->
    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
@@ -32,20 +32,19 @@
    <!-- CSS Just for demo purpose, don't include it in your project -->
    <link href="/static/assets/demo/demo.css" rel="stylesheet" />
    <meta name="viewport" content="width=device-width, initial-scale=1" />
-   <link rel="stylesheet" href="../static/style.css">
-   <link rel="shortcut icon" href="">  
+   <link rel="stylesheet" href="../static/style.css">  
 
 
   <title>
   Networker - {% block title %}{% endblock %} | Alpha
   </title>
-
- 
+  
 
   <!-- Specific Page CSS goes HERE  -->
   {% block stylesheets %}{% endblock stylesheets %}
 
 </head>
+
 
 <body class="">
   <div class="wrapper">
@@ -55,9 +54,13 @@
     <div class="main-panel">
 
       {% include 'includes/navigation.html' %}
-
       <div class="content">
-
+        <div class="BigTranscriptContainer">
+          <big-transcript
+            placement="top"
+            formattext="false" >
+          </big-transcript>
+        </div>
         {% block content %}{% endblock content %}
         <div class="PushToTalkContainer">
           <push-to-talk-button
@@ -70,9 +73,7 @@
           ></push-to-talk-button>
         </div>
       
-        <div class="BigTranscriptContainer">
-          <big-transcript></big-transcript>
-        </div>
+       
 
       {% include 'includes/footer.html' %}
 

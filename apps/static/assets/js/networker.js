@@ -9,19 +9,19 @@ var isMuted = false;
 var ask = true;
 var nav = false;
 var name = null;
-
+var edit = false;
+var set = false;
 button.addEventListener("speechsegment", (e) => {
   const speechSegment = e.detail;
   // console.log(speechSegment.intent);
 
   // ************** SEGMENT BY WORDS
   var note = false;
-  var edit = false;
   const all_words = speechSegment['words'];
 
   all_words.forEach(phrase => {
 
-      const word = phrase['value'];
+      const word = phrase['value'].toLowerCase();
 
     if(word === "note"){
       note = true;
@@ -30,24 +30,17 @@ button.addEventListener("speechsegment", (e) => {
     else if(word == "edit"){
       edit = true;
     }
+    else if(word == "help"){
+      console.log("Help is requested");
+    }
+    else if (word == 'set' && edit){
+      console.log("SETEDIT")
+      set = true;
+    }
     else if (word == "mute" && !isMuted){
       toggleMute();
     }
 
-
-    if (edit && name) {
-      const nameTds = document.querySelectorAll('td.expand');
-  
-      for (let i = 0; i < nameTds.length; i++) {
-      const nameTd = nameTds[i];
-      if (nameTd.innerText.includes(word.trim()) && nameTd.getAttribute('name') === name) {
-        // PUT THE CURSOUR ON THE TD THEN SHADE THE BACKGROUND TRANSPARENT YELLOW 
-        nameTd.style.backgroundColor = 'rgba(255, 255, 0, 0.5)'; // set background color to transparent yellow
-        nameTd.focus();
-      }
-      }
-  
-    }
 
     // OPEN THE STUPID FORM AND MAKE SURE IT'S OPEN
     if (note && window.getComputedStyle(document.getElementById("addnotes")).display === "none") {
@@ -58,7 +51,29 @@ button.addEventListener("speechsegment", (e) => {
         document.getElementById("addnotes").style.display = "block";
       }
     }
+      
+
+
+
   })
+
+  // CHECK FOR FIELDS TO SELECT!
+  if (set && name) {
+    all_words.forEach(word  => {
+      word = word['value'];
+   // // DREW PASTED
+   var arr = all_words;
+   var index = arr.indexOf(word['value']);
+   if (index === -1) {
+     console.log("Field not found in array");
+   }
+  arr = arr.slice(index + 1);
+  // const nameTds = document.querySelectorAll('td.expand');
+  find_field(word,arr);
+
+  });
+  }
+
 
   // CHECK FOR NOTE AND LOG THE NOTE INTO THE BODY 
   if (note && !nav) {
@@ -76,7 +91,7 @@ button.addEventListener("speechsegment", (e) => {
       }
       document.getElementById("form3").value = concatenatedWords;
       if (speechSegment.isFinal){
-         ask_question("Hey, this dialog came from speech to text AI. Can you clean it up a bit, taking notes about what was said here?".concat(concatenatedWords), speech=false, show_response=false).then(airesponse => {
+         ask_question("This dialog came from speech to text AI. Reformat the dialog, responding ONLY in notes about what was said here. Do not say 'Sure, here are the bulleted notes...' - ONLY RESPOND IN NOTES.\n".concat(concatenatedWords), speech=false, show_response=false).then(airesponse => {
           console.log(airesponse);
           document.getElementById("form3").value = airesponse; // Prints the airesponse value to the console
         });;
@@ -98,7 +113,6 @@ button.addEventListener("speechsegment", (e) => {
     
   }
   if (intent === 'nav'){
-    console.log("NAVIGATION");
     ask = false;
     nav = true;
   }
@@ -175,7 +189,10 @@ button.addEventListener("speechsegment", (e) => {
     var url = '/'.concat(entity.value.toLowerCase());
     window.location.replace(url);
   };
-  
+
+
+
+
 
   // END ENTITY SEARCHES
   });
@@ -198,7 +215,7 @@ button.addEventListener("speechsegment", (e) => {
 
 
 
-    if(!note && ask){
+    if(!note && !nav && !edit){
     ask_question(wordsString);}
     }
     }
@@ -244,7 +261,7 @@ function ask_question(words, speech=true, show_response=true) {
       },
       body: JSON.stringify({
         words: words,
-        "networking": false
+        "networking": true
       })
     }).then(response => response.json())
       .then(data => {
@@ -306,7 +323,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const td = e.target;
             const tr = td.parentElement;
             const nameTd = tr.querySelector("td[name]");
-            var name = nameTd.getAttribute("name");          
+            var name = nameTd.getAttribute("name"); 
+            var oldvalue = field.getAttribute("oldfield");           
             const value = field.textContent;
             // Change the background when enter is done
             // $(field).css("background-color", "green").fadeOut(3000);
@@ -318,7 +336,8 @@ document.addEventListener("DOMContentLoaded", () => {
                   method: 'POST',
                   body: new URLSearchParams({
                       name: name,
-                      value: value
+                      value: value,
+                      oldvalue : oldvalue
                   })
               })
               .then(response => response.json())
@@ -343,7 +362,7 @@ $("#submit-note-btn").click(function() {
     url: "/new_note",
     type: "POST",
     contentType: "application/json",
-    data: JSON.stringify({note: form2Data, person: form3Data}),
+    data: JSON.stringify({note: form3Data, person:form2Data }),
     success: function(response) {
       // Handle success response
      
@@ -360,7 +379,7 @@ $("#submit-note-btn").click(function() {
 // THE MUTE BUTTON
 
 $(document).on('keypress', function(e) {
-  if (e.key === 'm' && e.target.nodeName !== 'INPUT' && e.target.nodeName !== 'TEXTAREA' && e.target.nodeName !== 'SELECT' && e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'OPTION') {
+  if (e.key === 'm' && e.target.nodeName !== 'INPUT' && e.target.nodeName !== 'TD' && e.target.nodeName !== 'TEXTAREA' && e.target.nodeName !== 'SELECT' && e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'OPTION') {
     toggleMute();
   }
 });
@@ -412,7 +431,23 @@ function handleSearch() {
 }
 handleSearch();
 
+function find_field(name, value) {
+  console.log("name, value:",name,value);
+  var tds = document.querySelectorAll(".expand:not([style*='display: none'])");
 
+  for (var i = 0; i < tds.length; i++) {
+    var td = tds[i];
+    var parts = td.textContent.split(':');
+    console.log("value ", value.join(" "));
 
+    if (parts[0].trim().toLowerCase() === name) {
+      td.style.backgroundColor = "rgba(255, 255, 0, 0.5)";
+      td.textContent = name.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();}); + " : " + value.join(" ");
+      
+      break;
+    }
+  }
+  // speak("Set",value.join(" "))
+}
 
 // *********** END SCRIPT *********** 

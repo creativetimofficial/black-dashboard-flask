@@ -223,8 +223,9 @@ line-height: 200%;
   color:black
 }
 #addnotes div{
-  background-color: #e14eca;
-  opacity: .95;
+  background-color: #5603ad;
+  
+  opacity: .9;
   font-family: "Poppins", sans-serif;
   font-size: 0.875rem;
   font-weight: 400;
@@ -239,7 +240,7 @@ line-height: 200%;
 }
 #addnotes *{
   top:0px;
-margin-top:0px; color:black;
+margin-top:0px; color:white;
 outline: none;
 
 }
@@ -275,3 +276,111 @@ height:100px
 } */
 /* .delete-button{
 } */
+
+
+    /* Form styling */
+    .form-container {
+        background-color: #520606;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        color: #000;
+        font-size: 16px;
+        font-weight: 500;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .form-input-container {
+        width: 100%;
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-input-container label {
+        font-weight: 700;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .form-input-container input[type=text], .form-input-container input[type=email] {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        margin-top: 5px;
+        margin-bottom: 15px;
+    }
+
+    .form-input-container input[type=submit] {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        background-color: #333;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        cursor: pointer;
+    }
+
+    .form-input-container input[type=submit]:hover {
+        background-color: #555;
+    }
+
+    /* Profile styling */
+    .profile-container {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        color: #000;
+        font-size: 16px;
+        font-weight: 500;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .profile-container .profile-image-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .profile-container .profile-image-container img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .profile-container .profile-details-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .profile-container .profile-details-container h2 {
+        margin-bottom: 5px;
+    }
+
+    .profile-container .profile-details-container p {
+        margin-bottom: 10px;
+    }

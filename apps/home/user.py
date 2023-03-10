@@ -6,6 +6,10 @@ except:
     from db import get_people, update_person, delete_person
     from user_info import get_json
 
+import requests
+from bs4 import BeautifulSoup
+import requests
+
 class person():
     def __init__(self, name="", json="") -> None:
         self.name = name
@@ -25,7 +29,7 @@ class person():
             # # NOW, LOOK AT ANY LAST NAMES THAT MATCH
             # last_name_match = difflib.get_close_matches(lookupname.split(' ')[1], [name.split(' ')[1] for name in name_list], n=1, cutoff=.7)[0]
 
-            closest_match = difflib.get_close_matches(lookupname, name_list, n=2, cutoff=0.4)[0]
+            closest_match = difflib.get_close_matches(lookupname, name_list, n=2, cutoff=0.6)[0]
             # COMBINE
             # closest_match = first_name_match + ' ' + last_name_match
             print(f"We are assuming '{lookupname}' is", closest_match)
@@ -76,7 +80,29 @@ class Session():
     def speak():
         # Sends a response to the audio portion of the console. 
         pass
-        
+
+
+def google_it(search_term, other_info=None):
+    search_term = search_term.replace(' ', '%20')
+    if other_info:
+        other_info = '%20'.join(other_info)+'%20"linkedin"'
+    print(search_term)
+    url = f"https://www.google.com/search?q={search_term}%20{other_info}"
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"}
+
+    response = requests.get(url, headers=headers)
+    soup = BeautifulSoup(response.content, "html.parser")
+
+    search_results = soup.find_all("div", class_="g")
+    if search_results:
+        first_result = search_results[0]
+        title = first_result.find("h3").get_text()
+        url = first_result.find("a")["href"]
+        return title
+    else:
+        print("No search results found.")
+        return None
+
 
 # human = person(" DANIEL CRAIG ")
 # human.verify()

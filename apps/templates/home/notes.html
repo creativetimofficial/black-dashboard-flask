@@ -10,7 +10,7 @@
   <div class="col-md-12">
     <div class="card ">
       <div class="card-header">
-        <h4 class="card-title"> Notes for User Number:{{user_id}} Search Term: {{qTerm}}</h4>
+        <h4 class="card-title">Notes for User Number:{{user_id}} Search Term: {{qTerm}}</h4>
         <div class="dropdown">
           <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown" aria-expanded="false">
             <i class="tim-icons icon-settings-gear-63"></i></button>
@@ -29,23 +29,24 @@
             <thead class=" text-primary">
               <tr>
                 <th>
-                Note
+                Timestamp
                 </th>
                 <th>
-                Person of Interest
+                Person
                 </th>
-                <th>timestamp</th>
+                <th>
+                Note
+                </th>
               </thead>
               </tr>
               <p class="tiny">All logged activity for user will be displayed</p>
               {% for prompt in prompts %}
              
               <tr name="user_responses" value="{{prompt['_id']}}">
-                <td>{{prompt["prompt"]}}</td> <td>{{prompt["response"]}}</td><td>{{prompt["timestamp"]}}</td><td class="delete-button"> <i class="tim-icons icon-simple-remove"></i></td>
+              <td>{{prompt["timestamp"]}}</td><td>{{prompt["person"]}}</td><td>{{prompt["prompt"]}}</td><td class="delete-button"> <i class="tim-icons icon-simple-remove"></i></td>
               </tr>
               {% endfor %}
            
-
             </tbody>
                 
      

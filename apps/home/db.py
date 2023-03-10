@@ -18,6 +18,22 @@ else:
 # Connect to the MongoDB instance
 client = MongoClient(MONGO_CLIENT)
 
+def get_conversation(n, db_name, collection_name, response_type=None ,client=client):
+    db = client[db_name]
+    query = {}
+    if response_type:
+        query['type'] = response_type
+    cursor = db[collection_name].find(query, {'prompt': 1, 'response': 1, '_id': 0}).limit(n).sort([('timestamp', -1)])
+    conversation =[]
+    for doc in cursor:
+        # print(doc['prompt'])
+        conversation.append({"role": "assistant", "content": doc['response']})
+        conversation.append({"role": "user", "content": doc['prompt']})
+    conversation.append({"role": "system", "content": "you are an assistant"})
+    conversation.reverse()
+    # print(f"{n} conversations: {conversation}")
+    return conversation
+
 
 def get_people(client=client):
     # Pick out the DB we'd like to use.
@@ -41,21 +57,26 @@ def delete_person(name, client=client):
     else:
         print(name + " not found in the JSON table.")
 
-def update_person(name, json_input, badname='', client=client):
+def update_person(name, json_input, oldvalue, client=client):
     db =client.db
     collection = db['people']
     name = str(name)
+    if json_input == '':
+        print('no json here silly, removing the field')
+        print({"$set": {"People."+name+"."+str(oldvalue): ""}})
+        collection.update_one({"People": {"$exists": True}}, {"$set": {"People."+name+"."+str(oldvalue): ""}})
+        # DELETE THE FIELD THAT HAS BEEN ASKED OF
     for key in json_input:
         if json_input[key] != "" and json_input[key]:  
             collection.update_one({"People": {"$exists": True}}, {"$set": {"People."+name+"."+str(key): str(json_input[key])}})
-            print(key +" : "+ json_input[key])
+            print(f"{key} : {json_input[key]}")
 
     # If doing user-specific DBs, do:
     # collection.insert({"People": {"$exists": True}}, {"$set": {"People."+name+"."+str(key): str(json_input[key])}}) 
     return name+" Updated"
 
 
-def log_user_response(user, prompt, response="", type="note", client=client):
+def log_user_response(user, prompt, response="", type="prompt", person_of_interest='', client=client):
     # Connect to MongoDB
     client = MongoClient(MONGO_CLIENT)
     db = client["db"]
@@ -82,7 +103,8 @@ def log_user_response(user, prompt, response="", type="note", client=client):
             "prompt": prompt,
             "response": response,
             "type":type,
-            "timestamp": datetime.utcnow()
+            "timestamp": datetime.utcnow(),
+            'person':person_of_interest
         }
         result = collection.insert_one(doc)
         client.close()
@@ -100,14 +122,7 @@ def delete_object(collection, objectID, client=client):
         print("Successfully deleted " + objectID + " from the JSON table.")
     else:
         print(f"ObjectID: {objectID} not found in the JSON table.")
-# def note_taker(prompt):
-#     return response
-# conversation_json = """{   "People":{
-#             "John Doe": {
-#             "School": "Bunker Hill",
-#             "Location": "Boston, MA",
-#             "Interests":"Painting",
-#             "Fun Facts":"Skiied in the alps" }}}"""
+
 
 # print(log_user_response(1, "what's for dinner?", "Salmon"))
 # print(update_person("Sam Casey", conversation_json))

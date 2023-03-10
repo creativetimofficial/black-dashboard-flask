@@ -1,5 +1,4 @@
-import requests
-from bs4 import BeautifulSoup
+
 import json
 try:
     from apps.home.db import get_people, update_person
@@ -7,28 +6,6 @@ except:
     from db import get_people, update_person
 import difflib
 
-def google_it(search_term, other_info=None):
-    search_term = search_term.replace(' ', '%20')
-    if other_info:
-        other_info = '%20'.join(other_info)+'%20"linkedin"'
-    print(search_term)
-    url = f"https://www.google.com/search?q={search_term}%20{other_info}"
-    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"}
-
-    response = requests.get(url, headers=headers)
-    soup = BeautifulSoup(response.content, "html.parser")
-
-    search_results = soup.find_all("div", class_="g")
-    if search_results:
-        first_result = search_results[0]
-        title = first_result.find("h3").get_text()
-        url = first_result.find("a")["href"]
-        # print(f"Title: {title}")
-        # print(f"URL: {url}")
-        return title
-    else:
-        print("No search results found.")
-        return None
 
 # Based on an input string that includes json, clean the string to output the JSON:
 def get_json(input_string):
@@ -84,7 +61,7 @@ def json_update(lookupname, json_input, filename=None):
         # NOW, LOOK AT ANY LAST NAMES THAT MATCH
         last_name_match = difflib.get_close_matches(lookupname.split(' ')[1], [name.split(' ')[1] for name in name_list], n=1, cutoff=.7)[0]
         # COMBINE
-        closest_match = first_name_match + ' ' + last_name_match
+        closest_match = f'{first_name_match} {last_name_match}'
         print("We are assuming '", lookupname, "' is", closest_match)
         name = closest_match
     except:

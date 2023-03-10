@@ -4,17 +4,16 @@
 {% extends "layouts/base.html" %}
 
 
-{% block title %} UI Tables {% endblock %} 
+{% block title %} People {% endblock %} 
 
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
 {% block content %}
 <!-- Push to talk button: Make it so that when the entity is selected 
   (NOT AFTER SPEECH COMPLETE), the person's profile will come up and we can edit the 
   relevant info -->
-
-
-
 
 <div class="row">
   <div class="col-md-12">
@@ -45,7 +44,7 @@
 
                 {% for field, value in person.items() %}
            
-                <td class="expand" name="{{name}}" style="display: none;" contenteditable>
+                <td class="expand" name="{{name}}" oldfield="{{field}}" style="display: none;" contenteditable>
                 
                   {% if (value, list) %} 
                   {{field}} : {{value}}{{list}}
@@ -54,6 +53,7 @@
                   {% endif %}
                 </td>
                 {% endfor %}
+
                 <!-- <td class="expand" style="display: none;" contenteditable></td>  -->
                 <td class="expand" style="display: none;"><a href="/notes?s={{ name }}">View Notes</a> | <a href="" class="usereditbutton" data-toggle="modal" data-target="#edituser">Edit User</a></td>
                 
@@ -120,8 +120,3 @@
 
 
 {% endblock content %}
-
-<!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
-
-
