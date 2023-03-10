@@ -1,0 +1,24 @@
+/// <reference types="node" />
+import { ISpeechConfigAudioDevice } from "../common.speech/Exports";
+import { AudioStreamFormatImpl } from "../sdk/Audio/AudioStreamFormat";
+import { AudioSourceEvent } from "./AudioSourceEvents";
+import { EventSource } from "./EventSource";
+import { IDetachable } from "./IDetachable";
+import { IStreamChunk } from "./Stream";
+export interface IAudioSource {
+    id(): string;
+    turnOn(): Promise<void>;
+    attach(audioNodeId: string): Promise<IAudioStreamNode>;
+    detach(audioNodeId: string): void;
+    turnOff(): Promise<void>;
+    events: EventSource<AudioSourceEvent>;
+    format: Promise<AudioStreamFormatImpl>;
+    deviceInfo: Promise<ISpeechConfigAudioDevice>;
+    blob: Promise<Blob | Buffer>;
+    setProperty?(name: string, value: string): void;
+    getProperty?(name: string, def?: string): string;
+}
+export interface IAudioStreamNode extends IDetachable {
+    id(): string;
+    read(): Promise<IStreamChunk<ArrayBuffer>>;
+}

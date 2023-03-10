@@ -8,6 +8,8 @@ from apps.home import blueprint
 from flask import render_template, request, session
 from flask_login import login_required
 from jinja2 import TemplateNotFound
+from bson.objectid import ObjectId
+from datetime import datetime
 
 
 @blueprint.route('/index')
@@ -64,7 +66,7 @@ print("************************************ RUNNING ROUTES FILE ****************
 import os
 # from stt import speech_to_text
 from apps.home.prompt import ai_response
-from apps.home.tts import tts_string, speak
+from apps.home.tts import tts_string, azure_speak_string
 from flask import Flask, request, render_template, jsonify, flash, redirect, url_for
 from flask import session
 from apps.home.database import get_people, log_user_response, client, update_person, delete_object
@@ -112,7 +114,7 @@ def people2():
 # def demo():
 #     return render_template('home/voice.html')
 
-
+# RETURNS RESPONSE
 @blueprint.route("/ask_question", methods=['POST'])
 @login_required
 def ask_question():
@@ -138,9 +140,24 @@ def ask_question():
     else:
         response = "How can I help you?"
 
-    audioContent = tts_string(response)
+    # audioContent = tts_string(response)
     # do something with the audio data here
-    return jsonify({"audioContent": audioContent, "airesponse":response})
+    return jsonify({ "airesponse":response})
+
+# RETURNS JSON FILE WITH AUDIO STRING
+@blueprint.route('/speak', methods=['POST', 'GET'])
+def speak_route():
+    words = request.json['body']
+    # Call the speak() function and get the audio file URL and text result
+    while True:
+        print("sending to azure")
+        audio_content, text_result = azure_speak_string(words)
+        # Return the audio URL and text result as a JSON object
+        return jsonify({
+            'audioContent': audio_content,
+            'textResult': text_result
+        })
+
 
 @blueprint.route("/prompts")
 @login_required
@@ -172,19 +189,6 @@ def prompts():
     
     prompts = prompts.sort("timestamp", -1)
     return render_template('home/prompts.html', prompts=prompts, user_id=user_id, res=res, segment=get_segment(request))
-
-@blueprint.route('/speak/<words>', methods=['GET'])
-def speak_route(words):
-    # Call the speak() function and get the audio file URL and text result
-    while True:
-        audio_content, text_result = speak(words)
-
-        # Return the audio URL and text result as a JSON object
-        return jsonify({
-            'audioContent': audio_content,
-            'textResult': text_result
-        })
-
 
 @blueprint.route("/notes")
 @login_required
@@ -318,24 +322,37 @@ def delete(collection,objectID):
     }
     return jsonify(response_data)
 
+from flask import Flask, render_template
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired
+from bson import ObjectId
 
 
-# DREW OLD NETWORKER
+class EditForm(FlaskForm):
+    user = StringField('User', validators=[DataRequired()])
+    prompt = StringField('Prompt', validators=[DataRequired()])
+    response = StringField('Response', validators=[DataRequired()])
+    type = StringField('Type', validators=[DataRequired()])
+    person = StringField('Person')
+    submit = SubmitField('Update')
 
-# # if __name__ == "__main__":
-# app.secret_key = 'mysecretkey'
-# # app.config['TEMPLATES_AUTO_RELOAD'] = True
+@blueprint.route('/edit/<object_id>', methods=['GET', 'POST'])
+@login_required
+def edit(object_id):
+    # Get the document by its _id field
+    collection = client['db']['user_responses']
+    document = collection.find_one({'_id': ObjectId(object_id)})
+    print(document)
+    # Create an instance of the EditForm and prepopulate the fields with the document data
+    form = EditForm(obj=document)
+    if form.validate_on_submit():
+        # Update the document with the new form data
+        collection.update_one({'_id': ObjectId(object_id)}, {'$set': {'user': form.user.data, 'prompt': form.prompt.data, 'response': form.response.data, 'type': form.type.data, 'timestamp': datetime.utcnow(), 'person': form.person.data}})
+        flash('Response updated successfully!', 'success')
+    return render_template('cards/edit.html', form=form, document=document)
 
-# API_KEY = os.getenv('API_KEY')
 
-# if API_KEY is not None:
-#     # FOR RUNNING ON RAILWAY
-#     print("Running on Railway")
-#     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
-# else:
-#     # FOR RUNNING ON LOCAL
-#     print("Running on Railway")
-#     app.run(debug=False, port=int(os.getenv("PORT", default=5000)))
 
 if __name__ == '__main__':
     app.run()

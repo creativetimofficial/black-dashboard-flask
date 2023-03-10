@@ -29,7 +29,7 @@ def get_conversation(n, db_name, collection_name, response_type=None ,client=cli
         # print(doc['prompt'])
         conversation.append({"role": "assistant", "content": doc['response']})
         conversation.append({"role": "user", "content": doc['prompt']})
-    conversation.append({"role": "system", "content": "you are an assistant"})
+    conversation.append({"role": "system", "content": "Your name is Networker, and you are a personal CRM assistant."})
     conversation.reverse()
     # print(f"{n} conversations: {conversation}")
     return conversation
@@ -59,7 +59,7 @@ def delete_person(name, client=client):
     else:
         print(name + " not found in the JSON table.")
 
-def update_person(name, json_input, oldvalue, client=client):
+def update_person(name, json_input, oldvalue='', client=client):
     db =client.db
     collection = db['people']
     name = str(name)

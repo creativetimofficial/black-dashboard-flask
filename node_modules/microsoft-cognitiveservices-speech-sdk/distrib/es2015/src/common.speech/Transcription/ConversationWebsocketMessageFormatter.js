@@ -1,0 +1,46 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+import { Deferred, MessageType, RawWebsocketMessage, } from "../../common/Exports";
+import { ConversationConnectionMessage } from "./ConversationConnectionMessage";
+/**
+ * Based off WebsocketMessageFormatter. The messages for Conversation Translator have some variations from the Speech messages.
+ */
+export class ConversationWebsocketMessageFormatter {
+    /**
+     * Format incoming messages: text (speech partial/final, IM) or binary (tts)
+     */
+    toConnectionMessage(message) {
+        const deferral = new Deferred();
+        try {
+            if (message.messageType === MessageType.Text) {
+                const incomingMessage = new ConversationConnectionMessage(message.messageType, message.textContent, {}, message.id);
+                deferral.resolve(incomingMessage);
+            }
+            else if (message.messageType === MessageType.Binary) {
+                deferral.resolve(new ConversationConnectionMessage(message.messageType, message.binaryContent, undefined, message.id));
+            }
+        }
+        catch (e) {
+            deferral.reject(`Error formatting the message. Error: ${e}`);
+        }
+        return deferral.promise;
+    }
+    /**
+     * Format outgoing messages: text (commands or IM)
+     */
+    fromConnectionMessage(message) {
+        const deferral = new Deferred();
+        try {
+            if (message.messageType === MessageType.Text) {
+                const payload = `${message.textBody ? message.textBody : ""}`;
+                deferral.resolve(new RawWebsocketMessage(MessageType.Text, payload, message.id));
+            }
+        }
+        catch (e) {
+            deferral.reject(`Error formatting the message. ${e}`);
+        }
+        return deferral.promise;
+    }
+}
+
+//# sourceMappingURL=ConversationWebsocketMessageFormatter.js.map

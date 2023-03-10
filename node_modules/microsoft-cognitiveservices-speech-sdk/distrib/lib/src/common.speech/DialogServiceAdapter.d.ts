@@ -1,0 +1,34 @@
+import { IAudioSource } from "../common/Exports";
+import { CancellationErrorCode, CancellationReason, DialogServiceConnector, SpeechRecognitionResult } from "../sdk/Exports";
+import { ServiceRecognizerBase } from "./Exports";
+import { IAuthentication } from "./IAuthentication";
+import { IConnectionFactory } from "./IConnectionFactory";
+import { RecognitionMode, RecognizerConfig } from "./RecognizerConfig";
+import { SpeechConnectionMessage } from "./SpeechConnectionMessage.Internal";
+export declare class DialogServiceAdapter extends ServiceRecognizerBase {
+    private privDialogServiceConnector;
+    private privDialogAudioSource;
+    private privConnectionLoop;
+    private terminateMessageLoop;
+    private agentConfigSent;
+    private privLastResult;
+    private privEvents;
+    private privTurnStateManager;
+    constructor(authentication: IAuthentication, connectionFactory: IConnectionFactory, audioSource: IAudioSource, recognizerConfig: RecognizerConfig, dialogServiceConnector: DialogServiceConnector);
+    sendMessage(message: string): Promise<void>;
+    protected privDisconnect(): Promise<void>;
+    protected processTypeSpecificMessages(connectionMessage: SpeechConnectionMessage): Promise<boolean>;
+    protected cancelRecognition(sessionId: string, requestId: string, cancellationReason: CancellationReason, errorCode: CancellationErrorCode, error: string): Promise<void>;
+    protected listenOnce(recoMode: RecognitionMode, successCallback: (e: SpeechRecognitionResult) => void, errorCallback: (e: string) => void): Promise<void>;
+    private dialogConnectImpl;
+    private receiveDialogMessageOverride;
+    private startMessageLoop;
+    private configConnection;
+    private sendPreAudioMessages;
+    private sendAgentConfig;
+    private sendAgentContext;
+    private fireEventForResult;
+    private handleResponseMessage;
+    private onEvent;
+    private addKeywordContextData;
+}

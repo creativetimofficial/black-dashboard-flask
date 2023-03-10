@@ -1,0 +1,41 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+/**
+ * Defines contents of speech synthesis bookmark event.
+ * @class SpeechSynthesisBookmarkEventArgs
+ * Added in version 1.16.0
+ */
+export class SpeechSynthesisBookmarkEventArgs {
+    /**
+     * Creates and initializes an instance of this class.
+     * @constructor
+     * @param {number} audioOffset - The audio offset.
+     * @param {string} text - The bookmark text.
+     */
+    constructor(audioOffset, text) {
+        this.privAudioOffset = audioOffset;
+        this.privText = text;
+    }
+    /**
+     * Specifies the audio offset.
+     * @member SpeechSynthesisBookmarkEventArgs.prototype.audioOffset
+     * @function
+     * @public
+     * @returns {number} the audio offset.
+     */
+    get audioOffset() {
+        return this.privAudioOffset;
+    }
+    /**
+     * Specifies the bookmark.
+     * @member SpeechSynthesisBookmarkEventArgs.prototype.text
+     * @function
+     * @public
+     * @returns {string} the bookmark text.
+     */
+    get text() {
+        return this.privText;
+    }
+}
+
+//# sourceMappingURL=SpeechSynthesisBookmarkEventArgs.js.map

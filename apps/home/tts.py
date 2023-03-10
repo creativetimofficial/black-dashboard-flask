@@ -1,17 +1,9 @@
-# Google's speech to text API
+# AZURE
 
-import requests
-import subprocess
-import sys
 
-# subprocess.check_call([sys.executable, '-m', 'pip', 'install', 
-# 'pygame'])
-"""Synthesizes speech from the input string of text or ssml.
-Make sure to be working in a virtual environment.
+import azure.cognitiveservices.speech as speechsdk
+import io
 
-Note: ssml must be well-formed according to:
-    https://www.w3.org/TR/speech-synthesis/
-"""
 from google.cloud import texttospeech_v1beta1 as texttospeech
 
 # import pygame
@@ -27,6 +19,109 @@ try:
 except:
     client = texttospeech.TextToSpeechClient.from_service_account_file('apps/home/google.json')
     print('The Google KEY environment variable is not set. Using google.json')
+
+try:
+    SPEECH_KEY = subscription=os.environ.get('SPEECH_KEY')
+except:
+    from apps.home.creds import SPEECH_KEY 
+SPEECH_KEY = '05fb95209bb34b20abb4cfa5287a3a85'
+
+"""
+Voices:
+en-CA-LiamNeural
+en-TZ-ImaniNeural
+en-SG-LunaNeural
+en-NG-AbeoNeural
+en-KE-AsiliaNeural
+en-IE-ConnorNeural
+en-HK-SamNeural
+en-US-JaneNeural
+en-GB-AbbiNeural
+en-AU-DarrenNeural
+"""
+
+
+def azure_speak_string(word,  SPEECH_KEY=SPEECH_KEY):
+    # Create speech synthesizer
+    speech_config = speechsdk.SpeechConfig(SPEECH_KEY, region='eastus')
+    speech_config.speech_synthesis_voice_name = 'en-US-JaneNeural'
+    # Create audio config with PullAudioOutputStream to capture audio data in memory
+    audio_config = speechsdk.audio.AudioOutputConfig(
+        stream=speechsdk.audio.PullAudioOutputStream()
+    )
+
+    # Create speech synthesizer
+    speech_synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config, audio_config=audio_config)
+
+    # Synthesize speech and capture audio data in memory
+    speech_synthesis_result = speech_synthesizer.speak_text_async(word).get()
+
+    if speech_synthesis_result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
+        print("Speech synthesized for text [{}]".format(word))
+        audio_data = speech_synthesis_result.audio_data
+
+        # Encode audio data as base64 string
+        base64_data = base64.b64encode(audio_data).decode("utf-8")
+        return base64_data, word
+
+    elif speech_synthesis_result.reason == speechsdk.ResultReason.Canceled:
+        cancellation_details = speech_synthesis_result.cancellation_details
+        print("Speech synthesis canceled: {}".format(cancellation_details.reason))
+        if cancellation_details.reason == speechsdk.CancellationReason.Error:
+            if cancellation_details.error_details:
+                print("Error details: {}".format(cancellation_details.error_details))
+                print("Did you set the speech resource key and region values?")
+
+    # Return None if speech synthesis failed
+    return None
+
+        
+
+
+def azure_speak(word, SPEECH_KEY=SPEECH_KEY):
+    if word != "":
+        # Create speech synthesizer
+        speech_config = speechsdk.SpeechConfig(SPEECH_KEY, region='eastus')
+        speech_config.speech_synthesis_voice_name = 'en-US-JennyNeural'
+        speech_synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config)
+    
+
+        # Synthesize speech
+        result = speech_synthesizer.speak_text_async(word).get()
+
+        if result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
+            print("Speech synthesized for text [{}]".format(word))
+
+        elif result.reason == speechsdk.ResultReason.Canceled:
+            cancellation_details = result.cancellation_details
+            print("Speech synthesis canceled: {}".format(cancellation_details.reason))
+            if cancellation_details.reason == speechsdk.CancellationReason.Error:
+                if cancellation_details.error_details:
+                    print("Error details: {}".format(cancellation_details.error_details))
+                    print("Did you set the speech resource key and region values?")
+
+# string = "She likes to look at sea shells by the sea shore."
+# # azure_speak(string)
+# string = "One Moment"
+# print(azure_speak_string(string))
+
+# END AZURE
+
+
+# Google's speech to text API
+
+import requests
+import subprocess
+import sys
+
+# subprocess.check_call([sys.executable, '-m', 'pip', 'install', 
+# 'pygame'])
+"""Synthesizes speech from the input string of text or ssml.
+Make sure to be working in a virtual environment.
+
+Note: ssml must be well-formed according to:
+    https://www.w3.org/TR/speech-synthesis/
+"""
 
 def tts(text):
     # Set the text input to be synthesized
@@ -73,6 +168,7 @@ def tts(text):
     # pygame.quit()
 
 def tts_string(text):
+    print("tts_string()!!!")
     # Set the text input to be synthesized
     synthesis_input = texttospeech.SynthesisInput(text=text)
 

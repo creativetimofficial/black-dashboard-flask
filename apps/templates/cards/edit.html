@@ -1,0 +1,20 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Responses {% endblock %} 
+
+{% block content %}
+<h1>Edit Response</h1>
+<form method="POST" action="{{ url_for('home_blueprint.edit', object_id=document._id) }}">
+    {{ form.csrf_token }}
+    {{ form.user.label }} {{ form.user(value=document.user) }}
+    {{ form.prompt.label }} {{ form.prompt(value=document.prompt) }}
+    {{ form.response.label }} {{ form.response(value=document.response) }}
+    {{ form.type.label }} {{ form.type(value=document.type) }}
+    {{ form.person.label }} {{ form.person(value=document.person) }}
+    {{ form.submit }}
+</form>
+{% endblock %}
+
+
+
+{% block javascripts %}{% endblock javascripts %}

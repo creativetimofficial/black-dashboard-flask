@@ -54,13 +54,18 @@
     <div class="main-panel">
 
       {% include 'includes/navigation.html' %}
+
+      <!-- SPEECHLY COMPONENTS BELOW -->
       <div class="content">
         <div class="BigTranscriptContainer">
           <big-transcript
             placement="top"
-            formattext="false" >
+            formattext="false" 
+            highlightcolor="#f3a4b5"
+            >
           </big-transcript>
         </div>
+
         {% block content %}{% endblock content %}
         <div class="PushToTalkContainer">
           <push-to-talk-button
@@ -70,8 +75,11 @@
             capturekey=" "
             intro="Push to talk"
             size="80px"
+            gradientstop1="#32325d"
+            gradientstop2="#5603ad"
           ></push-to-talk-button>
         </div>
+        <!-- END SPEECHLY -->
       
        
 

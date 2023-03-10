@@ -1,7 +1,6 @@
 
 // **********************************************
 // ************** SPEECH FUNCTIONS **************
-// require('prompts.js');
 var button = document.getElementsByTagName("push-to-talk-button")[0];
 const inputElement = document.querySelector('#prompt textarea');
 const airesponseTextArea = document.querySelector("#response textarea");
@@ -11,6 +10,7 @@ var nav = false;
 var name = null;
 var edit = false;
 var set = false;
+var ask_question_running = false;
 
 button.addEventListener("speechsegment", (e) => {
   const speechSegment = e.detail;
@@ -56,9 +56,6 @@ button.addEventListener("speechsegment", (e) => {
         document.getElementById("addnotes").style.display = "block";
       }
     }
-      
-
-
 
   })
 
@@ -97,7 +94,6 @@ button.addEventListener("speechsegment", (e) => {
       document.getElementById("form3").value = concatenatedWords;
       if (speechSegment.isFinal){
          ask_question("This dialog came from speech to text AI. Reformat the dialog, responding ONLY in notes about what was said here. Do not say 'Sure, here are the bulleted notes...' - ONLY RESPOND IN NOTES.\n".concat(concatenatedWords), speech=false, show_response=false).then(airesponse => {
-          console.log(airesponse);
           document.getElementById("form3").value = airesponse; // Prints the airesponse value to the console
         });;
       }
@@ -259,6 +255,27 @@ $('.delete-button').on('click', deleteObject);
 
 
 function ask_question(words, speech=true, show_response=true) {
+  console.log("ask q");
+  if(ask_question_running){
+    return;
+  }
+  ask_question_running = true;
+  // THIS IS THE UM BEFORE THE TEXT RESPONSE
+  
+    if (audio && !audio.paused) {
+      audio.pause();
+    }
+
+    if (speech && !isMuted && words.length > 12){
+      audioSrc = `data:audio/mpeg;base64,${randomOne()}`;  
+      audio = new Audio(audioSrc);
+      audio.playbackRate = 1.4;
+      audio.pitch = 0.714;
+      audio.play();
+      };
+  
+
+  // }
   return  fetch('/ask_question', {
       method: 'POST',
       headers: {
@@ -271,10 +288,13 @@ function ask_question(words, speech=true, show_response=true) {
     }).then(response => response.json())
       .then(data => {
         const airesponse = data.airesponse;
+        
         if (show_response){airesponseTextArea.value = airesponse;}
         if (speech && !isMuted) {speak(airesponse)}
+        ask_question_running = false;
         return airesponse;
-      }) }
+      }) 
+      }
     console.log("Your query has been run!");
 
 if (inputElement){
@@ -283,7 +303,7 @@ inputElement.addEventListener("keydown", function(event) {
   // check if the user pressed the "Enter" key
   if (event.key === "Enter") {
     event.preventDefault();
-    const inputVal = inputElement.value;
+    const inputVal = inputElement.value;  
     ask_question(inputVal);
   }
 });
@@ -384,9 +404,14 @@ $("#submit-note-btn").click(function() {
 // THE MUTE BUTTON
 
 $(document).on('keypress', function(e) {
-  if (e.key === 'm' && e.target.nodeName !== 'INPUT' && e.target.nodeName !== 'TD' && e.target.nodeName !== 'TEXTAREA' && e.target.nodeName !== 'SELECT' && e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'OPTION') {
+  if ((e.key === 'm' ||e.key === ' ') && e.target.nodeName !== 'INPUT' && e.target.nodeName !== 'TD' && e.target.nodeName !== 'TEXTAREA' && e.target.nodeName !== 'SELECT' && e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'OPTION') {
     toggleMute();
   }
+  if (e.code === "Space") {
+    e.preventDefault();
+    window.scrollBy(0, 0);
+  }
+
 });
 
 $('#mute').on('click', toggleMute);
@@ -411,14 +436,19 @@ let audio = null;
 
 async function speak(text) {
   if (!isMuted) {
-    const response = await fetch(`/speak/${text}`);
+    const options = { headers:{'Content-Type': 'application/json'}, method:'POST', body: JSON.stringify({body:text}) };
+    const response = await fetch( '/speak', options);
     const data = await response.json();
     const audioContent = data.audioContent;
     audioSrc = `data:audio/mpeg;base64,${audioContent}`;
     if (audio && !audio.paused) {
       audio.pause();
     }
+    console.log("speak");
     audio = new Audio(audioSrc);
+    
+    audio.playbackRate = 1.4;
+    audio.pitch = 0.714;
     audio.play();
     return data.textResult;
   }
