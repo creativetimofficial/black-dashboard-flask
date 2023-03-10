@@ -4,13 +4,9 @@ API_KEY = os.getenv('API_KEY')
 
 print('The API_KEY environment variable is not set. Trying from apps.home')
 
-try:
-    from apps.home.user import person, google_it
-    from apps.home.database import get_conversation
-except:
-    from user import person, google_it
-    from database import get_conversation
-    
+from apps.home.user import person, google_it
+from apps.home.database import get_conversation
+
 
 
 from flask import session
@@ -133,7 +129,7 @@ def ai_response(prompt, networking = False, temperature =.5):
 # save_conversation(prompt, conversation)
 
 # messages = {f'You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible. Knowledge cutoff: {knowledge_cutoff} Current date: {current_date}'}
-messages=''
+# messages=''
 def gpt_response(prompt, messages = messages):
     response = openai.ChatCompletion.create( 
     openai.api_key,

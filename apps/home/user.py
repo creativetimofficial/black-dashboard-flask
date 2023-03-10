@@ -1,8 +1,7 @@
 import difflib
-try:
-    from apps.home.database import get_people, update_person, delete_person
-except:
-    from database import get_people, update_person, delete_person
+
+from apps.home.database import get_people, update_person, delete_person
+
 
 import requests
 from bs4 import BeautifulSoup

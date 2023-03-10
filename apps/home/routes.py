@@ -63,11 +63,11 @@ print("************************************ RUNNING ROUTES FILE ****************
 
 import os
 # from stt import speech_to_text
-from apps.home.prompt import *
+from apps.home.prompt import ai_response
 from apps.home.tts import tts_string, speak
 from flask import Flask, request, render_template, jsonify, flash, redirect, url_for
 from flask import session
-from apps.home.db import get_people, log_user_response, client, update_person, delete_object
+from apps.home.database import get_people, log_user_response, client, update_person, delete_object
 from apps.home.user import Session
 from html import escape
 
