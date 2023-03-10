@@ -129,7 +129,7 @@ def ai_response(prompt, networking = False, temperature =.5):
 # save_conversation(prompt, conversation)
 
 # messages = {f'You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible. Knowledge cutoff: {knowledge_cutoff} Current date: {current_date}'}
-# messages=''
+messages=''
 def gpt_response(prompt, messages = messages):
     response = openai.ChatCompletion.create( 
     openai.api_key,
