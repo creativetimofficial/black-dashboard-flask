@@ -49,7 +49,9 @@ if __name__ == "__main__":
         app.run(debug=True, port=int(os.getenv("PORT", default=5000)))
 
     
-from apps.home.db import get_people
+
+from apps.home.database import get_people
+
 data = get_people()
 it = iter(data['People']).__next__
 audioContent = ''

@@ -2,28 +2,19 @@ import requests
 import os
 API_KEY = os.getenv('API_KEY')
 
-if API_KEY is not None: 
-    print('The API key is found')
-    try:
-        from user import person, google_it
-        from db import get_conversation
-    except:
-        from apps.home.user import person, google_it
-        from apps.home.db import get_conversation
-        
-else:
-    print('The API_KEY environment variable is not set. Trying from apps.home')
-    try:
-        from creds import API_KEY
-        from user import person, google_it
-        from db import get_conversation
-    except:
-        from apps.home.user import person, google_it
-        from apps.home.db import get_conversation
+print('The API_KEY environment variable is not set. Trying from apps.home')
+
+try:
+    from apps.home.user import person, google_it
+    from apps.home.database import get_conversation
+except:
+    from user import person, google_it
+    from database import get_conversation
+    
+
 
 from flask import session
 import openai
-import json
 
 openai.api_key = API_KEY
 
