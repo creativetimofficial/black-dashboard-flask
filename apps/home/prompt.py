@@ -5,11 +5,9 @@ API_KEY = os.getenv('API_KEY')
 if API_KEY is not None: 
     print('The API key is found')
     try:
-        from creds import API_KEY
         from user import person, google_it
         from db import get_conversation
     except:
-        from apps.home.creds import API_KEY
         from apps.home.user import person, google_it
         from apps.home.db import get_conversation
         
