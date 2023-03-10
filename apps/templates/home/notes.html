@@ -32,10 +32,10 @@
                 Timestamp
                 </th>
                 <th>
-                Person
+                Note
                 </th>
                 <th>
-                Note
+                Person
                 </th>
               </thead>
               </tr>
@@ -43,7 +43,7 @@
               {% for prompt in prompts %}
              
               <tr name="user_responses" value="{{prompt['_id']}}">
-              <td>{{prompt["timestamp"]}}</td><td>{{prompt["person"]}}</td><td>{{prompt["prompt"]}}</td><td class="delete-button"> <i class="tim-icons icon-simple-remove"></i></td>
+              <td>{{prompt["timestamp"]}}</td><td>{{prompt["prompt"]}}</td><td><i class="tim-icons icon-user"></i>{{prompt["person"]}}</td><td class="delete-button"> <i class="tim-icons icon-simple-remove"></i></td>
               </tr>
               {% endfor %}
            

@@ -1,7 +1,6 @@
 import difflib
-
 from apps.home.database import get_people, update_person, delete_person
-
+import json
 
 import requests
 from bs4 import BeautifulSoup
@@ -126,12 +125,6 @@ def google_it(search_term, other_info=None):
 #  = person()
 
 
-import json
-try:
-    from apps.home.database import get_people, update_person
-except:
-    from database import get_people, update_person
-import difflib
 
 
 # Based on an input string that includes json, clean the string to output the JSON:

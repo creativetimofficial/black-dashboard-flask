@@ -156,14 +156,14 @@ def prompts():
  
     qTerm = request.args.get('s')
     if not qTerm:    
-        prompts = collection.find({"user": user_id})
+        prompts = collection.find({"user": user_id, 'type':'prompt'})
         flash("You did not search for anything")
         res="ALL"
         # return redirect(url_for('home_blueprint.prompts'))
     elif qTerm:
         cleanQuery = escape(qTerm)
         # Do a search on the user and the query, case insensitive "i" option
-        prompts = collection.find({"user": user_id,'$or':[
+        prompts = collection.find({"user": user_id,'type':'prompt', '$or':[
                                     {"prompt":{'$regex':cleanQuery, '$options' : 'i'}},
                                     { "response":{'$regex':cleanQuery, '$options' : 'i'}}
                                    ]                        })

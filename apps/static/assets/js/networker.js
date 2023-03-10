@@ -1,7 +1,7 @@
 
 // **********************************************
 // ************** SPEECH FUNCTIONS **************
-
+// require('prompts.js');
 var button = document.getElementsByTagName("push-to-talk-button")[0];
 const inputElement = document.querySelector('#prompt textarea');
 const airesponseTextArea = document.querySelector("#response textarea");
@@ -11,6 +11,7 @@ var nav = false;
 var name = null;
 var edit = false;
 var set = false;
+
 button.addEventListener("speechsegment", (e) => {
   const speechSegment = e.detail;
   // console.log(speechSegment.intent);
@@ -40,6 +41,10 @@ button.addEventListener("speechsegment", (e) => {
     else if (word == "mute" && !isMuted){
       toggleMute();
     }
+    else if ( (word === "begin" | word === "began") && $('#login-button').length) {
+      $('#login-button').click();
+    }
+    
 
 
     // OPEN THE STUPID FORM AND MAKE SURE IT'S OPEN
@@ -354,8 +359,8 @@ $("#submit-note-btn").click(function() {
   $('.modal-backdrop.fade.show').fadeOut('fast');
 
   var form2Data = $("#form2").val();
-  var form3Data = $("#form3").val();
-  
+  var form3Data = formatTextAsList($("#form3").val());
+  console.log(form3Data);
 
   // Send an AJAX request to the new-note endpoint with the data
   $.ajax({
@@ -449,5 +454,18 @@ function find_field(name, value) {
   }
   // speak("Set",value.join(" "))
 }
+
+function formatTextAsList(inputText) {
+  const lines = inputText.split("\n");
+  let html = "<ul>";
+
+  lines.forEach(function(line) {
+    html += "<li>" + line + "</li>";
+  });
+
+  html += "</ul>";
+  return html;
+}
+
 
 // *********** END SCRIPT *********** 

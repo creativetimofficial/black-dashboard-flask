@@ -43,9 +43,11 @@ def get_people(client=client):
     people = collection.find_one({"_id": ObjectId("63fd0087b9b2b4001ccb7c5f")})
     if people == None:
         print("NO OBJECT FOUND")
-    # Returns the JSON string of people, as detailed in our example
-    # print(people['People'])
-    return people
+    # Convert the People dictionary to a list of tuples and sort it by the person's name
+    sorted_people = sorted(people["People"].items(), key=lambda x: x[0])
+    # Convert the sorted list of tuples back to a dictionary
+    sorted_people_dict = {"People":dict(sorted_people)}
+    return sorted_people_dict
 
 def delete_person(name, client=client):
     db = client.db
