@@ -27,6 +27,7 @@
               
           <table class="table tablesorter " id="">
             <thead class=" text-primary">
+              <p class="tiny">All logged activity for user will be displayed</p>
               <tr>
                 <th>
                 Timestamp
@@ -39,7 +40,9 @@
                 </th>
               </thead>
               </tr>
-              <p class="tiny">All logged activity for user will be displayed</p>
+              {% if not length %}
+              <tr><td><p class>No Notes here - add one by saying "Note"</p></tr></td>
+              {% endif %}
               {% for prompt in prompts %}
              
               <tr name="user_responses" value="{{prompt['_id']}}">

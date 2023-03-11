@@ -15,8 +15,9 @@ var edit = false;
 var set = false;
 var ask_question_running = false;
 var focus_element = '';
-
+var bestmatch = '';
 button.addEventListener("speechsegment", (e) => {
+  
 
   const speechSegment = e.detail;
   // console.log(speechSegment.intent);
@@ -77,14 +78,32 @@ button.addEventListener("speechsegment", (e) => {
 
   //  var index = arr.indexOf(word['value']);
   var index = arr.indexOf('set');
+
+
   if (index === -1) {
      console.log("Set not found in array");
    }
-  arr = arr.slice(index + 1);
-  console.log("ELEMENT to feed ",arr );
+   else{
+    var beforeTo = '';
+    var afterTo = '';
+    var subArr = arr.slice(index + 1);
+
+    // Get the part before "to"
+    var beforeToIndex = subArr.indexOf('to');
+    if (beforeToIndex !== -1) {
+      beforeTo = subArr.slice(0, beforeToIndex).join(' ');
+    }
+  
+
+  afterTo = subArr.slice(beforeToIndex + 1).join(' ');
+  console.log("Before 'to': ", beforeTo);
+  console.log("After 'to': ", afterTo);
+
+  }
+  console.log("ELEMENT to ENTER: ",arr.join(" ") );
   // const nameTds = document.querySelectorAll('td.expand');
 
-  clicker_search(word, arr.join(" "), focus_element.parentElement);
+  clicker_search(beforeTo,afterTo, focus_element.parentElement);
 
   });
   }
@@ -375,6 +394,8 @@ document.addEventListener("DOMContentLoaded", () => {
               field.style.transition = "background-color 0.5s ease";
               field.style.backgroundColor = "";
             }, 1000);
+            field.blur(); // Remove focus from the td element
+
 
 
             // console.log("SUBMIT", name,value); // THE PEOPLE PAGE HAS BEEN SUBMITTED FOR UPDATES
@@ -509,6 +530,15 @@ function find_field(name, value) {
   // speak("Set",value.join(" "))
 }
 
+
+// PLAYING WITH TEXT
+function propercase(text) {
+  return text.replace(/\w\S*/g, function(word) {
+    return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
+  });
+}
+
+
 function formatTextAsList(inputText) {
   const lines = inputText.split("\n");
   let html = "<ul>";
@@ -520,11 +550,15 @@ function formatTextAsList(inputText) {
   html += "</ul>";
   return html;
 }
+
 // focus_element
 function clicker_search(text, change_to_text, focus_element) {
+  text = propercase(text);
+  change_to_text = propercase(change_to_text);
   // Find elements that roughly match object_to_click with difflib's getCloseMatches() function
+  // if (!ask_question_running){
   let elements;
-  var bestmatch = '';
+
   if (focus_element) {
     elements = Array.from(focus_element.querySelectorAll('td'));
   } else {
@@ -532,7 +566,11 @@ function clicker_search(text, change_to_text, focus_element) {
   }
   const visibleElements = elements.filter(td => window.getComputedStyle(td).getPropertyValue('display') !== 'none');
   
-  const matches = difflib.getCloseMatches(text, visibleElements.map(td => td.innerText), 1, 1);
+  const matches = difflib.getCloseMatches(text, visibleElements.map(td => {
+    const match = td.innerText.match(/^(.*?)\bto\b/);
+    return match ? match[1].trim() : '';
+  }), 1, 1);
+  console.log("MATCHES", matches)
 
   // If there are no matches, try again with a lower threshold and set clarify_flag
   let clarify_flag = false;
@@ -541,27 +579,57 @@ function clicker_search(text, change_to_text, focus_element) {
     if (lowermatch.length > 0) {
       matches.push(lowermatch[0]);
       clarify_flag = true;
-      console.log("LOWER MATCH",lowermatch[0]);
+      // console.log("LOWER MATCH",lowermatch[0]);
     }
   }
   // Click the most likely match
-  if (matches.length > 0) {
-    bestmatch = matches[0];
-    console.log("MATCH ME BABY",bestmatch);
-    const element = elements.find(td => td.innerText === bestmatch);
-    element.click();
+if (matches.length > 0) {
+  const bestmatch = matches[0];
+  console.log("MATCH ME BABY",bestmatch);
+  ask_question_running = true;
+  const element = elements.find(td => td.innerText === bestmatch);
+  if (!element.classList.contains('edited')) { // check if the element has already been edited
 
-    // Clear the text, set to "foobar", and shade parent element yellow
-    element.innerText = change_to_text;
-    element.parentElement.style.backgroundColor = "rgba(255, 255, 0, 0.5)";
+    element.classList.add('edited'); // add the 'edited' class to mark the element as edited
+    // Check if the text in the element contains a colon
+  } else {
+    const colonIndex = element.innerText.indexOf(":");
+    if (colonIndex > -1) {
+      // Get the text after the colon and trim it
+      const textAfterColon = element.innerText.substring(colonIndex + 1).trim();
+      if (textAfterColon.length > 0) {
+        if (change_to_text) {
+          const currentText = element.innerText;
+          const separatorIndex = currentText.indexOf(':');
+          if (separatorIndex >= 0) {
+            const prefix = currentText.substr(0, separatorIndex + 1);
+            element.innerText = prefix + " " + change_to_text;
+          } else {
+            element.innerText = change_to_text;
+          }
+        }
+      }
+    } else {
+      // If the text in the element doesn't contain a colon, just replace the entire text with the new text
+      const newText = change_to_text.trim();
+      element.innerText = newText;
+    }
+
+    element.style.backgroundColor = "rgba(255, 255, 0, 0.5)";
     setTimeout(() => {
       // Fade back to normal color after 1 second
-      element.parentElement.style.transition = "background-color 0.5s ease";
-      element.parentElement.style.backgroundColor = "";
+      element.style.transition = "background-color 0.5s ease";
+      element.style.backgroundColor = "";
     }, 1000);
+    // TO SUBMIT THE ENTRY
+    // const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' });
+    // element.dispatchEvent(enterEvent);
+
+
+    }
   }
-  return [ clarify_flag,  bestmatch ];
-}
+  return [ clarify_flag,  bestmatch ];}
+// }
 
 
 
@@ -573,8 +641,11 @@ document.addEventListener("keydown", function(event) {
     event.preventDefault();
 
   }
+  if (event.key === "$") {
+   speak("Screw you Rothstein");
+  }
   if (event.key === "f") {
-    clicker_search("School", "set to yale college");
+    clicker_search("Company", "set to yale college");
     console.log("find");
   }
 });

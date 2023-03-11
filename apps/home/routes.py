@@ -224,7 +224,7 @@ def notes():
         # res = dbQuery.fetchall()
     
 
-    return render_template('home/notes.html', prompts=prompts, user_id=user_id, qTerm=qTerm, segment=get_segment(request))
+    return render_template('home/notes.html', prompts=prompts, length = len([prompt for prompt in prompts]), user_id=user_id, qTerm=qTerm, segment=get_segment(request))
 
 
 @blueprint.route("/verify_person", methods=['POST'])
