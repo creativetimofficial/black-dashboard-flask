@@ -1,6 +1,9 @@
 
 // **********************************************
 // ************** SPEECH FUNCTIONS **************
+
+
+
 var button = document.getElementsByTagName("push-to-talk-button")[0];
 const inputElement = document.querySelector('#prompt textarea');
 const airesponseTextArea = document.querySelector("#response textarea");
@@ -11,8 +14,10 @@ var name = null;
 var edit = false;
 var set = false;
 var ask_question_running = false;
+var focus_element = '';
 
 button.addEventListener("speechsegment", (e) => {
+
   const speechSegment = e.detail;
   // console.log(speechSegment.intent);
 
@@ -28,13 +33,16 @@ button.addEventListener("speechsegment", (e) => {
       note = true;
       ask = false;
     }
+    if (word == "select"){
+      ask=false;
+    }
     else if(word == "edit"){
       edit = true;
     }
     else if(word == "help"){
       console.log("Help is requested");
     }
-    else if (word == 'set' && edit){
+    else if (word == 'set'){
       console.log("SETEDIT")
       set = true;
     }
@@ -60,18 +68,23 @@ button.addEventListener("speechsegment", (e) => {
   })
 
   // CHECK FOR FIELDS TO SELECT!
-  if (set && name) {
+  if (set) {
     all_words.forEach(word  => {
       word = word['value'];
    // // DREW PASTED
-   var arr = all_words;
-   var index = arr.indexOf(word['value']);
-   if (index === -1) {
-     console.log("Field not found in array");
+
+   var arr = all_words.map(obj => obj.value);
+
+  //  var index = arr.indexOf(word['value']);
+  var index = arr.indexOf('set');
+  if (index === -1) {
+     console.log("Set not found in array");
    }
   arr = arr.slice(index + 1);
+  console.log("ELEMENT to feed ",arr );
   // const nameTds = document.querySelectorAll('td.expand');
-  find_field(word,arr);
+
+  clicker_search(word, arr.join(" "), focus_element.parentElement);
 
   });
   }
@@ -128,12 +141,12 @@ button.addEventListener("speechsegment", (e) => {
   // ************** SEGMENT BY ENTITY 
   speechSegment.entities.forEach(entity => {
 
-    // console.log(entity.type);
-    // console.log(entity.value);
+    console.log(entity.type);
+    console.log(entity.value);
 
-    // Send entity.value to "/verify_person" only once
     
-    // LOOK UP DA PERSON
+    // IF THERE'S AN ENTITY OF A PERSON FOUD ANYWHERE IN YOUR SPEAKING, WE'RE GOING TO FIND THEIR FILE:
+    // Send entity.value to "/verify_person" only once
     if (entity.type === 'person') {
       console.log("Name entity has been found.", entity.value)
     const xhr = new XMLHttpRequest();
@@ -154,6 +167,7 @@ button.addEventListener("speechsegment", (e) => {
 
         for (let i = 0; i < nameTds.length; i++) {
         const nameTd = nameTds[i];
+        focus_element = nameTd;
         if (nameTd.innerText.trim() === name) {
           const moreTd = nameTd.nextElementSibling;
           if (moreTd && moreTd.classList.contains('more')) {
@@ -255,7 +269,6 @@ $('.delete-button').on('click', deleteObject);
 
 
 function ask_question(words, speech=true, show_response=true) {
-  console.log("ask q");
   if(ask_question_running){
     return;
   }
@@ -352,8 +365,18 @@ document.addEventListener("DOMContentLoaded", () => {
             var oldvalue = field.getAttribute("oldfield");           
             const value = field.textContent;
             // Change the background when enter is done
-            // $(field).css("background-color", "green").fadeOut(3000);
+            // $(field).css("background-color", "green").fadeOut(3000)
+
+
             $(field).css("background-color", "green");
+            // element.parentElement.style.backgroundColor = "rgba(255, 255, 0, 0.5)";
+            setTimeout(() => {
+              // Fade back to normal color after 1 second
+              field.style.transition = "background-color 0.5s ease";
+              field.style.backgroundColor = "";
+            }, 1000);
+
+
             // console.log("SUBMIT", name,value); // THE PEOPLE PAGE HAS BEEN SUBMITTED FOR UPDATES
 
 
@@ -410,6 +433,8 @@ $(document).on('keypress', function(e) {
   if (e.code === "Space") {
     e.preventDefault();
     window.scrollBy(0, 0);
+
+
   }
 
 });
@@ -444,7 +469,6 @@ async function speak(text) {
     if (audio && !audio.paused) {
       audio.pause();
     }
-    console.log("speak");
     audio = new Audio(audioSrc);
     
     audio.playbackRate = 1.4;
@@ -496,6 +520,64 @@ function formatTextAsList(inputText) {
   html += "</ul>";
   return html;
 }
+// focus_element
+function clicker_search(text, change_to_text, focus_element) {
+  // Find elements that roughly match object_to_click with difflib's getCloseMatches() function
+  let elements;
+  var bestmatch = '';
+  if (focus_element) {
+    elements = Array.from(focus_element.querySelectorAll('td'));
+  } else {
+    elements = Array.from(document.querySelectorAll('#people td'));
+  }
+  const visibleElements = elements.filter(td => window.getComputedStyle(td).getPropertyValue('display') !== 'none');
+  
+  const matches = difflib.getCloseMatches(text, visibleElements.map(td => td.innerText), 1, 1);
+
+  // If there are no matches, try again with a lower threshold and set clarify_flag
+  let clarify_flag = false;
+  if (matches.length === 0) {
+    var lowermatch = difflib.getCloseMatches(text, elements.map(td => td.innerText), 1, 0.2);
+    if (lowermatch.length > 0) {
+      matches.push(lowermatch[0]);
+      clarify_flag = true;
+      console.log("LOWER MATCH",lowermatch[0]);
+    }
+  }
+  // Click the most likely match
+  if (matches.length > 0) {
+    bestmatch = matches[0];
+    console.log("MATCH ME BABY",bestmatch);
+    const element = elements.find(td => td.innerText === bestmatch);
+    element.click();
+
+    // Clear the text, set to "foobar", and shade parent element yellow
+    element.innerText = change_to_text;
+    element.parentElement.style.backgroundColor = "rgba(255, 255, 0, 0.5)";
+    setTimeout(() => {
+      // Fade back to normal color after 1 second
+      element.parentElement.style.transition = "background-color 0.5s ease";
+      element.parentElement.style.backgroundColor = "";
+    }, 1000);
+  }
+  return [ clarify_flag,  bestmatch ];
+}
+
+
+
+document.addEventListener("keydown", function(event) {
+  if (event.key === "Space") {
+    if (audio && !audio.paused) {
+      audio.pause();
+    }
+    event.preventDefault();
+
+  }
+  if (event.key === "f") {
+    clicker_search("School", "set to yale college");
+    console.log("find");
+  }
+});
 
 
 // *********** END SCRIPT *********** 

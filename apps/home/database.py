@@ -93,10 +93,10 @@ def log_user_response(user, prompt, response="", type="prompt", person_of_intere
     num_entries = collection.count_documents(query)
     
     # DAILY LIMIT
-    if num_entries >= 100:
+    if num_entries >= 1000000:
         # If the user has already submitted two entries, prevent further submissions
         client.close()
-        print("LIMIT REACHED FOR USER ", user)
+        print("DB File: LIMIT REACHED FOR USER ", user)
         return None
     else:
         # If the user has not yet submitted two entries, create a new one
