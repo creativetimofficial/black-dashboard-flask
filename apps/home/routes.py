@@ -69,7 +69,7 @@ from apps.home.prompt import ai_response
 from apps.home.tts import tts_string, azure_speak_string
 from flask import Flask, request, render_template, jsonify, flash, redirect, url_for
 from flask import session
-from apps.home.database import get_people, log_user_response, client, update_person, delete_object, remove_field
+from apps.home.database import get_people, log_user_response, client, update_person, delete_object, remove_field, get_notes
 from apps.home.user import Session, person
 from html import escape
 
@@ -82,6 +82,8 @@ app.config["CACHE_TYPE"] = "null"
 # def index():
 #     session['respond'] = True
 #     return render_template('voice.html')
+
+# OBJECT ID IS DESIGNATED
 object_id = "63fd0087b9b2b4001ccb7c5f"
 
 @blueprint.route('/people')
@@ -159,7 +161,6 @@ def speak_route():
             'textResult': text_result
         })
 
-
 @blueprint.route("/prompts")
 @login_required
 def prompts():
@@ -191,41 +192,28 @@ def prompts():
     prompts = prompts.sort("timestamp", -1)
     return render_template('home/prompts.html', prompts=prompts, user_id=user_id, res=res, segment=get_segment(request))
 
+from flask_paginate import Pagination, get_page_parameter
+
 @blueprint.route("/notes")
 @login_required
 def notes():
     # Connect to MongoDB and query for unique prompts
-    db = client["db"]
-        # Connect to MongoDB and query for unique prompt
-    collection = db["user_responses"]
-    # prompts = collection.distinct("prompt")
-    # user_id = 'user123'
-    # print(session)
     user_id = session.get("_user_id")
-
-    prompts = collection.find({"user": user_id})
- 
+    # notes = collection.find({"user": user_id})
     qTerm = request.args.get('s')
-    if not qTerm:    
-        prompts = collection.find({"user": user_id, "type":"note"})
-        flash("You did not search for anything")
-        res="ALL"
-        # return redirect(url_for('home_blueprint.prompts'))
-    elif qTerm:
-        cleanQuery = escape(qTerm)
-        # Do a search on the user and the query, case insensitive "i" option
-        prompts = collection.find({"user": user_id, "type":"note",
-                                   '$or':[
-                                    {"prompt":{'$regex':cleanQuery, '$options' : 'i'}},
-                                    { "response":{'$regex':cleanQuery, '$options' : 'i'}}
-                                   ]
-                                   })
-        prompts = prompts.sort("timestamp", -1)
-        res = 'assume it has been searched'
-        # res = dbQuery.fetchall()
-    
-
-    return render_template('home/notes.html', prompts=prompts, length = len([prompt for prompt in prompts]), user_id=user_id, qTerm=qTerm, segment=get_segment(request))
+    notes = get_notes(user_id, qTerm)
+    # print(notes)
+    # Pagination logic
+    # page = request.args.get(get_page_parameter(), type=int, default=1)
+    per_page = 5 # Change this to however many notes you want to display per page
+    # offset = (1 - 1) * per_page
+    # notes_count = len(list(notes))
+    notes = notes[:per_page]
+    # pagination = Pagination(page=page, total=notes_count, per_page=per_page, css_framework='bootstrap4')
+    print("NOTES", list(notes))
+    length = len([note for note in list(notes)])
+    print(f"Length: {length}")
+    return render_template('home/notes.html', noteprompts= notes, length = length, user_id=user_id, qTerm=qTerm)
 
 
 @blueprint.route("/verify_person", methods=['POST'])
@@ -294,6 +282,30 @@ def new_note():
     log_user_response(user_id, response_data['processed_data']['note'], person_of_interest=response_data['processed_data']['person'], type="note")
     return jsonify(response_data)
 
+@blueprint.route("/new_person", methods=['POST'])
+@login_required
+def new_person():
+    data = request.get_json()
+    # NOW GET THE DATA FROM TEXTAREAS #FORM2 and #FORM3
+    form3_data = data.get('note')
+    form2_data = data.get('person')
+    
+    # Process the data here...
+    
+    # Return a JSON response with the processed data
+    response_data = {
+        'success': True,
+        'message': 'Note submitted successfully!',
+        'processed_data': {
+            'note': form3_data,
+            'person': form2_data
+        }
+    }
+    print(f"NOTE: {response_data['processed_data']['note']}")
+    print(f"PERSON: {response_data['processed_data']['person']}")
+    user_id = session.get("_user_id")
+    return jsonify(response_data)
+
 @blueprint.route('/repurpose',methods=['POST'])
 def repurpose():
     data = request.get_json()
@@ -327,7 +339,7 @@ def delete(collection,objectID):
 @blueprint.route('/remove-field/<objectID>/<person_name>/<field_name>', methods=['GET','POST'])
 @login_required
 def delete_field(objectID, person_name,field_name):
-    print(f"INCOMING FIELD DELETION AT DELETE/{field_name}/{person_name}/{field_name}")
+    # print(f"INCOMING FIELD DELETION AT DELETE/{field_name}/{person_name}/{field_name}")
     remove_field(field_name, person_name, objectID)
 
     # Return a JSON response with the processed data

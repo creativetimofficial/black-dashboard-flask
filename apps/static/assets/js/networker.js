@@ -53,12 +53,10 @@ button.addEventListener("speechsegment", (e) => {
     else if ( (word === "begin" | word === "began") && $('#login-button').length) {
       $('#login-button').click();
     }
-    else if(word === "submit" && focus_element !== ''){
+    else if(word === "submit" && focus_element !== '' && speechSegment.isFinal){
       console.log("submitting all");
       const tds = document.querySelectorAll(".expand:not([style*='display: none'])");
       console.log("innertext", focus_element.innerText);
-      var x = 0;
-      if (!isMuted){toggleMute(); x = 1};
         tds.forEach((cell) => {
           console.log("innertext", cell.innerText);
           if(cell.innerText.indexOf(':') > -1){
@@ -66,15 +64,9 @@ button.addEventListener("speechsegment", (e) => {
             cell.dispatchEvent(event);        
           };
         });
-        if (x=1){toggleMute()};
         speak("Updated.")
 
-      
-
-      
-
     }
-    
 
 
     // OPEN THE STUPID FORM AND MAKE SURE IT'S OPEN
@@ -367,8 +359,6 @@ function clicker_search(text, change_to_text, focus_element) {
 
 // **********************************************
 // ************** NON-SPEECH FUNCTIONS **************
-
-
 
 // DELETES THE ROW WITH THE .DELETEOBJECT CLASS
 function deleteObject() {

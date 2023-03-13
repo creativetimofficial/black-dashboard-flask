@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import os
-
+from html import escape
 
 from datetime import datetime, date
 
@@ -34,6 +34,8 @@ def get_conversation(n, db_name, collection_name, response_type=None ,client=cli
     # print(f"{n} conversations: {conversation}")
     return conversation
 
+
+# OBJECT ID DESIGNATED
 object_id = "63fd0087b9b2b4001ccb7c5f"
 
 def get_people(object_id=object_id, client=client):
@@ -143,7 +145,6 @@ def remove_field(field_name, person_name, objectID, client=client ):
     result = collection.find_one({"_id": ObjectId(objectID)})
 
     if result and person_name in result.get("People", {}):
-        print(result["People"])
         # Remove the specified field for the person
         del result["People"][person_name][field_name]
         
@@ -153,6 +154,25 @@ def remove_field(field_name, person_name, objectID, client=client ):
     else:
         return False
 
+def get_notes(user_id, qTerm, client=client):
+    db = client["db"]
+        # Connect to MongoDB and query for unique prompt
+    collection = db["user_responses"]
+    if not qTerm:    
+        notes = collection.find({"user": user_id, "type":"note"})
+        print("You no search nothing")
+        res="ALL"
+        # return redirect(url_for('home_blueprint.prompts'))
+    elif qTerm:
+        cleanQuery = escape(qTerm)
+        # Do a search on the user and the query, case insensitive "i" option
+        notes = collection.find({"user": user_id, "type":"note",
+                                   '$or':[
+                                    {"prompt":{'$regex':cleanQuery, '$options' : 'i'}},
+                                    { "response":{'$regex':cleanQuery, '$options' : 'i'}}
+                                   ]
+                                   })
+    return list(notes)
 # remove_field("Working","Sam Casey",'63fd0087b9b2b4001ccb7c5f')
 
 # print(log_user_response(1, "what's for dinner?", "Salmon"))

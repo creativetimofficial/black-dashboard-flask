@@ -37,3 +37,4 @@ MarkupSafe==2.1.1
 pymongo==4.3.3
 psycopg2-binary
 azure-cognitiveservices-speech==1.26.0
+flask-paginate==2022.1.8

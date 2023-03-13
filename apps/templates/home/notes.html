@@ -6,11 +6,11 @@
 {% block stylesheets %}{% endblock stylesheets %}
 {% block content %}
 <div class="row">
-  
   <div class="col-md-12">
     <div class="card ">
       <div class="card-header">
-        <h4 class="card-title">Notes for User Number:{{user_id}} Search Term: {{qTerm}}</h4>
+        <h4 class="card-title">Notes for UID:{{user_id}}<br>
+          {% if qTerm is defined %} Search Term: {{qTerm}}{% endif %}</h4>
         <div class="dropdown">
           <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown" aria-expanded="false">
             <i class="tim-icons icon-settings-gear-63"></i></button>
@@ -27,27 +27,20 @@
               
           <table class="table tablesorter " id="">
             <thead class=" text-primary">
-              <p class="tiny">All logged activity for user will be displayed</p>
+              <p class=>All logged activity for user will be displayed</p>
               <tr>
-                <th>
-                Timestamp
-                </th>
-                <th>
-                Note
-                </th>
-                <th>
-                Person
-                </th>
+                <th>Timestamp</th>
+                <th>Note</th>
+                <th>Person</th>
               </thead>
+              <tbody>
               </tr>
-              {% if not length %}
+              {% if length ==  0 %}
               <tr><td><p class>No Notes here - add one by saying "Note"</p></tr></td>
               {% endif %}
-              {% for prompt in prompts %}
-             
-              <tr name="user_responses" value="{{prompt['_id']}}" >
-              <td>{{prompt["timestamp"]}}</td><td>{{prompt["prompt"]}}</td><td><i class="tim-icons icon-user"></i>{{prompt["person"]}}</td><td class="delete-button"> <i class="tim-icons icon-simple-remove"></i></td>
-              </tr>
+              {% for note in noteprompts %}
+              <tr name="user_responses" value="{{note['_id']}}" >
+              <td>{{ note['timestamp'] }}</td><td>{{ note['prompt']|safe }}</td><td><i class="tim-icons icon-user"></i>{{ note['person'] }}</td><td class="delete-button"> <i class="tim-icons icon-simple-remove"></i></td></tr>
               {% endfor %}
            
             </tbody>
