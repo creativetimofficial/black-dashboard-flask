@@ -36,6 +36,9 @@ class person():
             print("No match found for ", self.name, "Will need to add new entry with person.update(): ",self.json)
             return False
 
+    def remove_field(self, field_name):
+        pass
+
     def update(self):
         json_input = get_json(self.json)
         update_person(self.name, json_input['People'][self.name])

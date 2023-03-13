@@ -45,7 +45,7 @@
               {% endif %}
               {% for prompt in prompts %}
              
-              <tr name="user_responses" value="{{prompt['_id']}}">
+              <tr name="user_responses" value="{{prompt['_id']}}" >
               <td>{{prompt["timestamp"]}}</td><td>{{prompt["prompt"]}}</td><td><i class="tim-icons icon-user"></i>{{prompt["person"]}}</td><td class="delete-button"> <i class="tim-icons icon-simple-remove"></i></td>
               </tr>
               {% endfor %}

@@ -48,11 +48,11 @@ def ai_response(prompt, networking = False, temperature =.5):
 
             if not verified:
                 # ask_for_clarification = True
-                prompt = f'Pretend I just inquired about someone you don\'t know. I asked, "{prompt}" who your DB has no data on. Please clarify my question as much as you can. On Google, {name}\'s headline is: {google_it(name)}'
+                linked_in_results = google_it(name)
+                prompt = f'Pretend I just inquired about someone you don\'t know. I asked, "{prompt}" who your DB has no data on. Please clarify my question as much as you can. Google looking up their LinkedIn, {name}\'s headline is: {linked_in_results}'
+                print(linked_in_results)
                 # LinkedIn stuff, feel free to delete:         
                 # # END LINKEDIN STUFF
-
-
 
             elif first_word in update_strings:
                 print("*** UPDATING USER ***")
@@ -108,6 +108,7 @@ def ai_response(prompt, networking = False, temperature =.5):
         message = f"LOGGED AS ERROR: {message}"
     return message.strip()
 
+# ai_response("Who is Lisa Matrundola?", networking=True)
 # postmeeting = "Just spoke with Zach. Seems like he's ready to go with our software demo but needs approval from his boss. He was interested in the low price, and wanted to learn more about the drag and drop editor. I'd like to follow up with him in a week to make sure he does that."
 
 # ai_response(postmeeting)

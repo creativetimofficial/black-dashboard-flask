@@ -37,26 +37,28 @@
  
               {% for name, person in data['People'].items() %}
               <div >
-              <tr>
+              <tr style="max-width: 80vw;">
                 <td class="name" contenteditable>{{ name }}</td>
                 <td class="more">View More</td>
                 
 
                 {% for field, value in person.items() %}
            
-                <td class="expand" name="{{name}}" oldfield="{{field}}" style="display: none;" contenteditable>
-                
+                <td class="expand" name="{{name}}" object="{{object_id}}" oldfield="{{field}}"  style="display: none;" contenteditable>
+                  <i class="remove-field tim-icons icon-simple-remove" style="padding:2px; padding-right:10px"></i>
                   {% if (value, list) %} 
                   {{field}} : {{value}}{{list}}
                   {% else %}
                   {{ value }}
                   {% endif %}
+                  
+                    
+                    
                 </td>
                 {% endfor %}
 
                 <!-- <td class="expand" style="display: none;" contenteditable></td>  -->
                 <td class="expand" style="display: none;"><a href="/notes?s={{ name }}">View Notes</a> | <a href="" class="usereditbutton" data-toggle="modal" data-target="#edituser">Edit User</a></td>
-                
               </tr>
             </div>
           {% endfor %}  {# Add this line to close the inner for loop #}

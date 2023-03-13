@@ -69,7 +69,7 @@ from apps.home.prompt import ai_response
 from apps.home.tts import tts_string, azure_speak_string
 from flask import Flask, request, render_template, jsonify, flash, redirect, url_for
 from flask import session
-from apps.home.database import get_people, log_user_response, client, update_person, delete_object
+from apps.home.database import get_people, log_user_response, client, update_person, delete_object, remove_field
 from apps.home.user import Session, person
 from html import escape
 
@@ -82,11 +82,12 @@ app.config["CACHE_TYPE"] = "null"
 # def index():
 #     session['respond'] = True
 #     return render_template('voice.html')
-
+object_id = "63fd0087b9b2b4001ccb7c5f"
 
 @blueprint.route('/people')
 def people():
-    data = get_people()
+    object_id = "63fd0087b9b2b4001ccb7c5f"
+    data = get_people(object_id=object_id)
     it = iter(data['People']).__next__
     # qTerm = request.args.get('s')
     # if not qTerm:    
@@ -95,7 +96,7 @@ def people():
     # elif qTerm:
     #     cleanQuery = escape(qTerm)
 
-    return render_template('home/people.html', data=data, it=it, segment=get_segment(request))
+    return render_template('home/people.html', data=data, it=it, object_id=object_id, segment=get_segment(request))
 
 @blueprint.route('/people2')
 def people2():
@@ -315,6 +316,20 @@ def repurpose():
 def delete(collection,objectID):
     print(f"INCOMING POST AT DELETE/{collection}/{objectID}")
     delete_object(collection,objectID)
+    # Return a JSON response with the processed data
+    response_data = {
+        'success': True,
+            'text': 'deleted'
+    }
+    return jsonify(response_data)
+
+
+@blueprint.route('/remove-field/<objectID>/<person_name>/<field_name>', methods=['GET','POST'])
+@login_required
+def delete_field(objectID, person_name,field_name):
+    print(f"INCOMING FIELD DELETION AT DELETE/{field_name}/{person_name}/{field_name}")
+    remove_field(field_name, person_name, objectID)
+
     # Return a JSON response with the processed data
     response_data = {
         'success': True,

@@ -34,13 +34,14 @@ def get_conversation(n, db_name, collection_name, response_type=None ,client=cli
     # print(f"{n} conversations: {conversation}")
     return conversation
 
+object_id = "63fd0087b9b2b4001ccb7c5f"
 
-def get_people(client=client):
+def get_people(object_id=object_id, client=client):
     # Pick out the DB we'd like to use.
     db = client.db
     # GET THE PEOPLE COLLECTION (NOT The Document)
     collection = db['people']
-    people = collection.find_one({"_id": ObjectId("63fd0087b9b2b4001ccb7c5f")})
+    people = collection.find_one({"_id": ObjectId(object_id)})
     if people == None:
         print("NO OBJECT FOUND")
     # Convert the People dictionary to a list of tuples and sort it by the person's name
@@ -58,6 +59,16 @@ def delete_person(name, client=client):
         print("Successfully deleted " + name + " from the JSON table.")
     else:
         print(name + " not found in the JSON table.")
+        
+def add_person(name, data, client=client):
+    db = client.db
+    collection = db['people']
+    name = str(name)
+    result = collection.update_one({"People": {"$exists": True}}, {"$set": {"People."+name: data}}, upsert=True)
+    if result.upserted_id:
+        print("Successfully added " + name + " to the JSON table.")
+    else:
+        print(name + " already exists in the JSON table. Data has been updated.")
 
 def update_person(name, json_input, oldvalue='', client=client):
     db =client.db
@@ -125,6 +136,24 @@ def delete_object(collection, objectID, client=client):
     else:
         print(f"ObjectID: {objectID} not found in the JSON table.")
 
+
+def remove_field(field_name, person_name, objectID, client=client ):
+    db = client.db
+    collection = db["people"]
+    result = collection.find_one({"_id": ObjectId(objectID)})
+
+    if result and person_name in result.get("People", {}):
+        print(result["People"])
+        # Remove the specified field for the person
+        del result["People"][person_name][field_name]
+        
+        # Update the document in the collection
+        collection.update_one({"_id": ObjectId(objectID)}, {"$set": result})
+        return True
+    else:
+        return False
+
+# remove_field("Working","Sam Casey",'63fd0087b9b2b4001ccb7c5f')
 
 # print(log_user_response(1, "what's for dinner?", "Salmon"))
 # print(update_person("Sam Casey", conversation_json))

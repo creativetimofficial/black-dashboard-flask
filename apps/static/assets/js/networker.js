@@ -53,6 +53,27 @@ button.addEventListener("speechsegment", (e) => {
     else if ( (word === "begin" | word === "began") && $('#login-button').length) {
       $('#login-button').click();
     }
+    else if(word === "submit" && focus_element !== ''){
+      console.log("submitting all");
+      const tds = document.querySelectorAll(".expand:not([style*='display: none'])");
+      console.log("innertext", focus_element.innerText);
+      var x = 0;
+      if (!isMuted){toggleMute(); x = 1};
+        tds.forEach((cell) => {
+          console.log("innertext", cell.innerText);
+          if(cell.innerText.indexOf(':') > -1){
+            const event = new KeyboardEvent('keydown', {key: 'Enter', code: 'Enter', keyCode: 13, which: 13, bubbles: true});
+            cell.dispatchEvent(event);        
+          };
+        });
+        if (x=1){toggleMute()};
+        speak("Updated.")
+
+      
+
+      
+
+    }
     
 
 
@@ -73,13 +94,8 @@ button.addEventListener("speechsegment", (e) => {
     all_words.forEach(word  => {
       word = word['value'];
    // // DREW PASTED
-
    var arr = all_words.map(obj => obj.value);
-
-  //  var index = arr.indexOf(word['value']);
   var index = arr.indexOf('set');
-
-
   if (index === -1) {
      console.log("Set not found in array");
    }
@@ -93,16 +109,11 @@ button.addEventListener("speechsegment", (e) => {
     if (beforeToIndex !== -1) {
       beforeTo = subArr.slice(0, beforeToIndex).join(' ');
     }
-  
-
   afterTo = subArr.slice(beforeToIndex + 1).join(' ');
-  console.log("Before 'to': ", beforeTo);
-  console.log("After 'to': ", afterTo);
+  // console.log("Before 'to': ", beforeTo);
+  // console.log("After 'to': ", afterTo);
 
   }
-  console.log("ELEMENT to ENTER: ",arr.join(" ") );
-  // const nameTds = document.querySelectorAll('td.expand');
-
   clicker_search(beforeTo,afterTo, focus_element.parentElement);
 
   });
@@ -141,7 +152,7 @@ button.addEventListener("speechsegment", (e) => {
   // console.log(intent);
   if (intent === "update"){
     url = "about";
-    console.log('UPDATEEE');
+    console.log('"Update" Intent');
     // $expand.text =
     
   }
@@ -150,10 +161,10 @@ button.addEventListener("speechsegment", (e) => {
     nav = true;
   }
   if (intent === "info"){
-    console.log("INFOOO")
+    console.log("'Info' Intent")
   }
   if (intent === "search"){
-    console.log("searrrccchh");
+    console.log("'search' intent");
   }
 
 
@@ -246,6 +257,14 @@ button.addEventListener("speechsegment", (e) => {
         console.log("looking up ", name, " in context");
       }})
 
+      console.log("Removing edited");
+      // document.classList.remove('edited');
+      const editedElems = document.querySelectorAll('.edited');
+  
+      editedElems.forEach((elem) => {
+        elem.classList.remove('edited');
+      });
+    
 
 
 
@@ -255,6 +274,94 @@ button.addEventListener("speechsegment", (e) => {
     }
 
 
+// EDIT THE FIELD FUNCTION:
+
+function clicker_search(text, change_to_text, focus_element) {
+  if(text){
+    text = propercase(text);
+    change_to_text = propercase(change_to_text);
+    // Find elements that roughly match object_to_click with difflib's getCloseMatches() function
+    // if (!ask_question_running){
+    let elements;
+  
+    if (focus_element) {
+      elements = Array.from(focus_element.querySelectorAll('td'));
+    } else {
+      elements = Array.from(document.querySelectorAll('#people td'));
+    }
+    const visibleElements = elements.filter(td => window.getComputedStyle(td).getPropertyValue('display') !== 'none');
+    
+    const matches = difflib.getCloseMatches(text, visibleElements.map(td => {
+      const match = td.innerText.match(/^(.*?)\bto\b/);
+      return match ? match[1].trim() : '';
+    }), 1, 1);
+  
+    // If there are no matches, try again with a lower threshold and set clarify_flag
+    let clarify_flag = false;
+    if (matches.length === 0) {
+      var lowermatch = difflib.getCloseMatches(text, elements.map(td => td.innerText), 1, 0.2);
+      if (lowermatch.length > 0) {
+        matches.push(lowermatch[0]);
+        clarify_flag = true;
+        // console.log("LOWER MATCH",lowermatch[0]);
+      }
+    }
+    // Click the most likely match
+  if (matches.length > 0) {
+    const bestmatch = matches[0];
+    ask_question_running = true;
+    const element = elements.find(td => td.innerText === bestmatch);
+    if (!element.classList.contains('edited')) { // check if the element has already been edited
+  
+      element.classList.add('edited'); // add the 'edited' class to mark the element as edited
+      // Check if the text in the element contains a colon
+    } else {
+      const colonIndex = element.innerText.indexOf(":");
+      if (colonIndex > -1) {
+        // Get the text after the colon and trim it
+        const textAfterColon = element.innerText.substring(colonIndex + 1).trim();
+        if (textAfterColon.length > 0) {
+          if (change_to_text) {
+            const currentText = element.innerText;
+            const separatorIndex = currentText.indexOf(':');
+            if (separatorIndex >= 0) {
+              const prefix = currentText.substr(0, separatorIndex + 1);
+              element.innerText = prefix + " " + change_to_text;
+            } else {
+              element.innerText = change_to_text;
+            }
+          }
+        }
+      } else {
+        // If the text in the element doesn't contain a colon, just replace the entire text with the new text
+        const newText = change_to_text.trim();
+        element.innerText = newText;
+      }
+  
+      element.style.backgroundColor = "rgba(255, 255, 0, 0.5)";
+      setTimeout(() => {
+        // Fade back to normal color after 1 second
+        element.style.transition = "background-color 0.5s ease";
+        element.style.backgroundColor = "";
+        ask_question_running = true;
+      }, 1000);
+      // TO SUBMIT THE ENTRY
+      
+      }
+    }
+    return [ clarify_flag,  bestmatch ];}}
+  // }
+  
+
+// END EDIT FIELD
+
+    
+
+
+
+
+
+// *******  END SPEECH SEGMENT ********
 });
 
 
@@ -285,6 +392,35 @@ function deleteObject() {
 
 // Attach the click event handler to the delete button
 $('.delete-button').on('click', deleteObject);
+
+// DELETES THE ROW WITH THE .DELETEOBJECT CLASS
+function deleteField() {
+  var button = $(this); // Get a reference to the clicked button
+  button.prop('disabled', true); // Disable the button to prevent multiple clicks
+  var tdElement = this.parentNode; // get the parent td element
+  var objectId = tdElement.getAttribute('object');
+  var person_name = tdElement.getAttribute('name');
+  var field_name = tdElement.getAttribute('oldfield');
+  console.log(objectId , person_name, field_name);
+  // Send a DELETE request to the Flask endpoint
+  $.ajax({
+    url: '/remove-field/' + objectId + '/' + person_name + '/' + field_name ,
+    type: 'POST',
+    success: function(result) {
+      // Reload the page or update the table as needed
+      $(tdElement).remove();
+    },
+    error: function(err) {
+      console.log(err);
+    },
+    complete: function() {
+      button.prop('disabled', false); // Re-enable the button once the request is complete
+    }
+  });
+}
+
+// Attach the click event handler to the delete button
+$('.remove-field').on('click', deleteField);
 
 
 function ask_question(words, speech=true, show_response=true) {
@@ -376,7 +512,7 @@ document.addEventListener("DOMContentLoaded", () => {
   expandFields.forEach(field => {
       field.addEventListener("keydown", e => {
           if (e.key === "Enter") {
-            speak("Update");
+            
             const td = e.target;
             const tr = td.parentElement;
             const nameTd = tr.querySelector("td[name]");
@@ -385,17 +521,15 @@ document.addEventListener("DOMContentLoaded", () => {
             const value = field.textContent;
             // Change the background when enter is done
             // $(field).css("background-color", "green").fadeOut(3000)
-
-
             $(field).css("background-color", "green");
             // element.parentElement.style.backgroundColor = "rgba(255, 255, 0, 0.5)";
             setTimeout(() => {
-              // Fade back to normal color after 1 second
-              field.style.transition = "background-color 0.5s ease";
-              field.style.backgroundColor = "";
+            // Fade back to normal color after 1 second
+            field.style.transition = "background-color 0.5s ease";
+            field.style.backgroundColor = "";
             }, 1000);
             field.blur(); // Remove focus from the td element
-
+            speak("Updated.");
 
 
             // console.log("SUBMIT", name,value); // THE PEOPLE PAGE HAS BEEN SUBMITTED FOR UPDATES
@@ -552,86 +686,6 @@ function formatTextAsList(inputText) {
 }
 
 // focus_element
-function clicker_search(text, change_to_text, focus_element) {
-  text = propercase(text);
-  change_to_text = propercase(change_to_text);
-  // Find elements that roughly match object_to_click with difflib's getCloseMatches() function
-  // if (!ask_question_running){
-  let elements;
-
-  if (focus_element) {
-    elements = Array.from(focus_element.querySelectorAll('td'));
-  } else {
-    elements = Array.from(document.querySelectorAll('#people td'));
-  }
-  const visibleElements = elements.filter(td => window.getComputedStyle(td).getPropertyValue('display') !== 'none');
-  
-  const matches = difflib.getCloseMatches(text, visibleElements.map(td => {
-    const match = td.innerText.match(/^(.*?)\bto\b/);
-    return match ? match[1].trim() : '';
-  }), 1, 1);
-  console.log("MATCHES", matches)
-
-  // If there are no matches, try again with a lower threshold and set clarify_flag
-  let clarify_flag = false;
-  if (matches.length === 0) {
-    var lowermatch = difflib.getCloseMatches(text, elements.map(td => td.innerText), 1, 0.2);
-    if (lowermatch.length > 0) {
-      matches.push(lowermatch[0]);
-      clarify_flag = true;
-      // console.log("LOWER MATCH",lowermatch[0]);
-    }
-  }
-  // Click the most likely match
-if (matches.length > 0) {
-  const bestmatch = matches[0];
-  console.log("MATCH ME BABY",bestmatch);
-  ask_question_running = true;
-  const element = elements.find(td => td.innerText === bestmatch);
-  if (!element.classList.contains('edited')) { // check if the element has already been edited
-
-    element.classList.add('edited'); // add the 'edited' class to mark the element as edited
-    // Check if the text in the element contains a colon
-  } else {
-    const colonIndex = element.innerText.indexOf(":");
-    if (colonIndex > -1) {
-      // Get the text after the colon and trim it
-      const textAfterColon = element.innerText.substring(colonIndex + 1).trim();
-      if (textAfterColon.length > 0) {
-        if (change_to_text) {
-          const currentText = element.innerText;
-          const separatorIndex = currentText.indexOf(':');
-          if (separatorIndex >= 0) {
-            const prefix = currentText.substr(0, separatorIndex + 1);
-            element.innerText = prefix + " " + change_to_text;
-          } else {
-            element.innerText = change_to_text;
-          }
-        }
-      }
-    } else {
-      // If the text in the element doesn't contain a colon, just replace the entire text with the new text
-      const newText = change_to_text.trim();
-      element.innerText = newText;
-    }
-
-    element.style.backgroundColor = "rgba(255, 255, 0, 0.5)";
-    setTimeout(() => {
-      // Fade back to normal color after 1 second
-      element.style.transition = "background-color 0.5s ease";
-      element.style.backgroundColor = "";
-    }, 1000);
-    // TO SUBMIT THE ENTRY
-    // const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' });
-    // element.dispatchEvent(enterEvent);
-
-
-    }
-  }
-  return [ clarify_flag,  bestmatch ];}
-// }
-
-
 
 document.addEventListener("keydown", function(event) {
   if (event.key === "Space") {
@@ -639,6 +693,7 @@ document.addEventListener("keydown", function(event) {
       audio.pause();
     }
     event.preventDefault();
+    stopPropagation();
 
   }
   if (event.key === "$") {
