@@ -72,7 +72,21 @@
     </div>
 
   </div>
-
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div>
+    {% for message in messages %}
+        
+    <div class="alert alert-warning" style="display:inline-block"> 
+      <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">
+        <i class="tim-icons icon-simple-remove"></i>
+      </button>
+      <span><b>Warning:</b> {{ message }}</span>
+    </div>
+    {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
 </div>
 <intro-popup>
   <span slot="priming-body">You'll be able to control this web app faster with voice.</span>
@@ -119,6 +133,7 @@
           
           <!-- END User Update -->
 
-
+         
+        
 
 {% endblock content %}

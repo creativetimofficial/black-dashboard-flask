@@ -13,6 +13,7 @@ var nav = false;
 var name = null;
 var edit = false;
 var set = false;
+var newperson = false;
 var ask_question_running = false;
 var focus_element = '';
 var bestmatch = '';
@@ -33,6 +34,11 @@ button.addEventListener("speechsegment", (e) => {
     if(word === "note"){
       note = true;
       ask = false;
+    }
+    if(word == "new"){
+      newperson = true;
+      ask = false;
+      nav = false;
     }
     if (word == "select"){
       ask=false;
@@ -76,6 +82,16 @@ button.addEventListener("speechsegment", (e) => {
       if (window.getComputedStyle(document.getElementById("addnotes")).display === "none") {
         // If it is hidden, make it visible
         document.getElementById("addnotes").style.display = "block";
+      }
+    }
+
+        // OPEN THE STUPID FORM AND MAKE SURE IT'S OPEN
+    if (newperson && window.getComputedStyle(document.getElementById("addperson")).display === "none") {
+      document.getElementById("newperson").click();
+        // Check if the modal is still hidden
+      if (window.getComputedStyle(document.getElementById("addperson")).display === "none") {
+        // If it is hidden, make it visible
+        document.getElementById("addperson").style.display = "block";
       }
     }
 
@@ -134,6 +150,33 @@ button.addEventListener("speechsegment", (e) => {
       }
     }
   }  
+
+
+  // CHECK FOR NEW PERSON FORM SPEECH AND LOG THE NOTE INTO THE BODY 
+  if (newperson && !nav) {
+    var concatenatedWords = '';
+    var noteIndex = all_words.findIndex(word => word && word['value'] && word['value'].toLowerCase() === 'person');
+    if (noteIndex !== -1) {
+      for (var i = noteIndex + 1; i < all_words.length; i++) {
+        if (all_words[i]) {
+          concatenatedWords += all_words[i]['value'] + " ";
+          if (all_words[i]['value'].toLowerCase() === 'submit') {
+            // Click the submit button
+            document.getElementById('submit-person-btn').click();
+          }
+          if (i < noteIndex + 3){document.getElementById("personform2").value = concatenatedWords;}
+        }
+        
+      }
+      document.getElementById("personform3").value = concatenatedWords;
+      if (speechSegment.isFinal){
+         ask_question("This dialog came from speech to text AI. Reformat the dialog, responding ONLY in notes about what was said here in a json format.\n".concat(concatenatedWords), speech=false, show_response=false).then(airesponse => {
+          document.getElementById("personform3").value = airesponse; // Prints the airesponse value to the console
+        });;
+      }
+    }
+  }  
+
 
 
 
@@ -572,7 +615,7 @@ $("#submit-note-btn").click(function() {
 // THE MUTE BUTTON
 
 $(document).on('keypress', function(e) {
-  if ((e.key === 'm' ||e.key === ' ') && e.target.nodeName !== 'INPUT' && e.target.nodeName !== 'TD' && e.target.nodeName !== 'TEXTAREA' && e.target.nodeName !== 'SELECT' && e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'OPTION') {
+  if ((e.key === 'm' ) && e.target.nodeName !== 'INPUT' && e.target.nodeName !== 'TD' && e.target.nodeName !== 'TEXTAREA' && e.target.nodeName !== 'SELECT' && e.target.nodeName !== 'BUTTON' && e.target.nodeName !== 'OPTION') {
     toggleMute();
   }
   if (e.code === "Space") {

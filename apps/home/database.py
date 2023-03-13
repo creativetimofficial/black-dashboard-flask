@@ -2,7 +2,6 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 import os
 from html import escape
-
 from datetime import datetime, date
 
 MONGO_CLIENT = os.getenv('MONGO_CLIENT')

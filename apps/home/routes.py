@@ -91,10 +91,10 @@ def people():
     object_id = "63fd0087b9b2b4001ccb7c5f"
     data = get_people(object_id=object_id)
     it = iter(data['People']).__next__
-    # qTerm = request.args.get('s')
-    # if not qTerm:    
-    #     flash("You did not search for anything")
-    #     return redirect(url_for('home_blueprint.people'))
+    qTerm = request.args.get('s')
+    if not qTerm:    
+        flash("You did not search for anything")
+        # return redirect(url_for('home_blueprint.people'))
     # elif qTerm:
     #     cleanQuery = escape(qTerm)
 
@@ -160,6 +160,7 @@ def speak_route():
             'audioContent': audio_content,
             'textResult': text_result
         })
+    
 
 @blueprint.route("/prompts")
 @login_required

@@ -1,57 +1,37 @@
-<!-- NOTE POPUP -->
-<div class="modal fade" id="personpopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-notify modal-warning" role="document">
-      <!--Content-->
-      <div class="modal-content">
-        <!--Header-->
-        <div class="modal-header text-center">
-          <h4 class="modal-title white-text w-100 font-weight-bold py-2">New Note</h4>
-          <p class="tiny">If speaking, mention any person of interest & say "Submit" when completed.</p>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true" class="white-text">&times;</span>
-          </button>
-        </div>
-  
-        <!--Body-->
-        <div class="modal-body">
-          <div class="profile-container">
-            <div class="profile-info">
-                <table>
-                    <th>
-              <h4 contenteditable>{{ name }}</h4></th>
-          
-              {% for field, value in person.items() %}
-                {% if value is iterable and not value|string %}    <tr>
-                 <td> <h5>{{ field }}</h5></td>
-                  <td contenteditable><ul>
-                    {% for item in value %}
-                      <li>{{ item }}</li></tr>
-                    {% endfor %}
-                  </ul></td>
-                {% else %}
-                  <p><strong>{{ field }}:</strong> {{ value }}</p>
-                {% endif %}
-              {% endfor %}
-            </table>
+
+              <!-- NOTE POPUP -->
+              <div class="modal fade" id="addperson" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog modal-notify modal-warning" role="document">
+                <!--Content-->
+                <div class="modal-content">
+                  <!--Header-->
+                  <div class="modal-header text-center">
+                    <h4 class="modal-title white-text w-100 font-weight-bold py-2">New Person</h4>
+                    <p class="tiny">If speaking, give as many details you can give about the individual & say "Submit" when completed.</p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true" class="white-text">&times;</span>
+                    </button>
+                  </div>
+                  
+                  <div class="md-form">
+                    <textarea id="personform2" class="form-control validate small"></textarea>
+                    <label data-error="wrong" data-success="right" for="personform2">Person's Name</label>
+                  </div>
+            
+ 
+                      <i class="fa-lightbulb-o prefix grey-text"></i>
+                      <textarea type="text" id="personform3" class="form-control validate"></textarea>
+                      <label data-error="wrong" data-success="right" for="personform2">Person's Info</label>
+         
+            
+                  <!--Footer-->
+                  <div class="modal-footer justify-content-center">
+                    <a type="button" id="submit-note-btn" class="btn btn-outline-warning waves-effect">Submit</a>
+                  </div>
+                </div>
+                <!--/.Content-->
+              </div>
             </div>
-            <div class="profile-image">
-              <img src="{{ image }}" alt="Profile Image">
-            </div>
-          </div>
-          <div class="md-form mb-4">
-            <i class="fa-lightbulb-o prefix grey-text"></i>
-            <textarea type="text" id="form3" class="form-control validate" style="color:black; background-color: white;"></textarea>
-            <label data-error="wrong" data-success="right" for="form2">Your Note</label>
-          </div>
-        </div>
-  
-        <!--Footer-->
-        <div class="modal-footer justify-content-center">
-          <a type="button" id="submit-note-btn" class="btn btn-outline-warning waves-effect">Submit</a>
-        </div>
-      </div>
-      <!--/.Content-->
-    </div>
-  </div>
-  <!-- END NOTEEE -->
-  
+            
+            <!-- END NOTEEE -->   

@@ -20,11 +20,15 @@
             </li>
             <li>
               <!-- Note and Help Buttons -->
-            <div class="text-center">
+            <div class="text-center" style="display:inline-block">
                 <a href="" id="newnote" class="btn btn-default btn-rounded" data-toggle="modal" data-target="#addnotes">New Note</a>
               </div>
+              <div class="text-center" style="display:inline-block">
+                <a href="" id="newperson" class="btn btn-default btn-rounded" data-toggle="modal" data-target="#addperson">New Person</a>
+              </div>
               {% include 'cards/note.html' %}
-              <div class="text-center">
+              {% include 'cards/person.html' %}
+              <div class="text-center" style="display:inline-block">
                 <a href="" id="newhelp" class="btn btn-default btn-rounded" data-toggle="modal" data-target="#addhelp">Help</a>
               </div>
               {% include 'cards/help.html' %}

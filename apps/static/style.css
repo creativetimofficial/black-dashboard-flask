@@ -222,7 +222,8 @@ line-height: 200%;
 #addhelp *{
   color:black
 }
-#addnotes div{
+
+#addnotes div, #addperson div{
   background-color: #5603ad;
   
   opacity: .9;
@@ -234,7 +235,7 @@ line-height: 200%;
   border-radius: 25px;
 
 }
-#addnotes a.btn{
+#addnotes a.btn, #addperson h4{
   /* background-color: grey; */
   color:white
 }
@@ -245,11 +246,14 @@ outline: none;
 
 }
 
-#addnotes textarea {
-  color:black;
+#addnotes textarea , #addperson textarea:not(.small){
+
   min-height:150px;
+}
 
-
+#addnotes textarea , #addperson textarea{
+  color:black;
+  padding: 10px
 }
 /* END MODAL */
 

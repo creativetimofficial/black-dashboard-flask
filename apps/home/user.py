@@ -1,7 +1,7 @@
 import difflib
 from apps.home.database import get_people, update_person, delete_person
 import json
-
+from flask import flash
 import requests
 from bs4 import BeautifulSoup
 import requests
@@ -34,6 +34,7 @@ class person():
             return True
         except:
             print("No match found for ", self.name, "Will need to add new entry with person.update(): ",self.json)
+            flash(f"No match found for {self.name} Will need to add new entry with person.update()")
             return False
 
     def remove_field(self, field_name):
