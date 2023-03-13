@@ -69,7 +69,7 @@ from apps.home.prompt import ai_response
 from apps.home.tts import tts_string, azure_speak_string
 from flask import Flask, request, render_template, jsonify, flash, redirect, url_for
 from flask import session
-from apps.home.database import get_people, log_user_response, client, update_person, delete_object, remove_field, get_notes
+from apps.home.database import get_people, log_user_response, client, update_person, delete_object, remove_field, get_notes, add_person
 from apps.home.user import Session, person
 from html import escape
 
@@ -290,9 +290,7 @@ def new_person():
     # NOW GET THE DATA FROM TEXTAREAS #FORM2 and #FORM3
     form3_data = data.get('note')
     form2_data = data.get('person')
-    
     # Process the data here...
-    
     # Return a JSON response with the processed data
     response_data = {
         'success': True,
@@ -305,6 +303,7 @@ def new_person():
     print(f"NOTE: {response_data['processed_data']['note']}")
     print(f"PERSON: {response_data['processed_data']['person']}")
     user_id = session.get("_user_id")
+    add_person(response_data['processed_data']['person'], response_data['processed_data']['note'], client=client)
     return jsonify(response_data)
 
 @blueprint.route('/repurpose',methods=['POST'])

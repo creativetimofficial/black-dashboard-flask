@@ -590,7 +590,7 @@ $("#submit-note-btn").click(function() {
   $('.modal-backdrop.fade.show').fadeOut('fast');
 
   var form2Data = $("#form2").val();
-  var form3Data = formatTextAsList($("#form3").val());
+  var form3Data = $("#form3").val();
   console.log(form3Data);
 
   // Send an AJAX request to the new-note endpoint with the data
@@ -604,6 +604,31 @@ $("#submit-note-btn").click(function() {
      
       document.getElementById("form3").value = "";
 
+    },
+    error: function(xhr, status, error) {
+      // Handle error response
+    }
+  });
+});
+
+$("#submit-person-btn").click(function() {
+  // Get the values from the textareas
+  $('#addperson').fadeOut('fast');
+  $('.modal-backdrop.fade.show').fadeOut('fast');
+
+  var form2Data = $("#personform2").val();
+  var form3Data = formatTextAsList($("#personform3").val());
+  console.log(form3Data);
+
+  // Send an AJAX request to the new-note endpoint with the data
+  $.ajax({
+    url: "/new_person",
+    type: "POST",
+    contentType: "application/json",
+    data: JSON.stringify({note: form3Data, person:form2Data }),
+    success: function(response) {
+      // Handle success response
+      document.getElementById("personform3").value = "";
     },
     error: function(xhr, status, error) {
       // Handle error response
