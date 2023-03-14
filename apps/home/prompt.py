@@ -35,7 +35,7 @@ def ai_response(prompt, networking = False, temperature =.5):
         human = person() 
         first_word = prompt.split()[0].lower().translate(str.maketrans("", "", string.punctuation)).splitlines()[0]
 
-        inquire_prompt = "Based on the below prompt, what is this person's full name who we are talking about?\n\n'"+prompt+"'\n\nAnswer in as few characters as possible."
+        inquire_prompt = "Based on the below prompt, what is this person's full name who we are talking about?\n\n'"+prompt+"'\n\nAnswer in as few characters as possible, and don't respond '___s full name', or 'his name is ___.'."
         name = ai_response(inquire_prompt, networking=False, temperature=0).replace('\n',' ')
         human.name  = name.translate(str.maketrans("", "", string.punctuation))
         verified = human.verify()
@@ -66,7 +66,7 @@ def ai_response(prompt, networking = False, temperature =.5):
                 # print("DATABASE (json_pull) RESPONSE",human_info)
              
 
-                prompt = f"Based on their json file data below, briefly summarize this person:\n{human.name}:{human_info}"
+                prompt = f"The question we originally asked was {prompt}. Based on their json file data below, briefly summarize this person:\n{human.name}:{human_info}"
             
             elif first_word in reminder_strings:
                 # IDENTIFY FIELD OF INTEREST

@@ -37,7 +37,7 @@ def get_conversation(n, db_name, collection_name, response_type=None ,client=cli
 # OBJECT ID DESIGNATED
 object_id = "63fd0087b9b2b4001ccb7c5f"
 
-def get_people(object_id=object_id, client=client):
+def get_people(object_id=object_id, client=client, search_term=''):
     # Pick out the DB we'd like to use.
     db = client.db
     # GET THE PEOPLE COLLECTION (NOT The Document)
@@ -45,8 +45,10 @@ def get_people(object_id=object_id, client=client):
     people = collection.find_one({"_id": ObjectId(object_id)})
     if people == None:
         print("NO OBJECT FOUND")
-    # Convert the People dictionary to a list of tuples and sort it by the person's name
-    sorted_people = sorted(people["People"].items(), key=lambda x: x[0])
+    # Convert the People dictionary to a list of tuples and filter it based on the search term
+    filtered_people = [(k,v) for k,v in people["People"].items() if search_term.lower() in k.lower()]
+    # Sort the filtered list of tuples by the person's name
+    sorted_people = sorted(filtered_people, key=lambda x: x[0])
     # Convert the sorted list of tuples back to a dictionary
     sorted_people_dict = {"People":dict(sorted_people)}
     return sorted_people_dict
@@ -71,6 +73,7 @@ def add_person(name, data, client=client):
     else:
         print(name + " already exists in the JSON table. Data has been updated.")
 
+
 def update_person(name, json_input, oldvalue='', client=client):
     db =client.db
     collection = db['people']
@@ -89,6 +92,11 @@ def update_person(name, json_input, oldvalue='', client=client):
     # collection.insert({"People": {"$exists": True}}, {"$set": {"People."+name+"."+str(key): str(json_input[key])}}) 
     return name+" Updated"
 
+def edit_name(oldname, newname, object_id=object_id, client=client):
+    db = client.db
+    db["people"].update_one({"_id": ObjectId(object_id), "People."+str(oldname): {"$exists": True}},
+        {"$rename": {"People."+str(oldname): "People."+str(newname)}}
+    )
 
 def log_user_response(user, prompt, response="", type="prompt", person_of_interest='', client=client):
     # Connect to MongoDB
@@ -138,7 +146,7 @@ def delete_object(collection, objectID, client=client):
         print(f"ObjectID: {objectID} not found in the JSON table.")
 
 
-def remove_field(field_name, person_name, objectID, client=client ):
+def remove_field(field_name, person_name, objectID=object_id, client=client ):
     db = client.db
     collection = db["people"]
     result = collection.find_one({"_id": ObjectId(objectID)})
@@ -177,3 +185,16 @@ def get_notes(user_id, qTerm, client=client):
 # print(log_user_response(1, "what's for dinner?", "Salmon"))
 # print(update_person("Sam Casey", conversation_json))
 
+
+# jdb = {
+#   "name": "Julian Alvarez",
+#   "company": "Wisdolia",
+#   "location": "San Francisco",
+#   "product_name":"Wisdolia Flashcards App",
+#   "phone_number": "+1-956-279-2407",
+#   "interests":["Scaling an app"]
+# }
+
+# peron = 'Julian Alvarez'
+
+# add_person(peron, jdb)

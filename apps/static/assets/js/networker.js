@@ -540,8 +540,41 @@ peopleTable.addEventListener("keydown", function(event) {
 
 // UPDATE A PERSON MANUALLY IN THE FORM
 document.addEventListener("DOMContentLoaded", () => {
-  const expandFields = document.querySelectorAll(".expand");
 
+  // NAME CHANGING IN FORM
+  const namefields = document.querySelectorAll(".name");
+  namefields.forEach(field => {
+      field.addEventListener("keydown", e => {
+          if (e.key === "Enter") {
+            console.log("Name enter");
+            var oldname = field.getAttribute("name");           
+            const value = field.textContent;
+            $(field).css("background-color", "green");
+            // element.parentElement.style.backgroundColor = "rgba(255, 255, 0, 0.5)";
+            setTimeout(() => {
+            // Fade back to normal color after 1 second
+            field.style.transition = "background-color 0.5s ease";
+            field.style.backgroundColor = "";
+            }, 1000);
+            field.blur(); // Remove focus from the td element
+            speak("Name Changed.");
+            fetch('/up-person', {
+              method: 'POST',
+              body: new URLSearchParams({
+                  name: oldname,
+                  value: value,
+                  oldvalue : oldname,
+                  namechange:true
+              })
+          })
+          .then(response => response.json())
+          // .then(data => console.log(data))
+          .catch(error => console.error(error));
+          }})
+        });
+
+// CHANGING THEIR FIELDS IN THE FORM:
+  const expandFields = document.querySelectorAll(".expand");
   expandFields.forEach(field => {
       field.addEventListener("keydown", e => {
           if (e.key === "Enter") {
@@ -563,17 +596,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 1000);
             field.blur(); // Remove focus from the td element
             speak("Updated.");
-
-
             // console.log("SUBMIT", name,value); // THE PEOPLE PAGE HAS BEEN SUBMITTED FOR UPDATES
-
-
               fetch('/up-person', {
                   method: 'POST',
                   body: new URLSearchParams({
                       name: name,
                       value: value,
-                      oldvalue : oldvalue
+                      oldvalue : oldvalue,
+                      namechange:false
                   })
               })
               .then(response => response.json())
@@ -590,7 +620,7 @@ $("#submit-note-btn").click(function() {
   $('.modal-backdrop.fade.show').fadeOut('fast');
 
   var form2Data = $("#form2").val();
-  var form3Data = $("#form3").val();
+  var form3Data = formatTextAsList($("#form3").val());
   console.log(form3Data);
 
   // Send an AJAX request to the new-note endpoint with the data
@@ -617,7 +647,7 @@ $("#submit-person-btn").click(function() {
   $('.modal-backdrop.fade.show').fadeOut('fast');
 
   var form2Data = $("#personform2").val();
-  var form3Data = formatTextAsList($("#personform3").val());
+  var form3Data = $("#personform3").val();
   console.log(form3Data);
 
   // Send an AJAX request to the new-note endpoint with the data
@@ -646,8 +676,14 @@ $(document).on('keypress', function(e) {
   if (e.code === "Space") {
     e.preventDefault();
     window.scrollBy(0, 0);
-
-
+  }
+  if ((e.key === '/' ) && e.target.nodeName !== 'INPUT' && e.target.nodeName !== 'TD' && e.target.nodeName !== 'TEXTAREA' && e.target.nodeName !== 'SELECT' && e.target.nodeName !== 'OPTION') {
+    e.preventDefault();
+    console.log("/ click");
+    $('#search-button').click();
+    setTimeout(function() {
+      $('#inlineFormInputGroup').focus();
+    }, 500);
   }
 
 });

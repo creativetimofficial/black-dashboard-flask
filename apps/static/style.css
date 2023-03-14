@@ -223,7 +223,7 @@ line-height: 200%;
   color:black
 }
 
-#addnotes div, #addperson div{
+#addnotes div, #addperson div, #edituser div{
   background-color: #5603ad;
   
   opacity: .9;
@@ -235,7 +235,7 @@ line-height: 200%;
   border-radius: 25px;
 
 }
-#addnotes a.btn, #addperson h4{
+#addnotes a.btn, #addperson h4, #edituser h4{
   /* background-color: grey; */
   color:white
 }
@@ -246,12 +246,12 @@ outline: none;
 
 }
 
-#addnotes textarea , #addperson textarea:not(.small){
+#addnotes textarea , #addperson textarea:not(.small), #edituser textarea{
 
   min-height:150px;
 }
 
-#addnotes textarea , #addperson textarea{
+#addnotes textarea , #addperson textarea, #edituser textarea{
   color:black;
   padding: 10px
 }

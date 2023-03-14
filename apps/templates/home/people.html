@@ -21,6 +21,9 @@
       <div class="card-header">
 
         <h4 class="card-title"> People</h4>
+        {% if qTerm is not none %}
+        <i>Results for <b>"{{qTerm}}"</b>:</i>
+        {% endif %}
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -38,7 +41,7 @@
               {% for name, person in data['People'].items() %}
               <div >
               <tr style="max-width: 80vw;">
-                <td class="name" contenteditable>{{ name }}</td>
+                <td class="name" name="{{name}}" contenteditable>{{ name }}</td>
                 <td class="more">View More</td>
                 
 
@@ -91,47 +94,6 @@
 <intro-popup>
   <span slot="priming-body">You'll be able to control this web app faster with voice.</span>
 </intro-popup>
-              
-
-            <!-- EDIT POPUP -->
-            <div class="modal fade" id="edituser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-notify modal-warning" role="document">
-              <!--Content-->
-              <div class="modal-content">
-                <!--Header-->
-                <div class="modal-header text-center">
-                  <h4 class="modal-title white-text w-100 font-weight-bold py-2">Edit User</h4>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" class="white-text">&times;</span>
-                  </button>
-                </div>
-          
-                <!--Body-->
-                <div class="modal-body">
-                  <div class="md-form mb-5">
-                    <i class="fas fa-user prefix grey-text"></i>
-                    <textarea type="text" id="userform3" class="form-control validate"></textarea>
-                    <label data-error="wrong" data-success="right" for="form2">Name</label>
-                  </div>
-          
-                  <div class="md-form">
-                    <i class="fas fa-envelope prefix grey-text"></i>
-                    <input type="email" id="form2" class="form-control validate">
-                    <label data-error="wrong" data-success="right" for="userform2">Person of Interest</label>
-                  </div>
-                </div>
-          
-                <!--Footer-->
-                <div class="modal-footer justify-content-center">
-                  <a type="button" class="btn btn-outline-warning waves-effect">Submit</a>
-                </div>
-              </div>
-              <!--/.Content-->
-            </div>
-          </div>
-          
-          <!-- END User Update -->
 
          
         

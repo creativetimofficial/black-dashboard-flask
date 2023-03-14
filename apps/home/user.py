@@ -104,10 +104,10 @@ def google_it(search_term, other_info=None):
         return None
 
 
-# human = person(" DANIEL CRAIG ")
+# human = person("henry lee")
 # human.verify()
 
-# user_js = conversation_json = """{   "People":{
+# # user_js = conversation_json = """{   "People":{
 #             "John Hooligan": {
 #             "School": "James Brown U",
 #             "Fondest Memory":"Swimming the English Channel",

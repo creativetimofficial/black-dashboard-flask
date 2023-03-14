@@ -69,7 +69,7 @@ from apps.home.prompt import ai_response
 from apps.home.tts import tts_string, azure_speak_string
 from flask import Flask, request, render_template, jsonify, flash, redirect, url_for
 from flask import session
-from apps.home.database import get_people, log_user_response, client, update_person, delete_object, remove_field, get_notes, add_person
+from apps.home.database import get_people, log_user_response, client, update_person, delete_object, remove_field, get_notes, add_person, edit_name
 from apps.home.user import Session, person
 from html import escape
 
@@ -89,16 +89,24 @@ object_id = "63fd0087b9b2b4001ccb7c5f"
 @blueprint.route('/people')
 def people():
     object_id = "63fd0087b9b2b4001ccb7c5f"
-    data = get_people(object_id=object_id)
-    it = iter(data['People']).__next__
+    
     qTerm = request.args.get('s')
     if not qTerm:    
-        flash("You did not search for anything")
+        print("NO Qterm")
+        data = get_people(object_id=object_id)     
+        qTerm = None   
+        # flash("You did not search for anything")
         # return redirect(url_for('home_blueprint.people'))
-    # elif qTerm:
-    #     cleanQuery = escape(qTerm)
+    elif qTerm:
+        print("Qy")
+        qTerm = escape(qTerm)
+        print(qTerm)
+        data = get_people(object_id=object_id, search_term=qTerm)
 
-    return render_template('home/people.html', data=data, it=it, object_id=object_id, segment=get_segment(request))
+    it = iter(data['People']).__next__
+
+
+    return render_template('home/people.html', data=data, it=it, object_id=object_id, qTerm=qTerm, segment=get_segment(request))
 
 @blueprint.route('/people2')
 def people2():
@@ -239,12 +247,20 @@ def relevant_fields():
 @blueprint.route('/up-person', methods=['POST'])
 def up_person():
     name = request.form['name'].strip()
+    namechange = request.form['namechange'].strip()
+    value = request.form['value'].strip()
+    if namechange == "true":
+        print(f':NAME CHANGE, Name:{name} Value:{value}')
+        edit_name(name, value)
+        return jsonify(success=True)
     oldvalue = request.form['oldvalue'].strip()
     # field = request.form['field']
-    value = request.form['value'].strip()
     # Format the value into an actual dict, ugh:
     parts = value.split(':')
     key = parts[0].strip()
+    if(key != oldvalue):
+        print(f"key: {key}, oldvalue:{oldvalue}")
+        remove_field(oldvalue, name)
     try:
         value = parts[1].strip()
         value = {key: value}
@@ -303,7 +319,7 @@ def new_person():
     print(f"NOTE: {response_data['processed_data']['note']}")
     print(f"PERSON: {response_data['processed_data']['person']}")
     user_id = session.get("_user_id")
-    add_person(response_data['processed_data']['person'], response_data['processed_data']['note'], client=client)
+    add_person(response_data['processed_data']['person'], dict(response_data['processed_data']['note']), client=client)
     return jsonify(response_data)
 
 @blueprint.route('/repurpose',methods=['POST'])
