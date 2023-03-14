@@ -772,12 +772,16 @@ function formatTextAsList(inputText) {
   let html = "<ul>";
 
   lines.forEach(function(line) {
+    if (line.startsWith("-")) {
+      line = line.slice(1); // remove the first character ("-")
+    }
     html += "<li>" + line + "</li>";
   });
 
   html += "</ul>";
   return html;
 }
+
 
 // focus_element
 
