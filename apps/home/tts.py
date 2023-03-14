@@ -126,15 +126,15 @@ def azure_save(word, SPEECH_KEY=SPEECH_KEY):
                     print("Error details: {}".format(cancellation_details.error_details))
                     print("Did you set the speech resource key and region values?")
 
-string = """
-Soon, users will be able to connect individuals via ai-drafted email automation, and add new users with AI business card scanning. With the assistant’s built-in conversation memory and MongoDB unstructured formatting, the Networker's personal CRM capabilities are endless.
+# string = """
+# Soon, users will be able to connect individuals via ai-drafted email automation, and add new users with AI business card scanning. With the assistant’s built-in conversation memory and MongoDB unstructured formatting, the Networker's personal CRM capabilities are endless.
 
-Networker is powered by Microsoft Azure, OpenAI, Speechly and Google Cloud computing. The future is limitless with the powers of AI, and networker will be one of many to bring it to fruition.  
+# Networker is powered by Microsoft Azure, OpenAI, Speechly and Google Cloud computing. The future is limitless with the powers of AI, and networker will be one of many to bring it to fruition.  
 
-Happy networking!
+# Happy networking!
 
-"""
-azure_save(string)
+# """
+# azure_save(string)
 
 # string = "One Moment"
 # print(azure_speak_string(string))
