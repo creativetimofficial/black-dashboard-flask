@@ -9,6 +9,8 @@ Once the Speech to text funcitonality is flushed out, we'll want to have the fol
 - Networking Assistant: Networker will take any data gathered from a conversation you've had and log it, including important details as well as important facts about the person/people you've interacted with, stored in a JSON format in a MongoDB database.
 - Inquiry Assistant: Networker will gather information on you by asking rich, meaningful questions to get to know you, your connections, and help you to inquire more about life, acting as both an assistant and personal coach.
 
+### 3/14/2023: Networker Tutorial [is here!](https://www.youtube.com/watch?v=VqBEqaqCqEY) 
+
 ### Latest deployment is held on Railway and [can be found here](https://networker.up.railway.app/)
 
 1. Add: This trigger is used to add a new object to the system. For example, if you say "Add person", the system should create a new person object and add it to the database.
