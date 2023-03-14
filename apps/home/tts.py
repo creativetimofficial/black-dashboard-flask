@@ -100,8 +100,42 @@ def azure_speak(word, SPEECH_KEY=SPEECH_KEY):
                     print("Error details: {}".format(cancellation_details.error_details))
                     print("Did you set the speech resource key and region values?")
 
-# string = "She likes to look at sea shells by the sea shore."
-# # azure_speak(string)
+
+def azure_save(word, SPEECH_KEY=SPEECH_KEY):
+    if word != "":
+        # Create speech synthesizer
+        speech_config = speechsdk.SpeechConfig(SPEECH_KEY, region='eastus')
+        speech_config.speech_synthesis_voice_name = 'en-US-JennyNeural'
+        speech_synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config)
+
+        # Synthesize speech
+        result = speech_synthesizer.speak_text_async(word).get()
+
+        if result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
+            print("Speech synthesized for text [{}]".format(word))
+            # Save audio file
+            audio_data = result.audio_data
+            with open("output.wav", "wb") as file:
+                file.write(audio_data)
+                print("Audio file saved as output.wav")
+        elif result.reason == speechsdk.ResultReason.Canceled:
+            cancellation_details = result.cancellation_details
+            print("Speech synthesis canceled: {}".format(cancellation_details.reason))
+            if cancellation_details.reason == speechsdk.CancellationReason.Error:
+                if cancellation_details.error_details:
+                    print("Error details: {}".format(cancellation_details.error_details))
+                    print("Did you set the speech resource key and region values?")
+
+string = """
+Soon, users will be able to connect individuals via ai-drafted email automation, and add new users with AI business card scanning. With the assistant’s built-in conversation memory and MongoDB unstructured formatting, the Networker's personal CRM capabilities are endless.
+
+Networker is powered by Microsoft Azure, OpenAI, Speechly and Google Cloud computing. The future is limitless with the powers of AI, and networker will be one of many to bring it to fruition.  
+
+Happy networking!
+
+"""
+azure_save(string)
+
 # string = "One Moment"
 # print(azure_speak_string(string))
 
