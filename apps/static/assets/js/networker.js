@@ -144,7 +144,7 @@ button.addEventListener("speechsegment", (e) => {
       }
       document.getElementById("form3").value = concatenatedWords;
       if (speechSegment.isFinal){
-         ask_question("This dialog came from speech to text AI. Reformat the dialog, responding ONLY in notes about what was said here. Do not say 'Sure, here are the bulleted notes...' - ONLY RESPOND IN NOTES.\n".concat(concatenatedWords), speech=false, show_response=false).then(airesponse => {
+         ask_question("This dialog came from speech to text AI. Reformat the dialog in first person, responding ONLY in notes about what was said here. Do not say 'Sure, here are the bulleted notes...' - ONLY RESPOND IN NOTES.\n".concat(concatenatedWords), speech=false, show_response=false).then(airesponse => {
           document.getElementById("form3").value = airesponse; // Prints the airesponse value to the console
         });;
       }
