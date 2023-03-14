@@ -222,7 +222,7 @@ def notes():
     print("NOTES", list(notes))
     length = len([note for note in list(notes)])
     print(f"Length: {length}")
-    return render_template('home/notes.html', noteprompts= notes, length = length, user_id=user_id, qTerm=qTerm)
+    return render_template('home/notes.html', noteprompts= notes, length = length, user_id=user_id, qTerm=qTerm, segment=get_segment(request))
 
 
 @blueprint.route("/verify_person", methods=['POST'])
