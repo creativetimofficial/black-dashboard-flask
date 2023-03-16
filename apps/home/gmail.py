@@ -1,66 +1,71 @@
-import os
-import base64
-from google.oauth2.credentials import Credentials
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
-from google.auth.transport.requests import Request
-from google_auth_oauthlib.flow import InstalledAppFlow
-from email.mime.text import MIMEText
+import imaplib
+import email
+from email.header import decode_header
+import getpass
 
-# Define the scope and credentials for accessing Gmail API
-SCOPES = ['https://www.googleapis.com/auth/gmail.compose', 'https://www.googleapis.com/auth/gmail.readonly']
-creds = None
-if os.path.exists('token.json'):
-    creds = Credentials.from_authorized_user_file('token.json', SCOPES)
-if not creds or not creds.valid:
-    if creds and creds.expired and creds.refresh_token:
-        creds.refresh(Request())
-    else:
-        flow = InstalledAppFlow.from_client_config('google.json', SCOPES)
-        creds = flow.run_local_server(port=0)
-    with open('token.json', 'w') as token:
-        token.write(creds.to_json())
 
-# Create a Gmail API service client
-service = build('gmail', 'v1', credentials=creds)
 
-# Define the sender or search term to filter messages
-query = "from:example@sender.com" # Change to your desired sender or search term
+def get_mail_client(email_address):
+    SMTP_SERVER = "imap.gmail.com"
+    SMTP_PORT = 993
+    
+    password = "Sirdewie31!"
+    # with open("password.txt", "r") as f:
+    #     password = f.read().strip()
 
-# Read messages from the specified sender or search term
-try:
-    messages = service.users().messages().list(userId='me', q=query).execute().get('messages', [])
-    if not messages:
-        print('No messages found.')
-    else:
-        for message in messages:
-            msg = service.users().messages().get(userId='me', id=message['id']).execute()
-            print(f"From: {msg['payload']['headers'][1]['value']}")
-            print(f"Subject: {msg['payload']['headers'][4]['value']}")
-            print(f"Body: {base64.urlsafe_b64decode(msg['payload']['parts'][0]['body']['data']).decode('utf-8')}")
-except HttpError as error:
-    print(f'An error occurred: {error}')
 
-def create_message(to, subject, message_text):
-    """Create a message for sending."""
-    message = MIMEText(message_text)
-    message['to'] = to
-    message['subject'] = subject
-    return {'raw': base64.urlsafe_b64encode(message.as_bytes()).decode()}
+    mail = imaplib.IMAP4_SSL(SMTP_SERVER)
+    mail.login(email_address, password)
+    return mail
 
-def send_message(message):
-    """Send an email message."""
-    try:
-        message = (service.users().messages().send(userId='me', body=message).execute())
-        return message
-    except HttpError as error:
-        print(f'An error occurred: {error}')
-        return None
+# print(get_mail_client('appiispanen@gmail.com'))
 
-# Send a message to a particular recipient
-try:
-    message = create_message('example@recipient.com', 'Example Subject', 'Example Body')
-    send_message(message)
-    print('Message sent successfully.')
-except HttpError as error:
-    print(f'An error occurred: {error}')
+
+
+def read_emails():
+    # Connect to the IMAP server and authenticate
+    # Replace 'your_email@example.com' with your email address
+    EMAIL = 'appiispanen@gmail.com'
+    PASSWORD = getpass.getpass('Sirdewie31!')
+    IMAP_SERVER = 'imap.gmail.com'  # Replace with your email provider's IMAP server
+    mail = imaplib.IMAP4_SSL(IMAP_SERVER)
+    mail.login(EMAIL, PASSWORD)
+
+    # Select the mailbox (inbox) you want to read from
+    mail.select('inbox')
+
+    # Search for all emails in the selected mailbox
+    _, msg_numbers = mail.search(None, 'ALL')
+    msg_numbers = msg_numbers[0].split()
+
+    # Iterate through the email messages
+    for msg_number in msg_numbers:
+        _, msg_data = mail.fetch(msg_number, '(RFC822)')
+        msg = email.message_from_bytes(msg_data[0][1])
+
+        subject = decode_header(msg['Subject'])[0][0]
+        if isinstance(subject, bytes):
+            subject = subject.decode()
+
+        from_ = decode_header(msg['From'])[0][0]
+        if isinstance(from_, bytes):
+            from_ = from_.decode()
+
+        print(f'Subject: {subject}')
+        print(f'From: {from_}')
+
+        if msg.is_multipart():
+            for part in msg.walk():
+                if part.get_content_type() == 'text/plain':
+                    text = part.get_payload(decode=True).decode()
+                    print(f'Email body: {text}')
+        else:
+            text = msg.get_payload(decode=True).decode()
+            print(f'Email body: {text}')
+
+    # Close the mailbox and logout
+    mail.close()
+    mail.logout()
+
+if __name__ == '__main__':
+    read_emails()

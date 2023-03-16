@@ -45,6 +45,24 @@ label {
   opacity: .2;
 }
 
+.response-container {
+  position: relative;
+}
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border-left-color: #000;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 
 input, select , textarea{
   box-sizing: border-box;

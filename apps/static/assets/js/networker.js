@@ -177,9 +177,7 @@ button.addEventListener("speechsegment", (e) => {
     }
   }  
 
-
-
-
+  
 
 
   // ************** SEGMENT BY INTENT
@@ -461,22 +459,22 @@ function ask_question(words, speech=true, show_response=true) {
     return;
   }
   ask_question_running = true;
-  // THIS IS THE UM BEFORE THE TEXT RESPONSE
   
-    if (audio && !audio.paused) {
-      audio.pause();
-    }
+  // Show the spinner
+  document.getElementById('spinner').style.display = 'block';
 
-    if (speech && !isMuted && words.length > 12){
-      audioSrc = `data:audio/mpeg;base64,${randomOne()}`;  
-      audio = new Audio(audioSrc);
-      audio.playbackRate = 1.4;
-      audio.pitch = 0.714;
-      audio.play();
-      };
-  
+  if (audio && !audio.paused) {
+    audio.pause();
+  }
 
-  // }
+  if (speech && !isMuted && words.length > 12){
+    audioSrc = `data:audio/mpeg;base64,${randomOne()}`;  
+    audio = new Audio(audioSrc);
+    audio.playbackRate = 1.4;
+    audio.pitch = 0.714;
+    audio.play();
+  }
+
   return  fetch('/ask_question', {
       method: 'POST',
       headers: {
@@ -493,9 +491,14 @@ function ask_question(words, speech=true, show_response=true) {
         if (show_response){airesponseTextArea.value = airesponse;}
         if (speech && !isMuted) {speak(airesponse)}
         ask_question_running = false;
+
+        // Hide the spinner
+        document.getElementById('spinner').style.display = 'none';
+
         return airesponse;
       }) 
-      }
+}
+
     console.log("Your query has been run!");
 
 if (inputElement){
