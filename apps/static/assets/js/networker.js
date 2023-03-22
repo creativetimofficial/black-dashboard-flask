@@ -142,10 +142,14 @@ button.addEventListener("speechsegment", (e) => {
           }
         }
       }
-      document.getElementById("form3").value = concatenatedWords;
+      // document.getElementById("form3").value = concatenatedWords;
+      tinymce.activeEditor.setContent(concatenatedWords);
       if (speechSegment.isFinal){
-         ask_question("This dialog came from speech to text AI. Reformat the dialog in first person, responding ONLY in notes about what was said here. Do not say 'Sure, here are the bulleted notes...' - ONLY RESPOND IN NOTES.\n".concat(concatenatedWords), speech=false, show_response=false).then(airesponse => {
-          document.getElementById("form3").value = airesponse; // Prints the airesponse value to the console
+        console.log("ASKING HTML OUTPUT");
+         ask_question("This dialog came from speech to text AI. Reformat the dialog in first person HTML, responding ONLY in notes about what was said here. Do not say 'Sure, here are the bulleted notes...' - ONLY RESPOND IN an HTML of the NOTES.\n".concat(concatenatedWords), speech=false, show_response=false).then(airesponse => {
+          // document.getElementById("form3").value = airesponse; // Prints the airesponse value to the console
+          tinymce.activeEditor.setContent(airesponse);
+          note=false;
         });;
       }
     }
@@ -289,8 +293,6 @@ button.addEventListener("speechsegment", (e) => {
         name = entity.name;
         console.log("looking up ", name, " in context");
       }})
-
-      console.log("Removing edited");
       // document.classList.remove('edited');
       const editedElems = document.querySelectorAll('.edited');
   
@@ -456,6 +458,7 @@ $('.remove-field').on('click', deleteField);
 
 function ask_question(words, speech=true, show_response=true) {
   if(ask_question_running){
+    console.log("ask q already running");
     return;
   }
   ask_question_running = true;
@@ -473,7 +476,8 @@ function ask_question(words, speech=true, show_response=true) {
     audio.playbackRate = 1.4;
     audio.pitch = 0.714;
     audio.play();
-  }
+  }  
+
 
   return  fetch('/ask_question', {
       method: 'POST',
@@ -488,7 +492,7 @@ function ask_question(words, speech=true, show_response=true) {
       .then(data => {
         const airesponse = data.airesponse;
         
-        if (show_response){airesponseTextArea.value = airesponse;}
+        if (show_response){airesponseTextArea.innerHTML = airesponse;}
         if (speech && !isMuted) {speak(airesponse)}
         ask_question_running = false;
 
@@ -623,7 +627,10 @@ $("#submit-note-btn").click(function() {
   $('.modal-backdrop.fade.show').fadeOut('fast');
 
   var form2Data = $("#form2").val();
-  var form3Data = formatTextAsList($("#form3").val());
+  // var form3Data = formatTextAsList($("#form3").val());
+  var form3Data = tinymce.activeEditor.getContent();
+
+
   console.log(form3Data);
 
   // Send an AJAX request to the new-note endpoint with the data
@@ -635,8 +642,10 @@ $("#submit-note-btn").click(function() {
     success: function(response) {
       // Handle success response
      
-      document.getElementById("form3").value = "";
+      // document.getElementById("form3").value = "";
+      tinymce.activeEditor.setContent('');
 
+      
     },
     error: function(xhr, status, error) {
       // Handle error response
@@ -800,11 +809,11 @@ document.addEventListener("keydown", function(event) {
   if (event.key === "$") {
    speak("Screw you Rothstein");
   }
-  if (event.key === "f") {
-    clicker_search("Company", "set to yale college");
-    console.log("find");
-  }
+
 });
 
 
 // *********** END SCRIPT *********** 
+
+  
+

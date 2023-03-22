@@ -56,6 +56,12 @@ label {
   border-left-color: #000;
   animation: spin 1s linear infinite;
 }
+.note-options *{
+display:inline-block;
+padding:5px;
+text-align: center;
+width:10%
+}
 
 @keyframes spin {
   100% {
@@ -244,7 +250,7 @@ line-height: 200%;
 #addnotes div, #addperson div, #edituser div{
   background-color: #5603ad;
   
-  opacity: .9;
+  opacity: .95;
   font-family: "Poppins", sans-serif;
   font-size: 0.875rem;
   font-weight: 400;

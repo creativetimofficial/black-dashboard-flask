@@ -26,14 +26,14 @@ def read_emails():
     # Connect to the IMAP server and authenticate
     # Replace 'your_email@example.com' with your email address
     EMAIL = 'appiispanen@gmail.com'
-    PASSWORD = getpass.getpass('Sirdewie31!')
+    PASSWORD = getpass.getpass(PASS)
     IMAP_SERVER = 'imap.gmail.com'  # Replace with your email provider's IMAP server
     mail = imaplib.IMAP4_SSL(IMAP_SERVER)
     mail.login(EMAIL, PASSWORD)
 
     # Select the mailbox (inbox) you want to read from
     mail.select('inbox')
-
+    print(mail)
     # Search for all emails in the selected mailbox
     _, msg_numbers = mail.search(None, 'ALL')
     msg_numbers = msg_numbers[0].split()

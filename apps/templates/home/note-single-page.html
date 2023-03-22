@@ -1,0 +1,27 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Tables {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+{% block content %}
+
+  <textarea id="my-editor"></textarea>
+  <div class="note-options">
+  <input type="radio" id="age1" name="age" value="30">
+  <label for="age1">With GPT Reformatting</label><br>
+  <input type="radio" id="age2" name="age" value="60">
+  <label for="age2">Dictation</label><br>  
+  <input type="radio" id="age3" name="age" value="100">
+  <label for="age3">No Formatting</label><br><br>
+
+  <input type="submit" value="Submit">
+</div>
+
+</body>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

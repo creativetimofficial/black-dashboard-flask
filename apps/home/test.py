@@ -1,18 +1,15 @@
 import requests
-import json
+from creds import NINJA_KEY
 
-# Define the JSON data you want to send in the request
-json_data = {'body': 'Hello, how are you?'}
+api_url = 'https://api.api-ninjas.com/v1/imagetotext'
+image_file_descriptor = open('apps/home/download.jpeg', 'rb')
+files = {'image': image_file_descriptor}
 
-# Set the content type as JSON
-headers = {'Content-Type': 'application/json'}
 
-# Send a POST request to the speak_route() function with the JSON data
-response = requests.post('http://127.0.0.1:5000/speak', data=json.dumps(json_data), headers=headers)
+r = requests.post(api_url, headers={'X-Api-Key': NINJA_KEY}, files=files)
 
-# Get the response as a JSON object
-response_json = response.json()
+for text in r.json():
+    print(text['text'])
 
-# Print the audio content and text result from the response
-print(response_json['audioContent'])
-print(response_json['textResult'])
+
+# print(r.json())
