@@ -37,15 +37,15 @@ class ProductionConfig(Config):
     # )
 
         # PostgreSQL database
-    SQLALCHEMY_DATABASE_URI = '{}://{}:{}@{}:{}/{}'.format(
-        config('DB_ENGINE', default='postgresql'),
-        config('DB_USERNAME', default='postgres'),
-        config('DB_PASS', default='4XBUMcec2v8qCdw4Gsp1'),
-        config('DB_HOST', default='containers-us-west-205.railway.app'),
-        config('DB_PORT', default=6184),
-        config('DB_NAME', default='railway')
-    )
-
+    # SQLALCHEMY_DATABASE_URI = '{}://{}:{}@{}:{}/{}'.format(
+    #     config('DB_ENGINE', default='postgresql'),
+    #     config('DB_USERNAME', default='postgres'),
+    #     config('DB_PASS', default='4XBUMcec2v8qCdw4Gsp1'),
+    #     config('DB_HOST', default='containers-us-west-205.railway.app'),
+    #     config('DB_PORT', default=6184),
+    #     config('DB_NAME', default='railway')
+    # )
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
 
 
 class DebugConfig(Config):
