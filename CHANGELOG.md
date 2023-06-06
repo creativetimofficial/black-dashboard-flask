@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.0.5] 2023-06-06
+### Changes
+
+- Codebase Update
+- Added OAuth via Github
+- Improved Auth Pages
+  - UI/UX updates (minor)
+
 ## [1.0.4] 2021-11-10
 ### Improvements
 
