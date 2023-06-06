@@ -6,18 +6,14 @@
 
 <br />
 
-> Free product - **Flask Dashboard** starter project - Features:
+> Features:
 
-- Up-to-date [dependencies](./requirements.txt): **Flask 2.0.1**
-- [SCSS compilation](#recompile-css) via **Gulp**
-- UI Kit: **Black Dashboard** (Free Version) provided by **[Creative-Tim](https://www.creative-tim.com/)**
-- Flask Codebase - provided by **[AppSeed](https://appseed.us/)**
-- SQLite, PostgreSQL, SQLAlchemy ORM
-- Alembic (DB schema migrations)
-- Modular design with **Blueprints**
-- Session-Based authentication (via **flask_login**)
-- Forms validation
-- Deployment scripts: Docker, Gunicorn / Nginx, Heroku
+- ✅ `Up-to-date dependencies`
+- ✅ Black Dashboard, BS4 Design
+- ✅ `DB Tools`: SQLAlchemy ORM, `Flask-Migrate` (schema migrations)
+- ✅ `Persistence`: SQLite (dev), MySql (prod)
+- ✅ `Authentication`: Session Based, `OAuth` via Github
+- ✅ `Deployment`: Docker, Page Compression (Flask-Minify) 
 
 <br />
 
@@ -57,66 +53,137 @@ $ cd black-dashboard-flask
 > Start the app in Docker
 
 ```bash
-$ docker-compose pull   # download dependencies 
-$ docker-compose build  # local set up
-$ docker-compose up -d  # start the app 
+$ docker-compose up --build 
 ```
 
-Visit `http://localhost:85` in your browser. The app should be up & running.
+Visit `http://localhost:5085` in your browser. The app should be up & running.
 
 <br />
 
-## Quick start
+## Create/Edit `.env` file
+
+The meaning of each variable can be found below: 
+
+- `DEBUG`: if `True` the app runs in develoment mode
+  - For production value `False` should be used
+- `ASSETS_ROOT`: used in assets management
+  - default value: `/static/assets`
+- `OAuth` via Github
+  - `GITHUB_ID`=<GITHUB_ID_HERE>
+  - `GITHUB_SECRET`=<GITHUB_SECRET_HERE> 
+
+<br />
+
+## Manual Build
 
 > UNZIP the sources or clone the private repository. After getting the code, open a terminal and navigate to the working directory, with product source code.
 
+### 👉 Set Up for `Unix`, `MacOS` 
+
+> Install modules via `VENV`  
+
 ```bash
-$ # Get the code
-$ git clone https://github.com/creativetimofficial/black-dashboard-flask.git
-$ cd black-dashboard-flask
-$
-$ # Virtualenv modules installation (Unix based systems)
 $ virtualenv env
 $ source env/bin/activate
-$
-$ # Virtualenv modules installation (Windows based systems)
-$ # virtualenv env
-$ # .\env\Scripts\activate
-$
-$ # Install modules - SQLite Database
 $ pip3 install -r requirements.txt
-$
-$ # OR with PostgreSQL connector
-$ # pip install -r requirements-pgsql.txt
-$
-$ # Set the FLASK_APP environment variable
-$ (Unix/Mac) export FLASK_APP=run.py
-$ (Windows) set FLASK_APP=run.py
-$ (Powershell) $env:FLASK_APP = ".\run.py"
-$
-$ # Set up the DEBUG environment
-$ # (Unix/Mac) export FLASK_ENV=development
-$ # (Windows) set FLASK_ENV=development
-$ # (Powershell) $env:FLASK_ENV = "development"
-$
-$ # Start the application (development mode)
-$ # --host=0.0.0.0 - expose the app on all network interfaces (default 127.0.0.1)
-$ # --port=5000    - specify the app port (default 5000)  
-$ flask run --host=0.0.0.0 --port=5000
-$
-$ # Access the dashboard in browser: http://127.0.0.1:5000/
 ```
 
-> Note: To use the app, please access the registration page and create a new user. After authentication, the app will unlock the private pages.
+<br />
+
+> Set Up Flask Environment
+
+```bash
+$ export FLASK_APP=run.py
+$ export FLASK_ENV=development
+```
+
+<br />
+
+> Start the app
+
+```bash
+$ flask run
+// OR
+$ flask run --cert=adhoc # For HTTPS server
+```
+
+At this point, the app runs at `http://127.0.0.1:5000/`. 
+
+<br />
+
+### 👉 Set Up for `Windows` 
+
+> Install modules via `VENV` (windows) 
+
+```
+$ virtualenv env
+$ .\env\Scripts\activate
+$ pip3 install -r requirements.txt
+```
+
+<br />
+
+> Set Up Flask Environment
+
+```bash
+$ # CMD 
+$ set FLASK_APP=run.py
+$ set FLASK_ENV=development
+$
+$ # Powershell
+$ $env:FLASK_APP = ".\run.py"
+$ $env:FLASK_ENV = "development"
+```
+
+<br />
+
+> Start the app
+
+```bash
+$ flask run
+// OR
+$ flask run --cert=adhoc # For HTTPS server
+```
+
+At this point, the app runs at `http://127.0.0.1:5000/`. 
+
+<br />
+
+## Recompile SCSS  
+
+The SCSS/CSS files used to style the Ui are saved in the `apps/static/assets` directory. 
+In order to update the Ui colors (primary, secondary) this procedure needs to be followed. 
+
+```bash
+$ yarn # install modules
+$ # # edit variables 
+$ vi apps/static/assets/scss/black-dashboard/custom/_variables.scss 
+$ gulp # SCSS to CSS translation
+```
+
+The `_variables.scss` content defines the `primary` and `secondary` colors: 
+
+```scss
+$default:       #344675 !default; // EDIT for customization
+$primary:       #e14eca !default; // EDIT for customization
+$secondary:     #f4f5f7 !default; // EDIT for customization
+$success:       #00f2c3 !default; // EDIT for customization
+$info:          #1d8cf8 !default; // EDIT for customization
+$warning:       #ff8d72 !default; // EDIT for customization
+$danger:        #fd5d93 !default; // EDIT for customization
+$black:         #222a42 !default; // EDIT for customization
+```
 
 <br />
 
 ## Documentation
+
 The documentation for the **Black Dashboard Flask** is hosted at our [website](https://demos.creative-tim.com/black-dashboard-flask/docs/1.0/getting-started/getting-started-flask.html).
 
 <br />
 
 ## File Structure
+
 Within the download you'll find the following directories and files:
 
 ```bash
@@ -124,23 +191,23 @@ Within the download you'll find the following directories and files:
    |
    |-- apps/
    |    |
-   |    |-- home/                          # A simple app that serve HTML files
-   |    |    |-- routes.py                 # Define app routes
+   |    |-- home/                           # A simple app that serve HTML files
+   |    |    |-- routes.py                  # Define app routes
    |    |
-   |    |-- authentication/                # Handles auth routes (login and register)
-   |    |    |-- routes.py                 # Define authentication routes  
-   |    |    |-- models.py                 # Defines models  
-   |    |    |-- forms.py                  # Define auth forms (login and register) 
+   |    |-- authentication/                 # Handles auth routes (login and register)
+   |    |    |-- routes.py                  # Define authentication routes  
+   |    |    |-- models.py                  # Defines models  
+   |    |    |-- forms.py                   # Define auth forms (login and register) 
    |    |
    |    |-- static/
-   |    |    |-- <css, JS, images>         # CSS files, Javascripts files
+   |    |    |-- <css, JS, images>          # CSS files, Javascripts files
    |    |
-   |    |-- templates/                     # Templates used to render pages
-   |    |    |-- includes/                 # HTML chunks and components
-   |    |    |    |-- navigation.html      # Top menu component
-   |    |    |    |-- sidebar.html         # Sidebar component
-   |    |    |    |-- footer.html          # App Footer
-   |    |    |    |-- scripts.html         # Scripts common to all pages
+   |    |-- templates/                      # Templates used to render pages
+   |    |    |-- includes/                  # HTML chunks and components
+   |    |    |    |-- navigation.html       # Top menu component
+   |    |    |    |-- sidebar.html          # Sidebar component
+   |    |    |    |-- footer.html           # App Footer
+   |    |    |    |-- scripts.html          # Scripts common to all pages
    |    |    |
    |    |    |-- layouts/                   # Master pages
    |    |    |    |-- base-fullscreen.html  # Used by Authentication pages
@@ -158,76 +225,13 @@ Within the download you'll find the following directories and files:
    |  config.py                             # Set up the app
    |    __init__.py                         # Initialize the app
    |
-   |-- requirements.txt                     # Development modules - SQLite storage
-   |-- requirements-mysql.txt               # Production modules  - Mysql DMBS
-   |-- requirements-pqsql.txt               # Production modules  - PostgreSql DMBS
-   |
-   |-- Dockerfile                           # Deployment
-   |-- docker-compose.yml                   # Deployment
-   |-- gunicorn-cfg.py                      # Deployment   
-   |-- nginx                                # Deployment
-   |    |-- appseed-app.conf                # Deployment 
+   |-- requirements.txt                     # App Dependencies
    |
    |-- .env                                 # Inject Configuration via Environment
    |-- run.py                               # Start the app - WSGI gateway
    |
    |-- ************************************************************************
 ```
-
-<br />
-
-> The bootstrap flow
-
-- `run.py` loads the `.env` file
-- Initialize the app using the specified profile: *Debug* or *Production*
-  - If env.DEBUG is set to *True* the SQLite storage is used
-  - If env.DEBUG is set to *False* the specified DB driver is used (MySql, PostgreSQL)
-- Call the app factory method `create_app` defined in app/__init__.py
-- Redirect the guest users to Login page
-- Unlock the pages served by *home* blueprint for authenticated users
-
-<br />
-
-## Recompile CSS
-
-To recompile SCSS files, follow this setup:
-
-<br />
-
-**Step #1** - Install tools
-
-- [NodeJS](https://nodejs.org/en/) 12.x or higher
-- [Gulp](https://gulpjs.com/) - globally 
-    - `npm install -g gulp-cli`
-- [Yarn](https://yarnpkg.com/) (optional) 
-
-<br />
-
-**Step #2** - Change the working directory to `assets` folder
-
-```bash
-$ cd apps/static/assets
-```
-
-<br />
-
-**Step #3** - Install modules (this will create a classic `node_modules` directory)
-
-```bash
-$ npm install
-// OR
-$ yarn
-```
-
-<br />
-
-**Step #4** - Edit & Recompile SCSS files 
-
-```bash
-$ gulp scss
-```
-
-The generated file is saved in `static/assets/css` directory.
 
 <br />
 
